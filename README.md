@@ -20,6 +20,10 @@
 * Analizar los casos de uso
 * Desarrollar el modelo físico 
 
+### Cambio del tema UI/UX ###
+
+* Cambiar el tema (colores) del tema actual
+
 ### Estos son los requerimientos más necesarios de la aplicación hasta el momento ###
 
 * Pruebas funcionales
