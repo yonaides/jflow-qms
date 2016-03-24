@@ -1,0 +1,75 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:pe="http://primefaces.org/ui/extensions">
+
+    <header class="main-header">
+
+        <a href="#" class="logo">
+            <span class="logo-lg text text-black">
+                <i class="fa fa-refresh fa-2x"></i>
+                ADM <b>Turnos</b> </span>
+        </a>
+
+        <!-- Header Navbar: style can be found in header.less -->
+        <nav class="navbar navbar-static-top" role="navigation">
+
+            <!-- Navbar Right Menu -->
+            <div class="navbar-custom-menu">
+                <ul class="nav navbar-nav">
+
+                    <!-- User Account: style can be found in dropdown.less -->
+                    <li class="dropdown user user-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <!--<pe:gravatar  style="user-image" value="hectorvent1@gmail.com" size="66" notFound="mm"/>-->
+                            <img src="resources/img/mprofile.jpg" class="user-image" alt="User Image" />
+                            <span class="hidden-xs">
+                                #{authenticationBean.usuario.nombre} #{authenticationBean.usuario.apellido}
+                            </span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <!-- User image -->
+                            <li class="user-header">
+                                <img src="resources/img/mprofile.jpg" class="img-circle" alt="User Image" />
+                                <p>
+                                    #{authenticationBean.usuario.nombre} #{authenticationBean.usuario.apellido}
+                                    <br/>
+                                    <span class="text-capitalize">
+                                        <!--authenticationBean.usuario.departamento-->
+                                    </span>
+
+                                    <small> 
+                                        <h:outputText value="#{authenticationBean.usuario.idoficina.numeroOficina} - #{authenticationBean.usuario.idoficina.nombre}" 
+                                                      class="text-capitalize text-bold" >
+                                        </h:outputText>
+                                    </small>
+                                </p>
+                            </li>
+                            <!-- Menu Footer-->
+                            <li class="user-footer">
+                                <div class="pull-left">
+                                    <p:commandLink id='eventoPerfil' action="#{menuController.setPagina('usuario/perfil')}" 
+                                                   class="btn btn-primary btn-flat" update=":content">
+                                        <span class="glyphicon glyphicon-user"></span>
+                                        Perfil
+                                    </p:commandLink>
+                                </div>
+                                <div class="pull-right">
+                                    <p:commandLink id="salir" class="btn btn-primary btn-flat" 
+                                                   action="#{authenticationBean.doLogout()}">
+                                        <span class="glyphicon glyphicon-log-out"></span> Salir
+                                    </p:commandLink>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+
+        </nav>
+    </header>
+</ui:composition>

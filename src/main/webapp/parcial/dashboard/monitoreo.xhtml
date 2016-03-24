@@ -1,0 +1,78 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:jsf="http://xmlns.jcp.org/jsf"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <!-- Content Header (Page header) -->
+    <h:form><f:ajax render=":content">
+            <section class="content-header">
+
+                <h1><li class="fa fa-mobile fa-1x"></li> Monitoreo Estaciones <small></small> </h1>
+                <ol class="breadcrumb">
+
+                    <!---->
+                    <li><a href="#"><i class="fa fa-mobile"></i>Inicio</a></li>
+                    <li>
+                        <h:commandLink action="#{menuController.setPagina('dashboard/dashboard')}" >
+                            Panel de Principal
+                        </h:commandLink>
+                    </li>
+                    <li class="active">Monitoreo Estaciones</li>
+                    <!--</f:ajax>-->
+                    <!--</h:form>-->
+                </ol>
+
+                <!---->
+            </section>
+        </f:ajax>
+    </h:form>
+
+    <section class="content">
+
+        <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+                <li class="active tab_consulta">
+                    <a href="#consulta" data-toggle="tab">
+                        <span class="text-primary glyphicon glyphicon-search"></span>
+                        Estaciones
+                    </a>
+                </li>
+                <li class="tab_registro"><a href="#registro" data-toggle="tab">
+                        <span class="text-primary glyphicon glyphicon-pencil"></span> 
+                        Representantes
+                    </a>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane active tab_consulta" id="consulta">
+                    <div class="row">
+
+                    </div>
+                </div><!-- /#consulta -->
+
+                <div class="tab-pane tab_registro" id="registro">
+                    <!--<ui:include src="administrarPDARegistro.xhtml"/>-->
+                </div><!-- /#registro -->
+
+
+            </div><!-- /.tab-content -->
+        </div><!-- nav-tabs-custom -->
+
+
+    </section>
+    <script>
+
+        //        function cambiarTab() {
+        //            $('.tab_consulta').removeClass('active');
+        //            $('.tab_registro').addClass('active');
+        //        }
+
+    </script>
+
+
+</ui:composition>
+

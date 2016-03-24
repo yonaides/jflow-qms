@@ -1,0 +1,112 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <h:head>
+
+        <f:facet name="first">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+
+            <meta http-equiv="Content-Type"    content="text/html; charset=UTF-8"/>
+            <meta http-equiv="cache-control" content="max-age=0" />
+            <meta http-equiv="cache-control" content="no-cache" />
+            <meta http-equiv="expires" content="0" />
+            <meta http-equiv="pragma" content="no-cache" />
+            <meta charset="UTF-8" />
+
+            <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport" />
+            <meta http-equiv="refresh" content="#{facesContext.externalContext.sessionMaxInactiveInterval};url=#{request.contextPath}/app/login.xhtml"/>
+        </f:facet>
+
+        <title>Login - Sistema de Turnos</title>
+
+        <!--bootstrap librery-->
+        <h:outputStylesheet name="css/bootstrap-3.3.4.min.css"/>
+        <h:outputStylesheet name="css/font-awesome-4.4.0.min.css"/>
+        <h:outputStylesheet name="css/AdminLTE.css"/>
+        <h:outputStylesheet name="css/main.css"/>
+        <h:outputStylesheet name="css/ajax-login.css"/>
+
+    </h:head>
+
+    <h:body class="login-page">
+
+        <div class="login-box">
+
+            <div class="login-logo">
+                <a href="#">
+                    <i class="fa fa-refresh fa-1x"></i>
+                    ADM - <b>Turnos</b></a>
+            </div>
+
+            <div class="login-box-body">
+
+                <p class="login-box-msg">Completar para iniciar sesión</p>
+
+                <h:form id="loginForm">
+                    <p:focus for="username"/>
+                    <p:defaultCommand target="loginbtn"/>
+                    <p:growl id="errorLogin" showDetail="true" life="3000"/>
+
+                    <div class="form-group has-feedback">
+                        <p:inputText id="username" styleClass="form-control username" 
+                                     placeholder="Nombre de Usuario" 
+                                     required="true" requiredMessage="Se debe indicar usuario"
+                                     value="#{authenticationBean.username}"/>
+                        <span class="glyphicon glyphicon-user form-control-feedback"></span>
+                    </div>
+
+                    <div class="form-group has-feedback">
+                        <p:password  id="password" styleClass="form-control password" 
+                                     required="true" requiredMessage="Se debe indicar contraseña"
+                                     placeholder="Contraseña" value="#{authenticationBean.password}"/>
+                        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div id="statusDiv" style="display: none;">
+
+                                <div class="spinner">
+                                    <div class="rect1"></div>
+                                    <div class="rect2"></div>
+                                    <div class="rect3"></div>
+                                    <div class="rect4"></div>
+                                    <div class="rect5"></div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-md-6">
+                            <p:commandLink id="loginbtn" styleClass="btn btn-primary btn-flat pull-right btnLogin" 
+                                           action="#{authenticationBean.doLogin()}" ajax="true" update="errorLogin">
+                                <span class="glyphicon glyphicon-log-in"></span> Iniciar
+                            </p:commandLink>
+                        </div><!-- /.col -->
+                    </div>
+                </h:form>
+
+            </div>
+        </div>
+
+        <p:ajaxStatus onstart="disabledInput(true)" 
+                      onsuccess="disabledInput(false)" onerror="alert('Error');" />
+        <script >
+            function disabledInput(disabled) {
+                if (disabled) {
+                    $('.btnLogin').addClass('disabled');
+                    $('#statusDiv').show();
+                } else {
+                    $('.btnLogin').removeClass('disabled');
+                    $('#statusDiv').hide();
+                }
+            }
+        </script>
+
+
+    </h:body>
+</html>
+

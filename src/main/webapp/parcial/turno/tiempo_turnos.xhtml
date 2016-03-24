@@ -1,0 +1,229 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:jsf="http://xmlns.jcp.org/jsf"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1><li class="fa fa-clock-o fa-1x"></li> Tiempo Turnos<small></small> </h1>
+        <ol class="breadcrumb">
+            <li>
+                <a href="#">
+                    <i class="fa fa-arrow-right"></i>Inicio
+                </a>
+            </li>
+            <li><a href=""></a></li>
+            <li class="active">Monitorear turnos
+            </li>
+        </ol>
+    </section>
+
+    <section class="content">
+
+        <!--               <div class="row">
+                            <div class="col-lg-3 col-xs-6">
+                                small box 
+                                <div class="small-box bg-red">
+                                    <div class="inner">
+                                        <h3>15</h3>
+                                        <p>Turnos abandonados</p>
+                                    </div>
+                                    <div class="icon">
+                                        <i class="fa fa-ticket"></i>
+                                    </div>
+                                    <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                                </div>
+                            </div> 
+        
+                            <div class="col-lg-3 col-xs-6">
+                                small box 
+                                <div class="small-box bg-green">
+                                    <div class="inner">
+                                        <h3>5<sup style="font-size: 20px">%</sup></h3>
+                                        <p>De los turnos esperaron más de 40 minutos</p>
+                                    </div>
+                                    <div class="icon">
+                                        <i class="fa fa-clock-o"></i>
+                                    </div>
+                                    <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                                </div>
+                            </div> 
+        
+                            <div class="col-lg-3 col-xs-6">
+                                small box 
+                                <div class="small-box bg-yellow">
+                                    <div class="inner">
+                                        <h3>44</h3>
+                                        <p>User Registrations</p>
+                                    </div>
+                                    <div class="icon">
+                                        <i class="fa fa-inbox"></i>
+                                    </div>
+                                    <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                                </div>
+                            </div> 
+        
+                            <div class="col-lg-3 col-xs-6">
+                                small box 
+                                <div class="small-box bg-red">
+                                    <div class="inner">
+                                        <h3>65</h3>
+                                        <p>Unique Visitors</p>
+                                    </div>
+                                    <div class="icon">
+                                        <i class="fa fa-user"></i>
+                                    </div>
+                                    <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                                </div>
+                            </div> 
+        
+                        </div> -->
+
+        <style>
+            .rojo {
+                /*background: red;*/
+                color: red;
+
+            }
+            .verde {
+                color: green;
+            }
+
+            .status { 
+                width: 15px;
+                height: 15px;
+                border-radius: 50px;
+            }
+        </style>
+
+        <div class="box box-primary">
+
+            <div class="box-header with-border">
+                <h3 class="box-title">Generar nuevo turno</h3>
+            </div>
+            <div class="box-body">
+
+
+
+                <div class="row">
+                    <div class="col-md-12" >
+                        <h:form>
+                            <p:commandLink onclick="PF('poll').start();" class="btn btn-flat btn-default">
+                                <span class="glyphicon glyphicon-play" aria-hidden="true"></span> Iniciar
+                            </p:commandLink>
+                            <p:commandLink onclick="PF('poll').stop();" class="btn btn-flat btn-danger">
+                                <span class="glyphicon glyphicon-stop" aria-hidden="true"></span> Detener
+                            </p:commandLink>
+
+                            <p:poll widgetVar="poll" interval="10" update="tbTurnos tbTurnoProceso" autoStart="false" />
+                        </h:form>
+
+                        <p:dataTable id="tbTurnos" var="turno" 
+                                     value="#{monitorearTurno.turnosEspera}"
+                                     rowKey="#{turno.turno}" 
+                                     style="margin-top: 10px" selectionMode="single" rows="15"
+                                     rowStyleClass="#{turno.tiempoEspera > 40 ? 'text-danger' : 'text-success' } "
+                                     emptyMessage="No hay registros">
+
+                            <f:facet name="header">
+                                <span class="text text-primary">Turnos en Espera</span>
+                            </f:facet>
+
+                            <p:column headerText="-" style="width: 5%" class="text text-center">
+                                <label class="status control-label #{turno.tiempoEspera > 40 ? 'label-danger' : 'label-success' }"/>
+                            </p:column>
+
+                            <p:column headerText="Turno" style="width: 5%" class="text text-center">
+                                <h:outputText value="#{turno.turno}" />
+                            </p:column>
+
+                            <p:column headerText="Servicio" style="width: 10%" class="text text-center">
+                                <h:outputText value="#{turno.servicio}" />
+                            </p:column>
+
+                            <p:column headerText="NIC" style="width: 10%" class="text text-center">
+                                <h:outputText value="#{turno.nic}" />
+                            </p:column>
+
+                            <p:column headerText="Cliente" style="width: 20%">
+                                <h:outputText value="#{turno.cliente}" />
+                            </p:column>
+
+                            <p:column headerText="Minutos Espera " style="width: 10%" class="text text-center">
+                                <h:outputText value="#{turno.tiempoEspera}" >
+                                    <f:convertNumber pattern="#,##0.00"/>
+                                </h:outputText>
+                            </p:column>
+
+
+                        </p:dataTable>
+
+
+                        <p:dataTable id="tbTurnoProceso" var="turno" 
+                                     value="#{monitorearTurno.turnosProceso}"
+                                     rowKey="#{turno.turno}" 
+                                     style="margin-top: 10px" selectionMode="single" rows="15"
+                                     rowStyleClass="#{turno.tiempoProceso > 40 ? 'text-danger' : 'text-success' } "
+                                     emptyMessage="No hay registros">
+
+                            <f:facet name="header">
+                                <span class="text text-primary">Turnos en Proceso</span>
+                            </f:facet>
+
+                            <p:column headerText="-" style="width: 5%" class="text text-center">
+                                <label class="status control-label #{turno.tiempoProceso > 40 ? 'label-danger' : 'label-success' }"/>
+                            </p:column>
+
+                            <p:column headerText="Turno" style="width: 5%" class="text text-center">
+                                <h:outputText value="#{turno.turno}" />
+                            </p:column>
+
+                            <p:column headerText="Servicio" style="width: 15%" class="text text-center">
+                                <h:outputText value="#{turno.servicio}" />
+                            </p:column>
+
+                            <p:column headerText="NIC" style="width: 10%" class="text text-center">
+                                <h:outputText value="#{turno.nic}" />
+                            </p:column>
+
+                            <p:column headerText="Cliente" style="width: 20%">
+                                <h:outputText value="#{turno.cliente}" />
+                            </p:column>
+
+                            <p:column headerText="Representante" style="width: 15%">
+                                <h:outputText value="#{turno.usuario}" />
+                            </p:column>
+
+                            <p:column headerText="Estación" style="width: 10%">
+                                <h:outputText value="#{turno.estacion}" />
+                            </p:column>
+
+                            <p:column headerText="Minutos Espera " style="width: 10%" class="text text-center">
+                                <h:outputText value="#{turno.tiempoEspera}" >
+                                    <f:convertNumber pattern="#,##0.00"/>
+                                </h:outputText>
+                            </p:column>
+
+                            <p:column headerText="Minutos Proceso " style="width: 10%" class="text text-center">
+                                <h:outputText value="#{turno.tiempoProceso}" >
+                                    <f:convertNumber pattern="#,##0.00"/>
+                                </h:outputText>
+                            </p:column>
+
+
+                        </p:dataTable>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </section>
+
+
+</ui:composition>
+

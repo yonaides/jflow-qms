@@ -1,0 +1,29 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <div class="panel panel-primary">
+
+        <div class="panel-heading">Archivos de Anuncios</div>
+        <div class="panel-body">
+            <div class="row">
+                <h:form class="form form-personalizado form-horizontal" 
+                        id="formMotivoAbandono" enctype="multipart/form-data">
+                    <div class="col-md-12">
+
+                        <p:fileUpload fileUploadListener="#{archivoAnuncionBean.handleFileUpload}" mode="advanced" dragDropSupport="false"
+                                      multiple="true" update="messages" sizeLimit="437256192" fileLimit="3" allowTypes="/(\.|\/)(gif|jpe?g|png|flv|mp4)$/" />
+
+                    </div>
+                </h:form>
+            </div>
+
+            <hr />
+        </div>
+    </div>
+
+</ui:composition>
+

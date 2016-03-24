@@ -1,0 +1,229 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:jsf="http://xmlns.jcp.org/jsf"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1><li class="fa fa-plus-square fa-1x"></li> Generar Turno<small></small> </h1>
+        <ol class="breadcrumb">
+            <li>
+                <a href="#">
+                    <i class="fa fa-arrow-right"></i>Inicio
+                </a>
+            </li>
+            <!--<li><a href=""></a></li>-->
+            <li class="active">Generar turno
+            </li>
+        </ol>
+    </section>
+
+    <section class="content">
+        <style>
+            .status { 
+                width: 15px;
+                height: 15px;
+                border-radius: 50px;
+            }
+        </style>
+        <div class="box box-primary">
+
+            <div class="box-header with-border">
+                <h3 class="box-title">Generar nuevo turno</h3>
+            </div>
+            <div class="box-body">
+                <div class="row">
+                    <h:form class="form form-personalizado form-horizontal"  id="formTurno">                        
+                        <div class="col-md-5">
+
+                            <div class="form-group">
+                                <label for="contratoCliente" class="col-md-3 control-label">Contrato</label>
+                                <div class="col-md-9">
+                                    <p:fragment>
+                                        <div class="input-group">
+                                            <p:inputText id="contratoCliente" class="form-control input-sm" 
+                                                         value="#{generarTurnoBean.cliente.contrato}" required="true"
+                                                         requiredMessage="Se debe indicar NIC "/>
+                                            <span class="input-group-btn">
+                                                <p:commandLink id="buscarNic" class="btn btn-success btn-sm btn-flat"
+                                                               type="button" actionListener="#{generarTurnoBean.buscarNic()}" 
+                                                               update="@form :messages">
+                                                    <span class="glyphicon glyphicon-ok"></span>
+                                                </p:commandLink>
+                                            </span>
+                                        </div>
+                                    </p:fragment>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="identificacionCliente" class="col-md-3 control-label">Identificación</label>
+                                <div class="col-md-9">
+                                    <p:fragment>
+                                        <div class="input-group">
+                                            <p:inputText id="identificacionCliente" class="form-control input-sm" 
+                                                         value="#{generarTurnoBean.cliente.cedula}" required="true"
+                                                         requiredMessage="Debe introducir Identificación"/>
+                                            <span class="input-group-btn">
+                                                <p:commandLink id="buscarCliente" class="btn btn-success btn-sm btn-flat"
+                                                               type="button" actionListener="#{generarTurnoBean.buscarCliente()}" 
+                                                               update="@form messages">
+                                                    <span class="glyphicon glyphicon-ok"></span>
+                                                </p:commandLink>
+                                            </span>
+                                        </div>
+                                    </p:fragment>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="nombreCliente" class="col-md-3 control-label">Nombre</label>
+                                <div class="col-md-9">
+                                    <p:inputText id="nombreCliente" class="form-control input-sm" 
+                                                 value="#{generarTurnoBean.cliente.nombre}" required="true"
+                                                 requiredMessage="Debe introducir nombre"/>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="apellidoCliente" class="col-md-3 control-label">Apellido</label>
+                                <div class="col-md-9">
+                                    <p:inputText id="apellidoCliente" class="form-control input-sm" 
+                                                 value="#{generarTurnoBean.cliente.apellido}" required="true"
+                                                 requiredMessage="Debe introducir apellido"/>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="telefonoCliente" class="col-md-3 control-label">Teléfono</label>
+                                <div class="col-md-9">
+                                    <p:inputText id="telefonoCliente" class="form-control input-sm" 
+                                                 value="#{generarTurnoBean.cliente.telefono}"/>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-3"></div>
+                                <div class="col-md-9">
+                                    <h:selectBooleanCheckbox id="esTitular"
+                                                             value="#{generarTurnoBean.titular}"/>
+                                    <span>Es titular</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-5">
+
+                            <div class="form-group">
+                                <label for="tipoServicio" class="col-md-3 control-label">Servicio</label>
+                                <div class="col-md-9">
+                                    <h:selectOneMenu id="tipoServicio" class="form-control input-sm"
+                                                     converter="#{servicioConverter}" value="#{generarTurnoBean.turnoDetalle.idservicio}"
+                                                     required="true" requiredMessage="Debe seleccionar el servicio" >
+                                        <f:selectItem itemLabel="Seleccionar Servicio" itemValue=""/>
+                                        <f:selectItems value="#{generarTurnoBean.servicios}" 
+                                                       var="o" itemLabel="#{o.nombre}" />
+
+                                    </h:selectOneMenu>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-3"></div>
+                                <div class="col-md-9">
+                                    <h:selectBooleanCheckbox id="esPrioritario"
+                                                             value="#{generarTurnoBean.prioritario}"/>
+                                    <span>Especial</span>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="tokenKiosco" class="col-md-3 control-label"></label>
+                                <div class="col-md-9">
+                                    <label class="status control-label #{generarTurnoBean.printerConnected ? 'label-success' : 'label-danger'}"/>
+                                    <label for="tokenKiosco" class="control-label">#{generarTurnoBean.printerConnected ? 'Printer Disponible' : 'Printer Desconectado'}</label>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-2">
+                            <div class="btn-group btn-group-vertical btn-block">
+                                <p:commandLink id="cancelarBtn" class="btn btn-default btn-sm btn-flat" 
+                                               actionListener="#{generarTurnoBean.nuevo()}"
+                                               resetValues="true" type="reset" immediate="true" update="@form">
+                                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Limpiar
+                                </p:commandLink>
+
+                                <p:commandLink id="siguienteBtn" class="btn btn-primary btn-sm btn-flat" ajax="true"
+                                               actionListener="${generarTurnoBean.salvar()}" update="messages @form :tbTurnos">
+                                    <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span> Generar Turno
+                                </p:commandLink>
+                            </div>
+                        </div>
+
+                        <script >
+                            $('input').iCheck({
+                                checkboxClass: 'icheckbox_square-blue',
+                                radioClass: 'iradio_square-blue',
+                                increaseArea: '20%'
+                            });
+                        </script>
+                    </h:form>
+                </div>
+                <div class="row">
+                    <div class="col-md-12" >
+                        <p:dataTable id="tbTurnos" var="turno" 
+                                     value="#{generarTurnoBean.turnos}"
+                                     rowKey="#{turno.idturno}" 
+                                     style="margin-top: 10px" selectionMode="single" rows="15"
+                                     emptyMessage="No hay registros">
+
+                            <f:facet name="header">
+                                Últimos : <span class="text text-primary">5 turnos</span>
+                            </f:facet>
+
+                            <p:column headerText="Turno" style="width: 5%" class="text text-center">
+                                <h:outputText value="#{turno.happyNumber}" />
+                            </p:column>
+
+                            <p:column headerText="NIC" style="width: 10%" class="text text-center">
+                                <h:outputText value="#{turno.idcliente.contrato}" />
+                            </p:column>
+
+                            <p:column headerText="Estado" style="width: 20%">
+                                <h:outputText value="#{turno.idestado.descripcion}" />
+                            </p:column>
+
+                            <p:column headerText="Nombre Cliente" style="width: 20%">
+                                <h:outputText value="#{turno.idcliente.nombre} #{turno.idcliente.apellido}" />
+                            </p:column>
+
+                            <p:column headerText="" style="width: 5%">
+                                <div class="btn-group btn-group-justified" role="group" aria-label="...">
+
+                                    <p:commandLink id="editarKiosco" update="messages"
+                                                   actionListener="#{generarTurnoBean.imprimir(turno)}"
+
+                                                   class="btn btn-default btn-sm btn-flat" type="button" >
+                                        <span class="glyphicon glyphicon-print"></span> 
+                                    </p:commandLink>
+                                </div>
+                            </p:column>
+
+                        </p:dataTable>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+    </section>
+
+
+</ui:composition>
+

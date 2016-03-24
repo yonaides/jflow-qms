@@ -1,0 +1,122 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <aside class="main-sidebar">
+        <!-- sidebar: style can be found in sidebar.less -->
+        <section class="sidebar">
+            <h:form id="form_menu">
+                <ul class="sidebar-menu">
+                    <f:ajax render=":content">
+                        <li class="header text-blue">
+                            <span class="fa fa-bars" aria-hidden="true"></span> MENU PRINCIPAL
+                        </li>
+
+<!--                        <li class="#menuController.pagina == 'dashboard/dashboard' ? 'active' : ''}">
+                            <h:commandLink action="#menuController.setPagina('dashboard/dashboard')}" >
+                                <span class="fa fa-dashboard" aria-hidden="true"></span>
+                                <span>Panel de Principal</span> 
+                            </h:commandLink>
+                        </li>-->
+
+                        <c:if test="#{authenticationBean.hasRol(rolEnum.atenderTurno)}">
+                            <li class="#{menuController.pagina == 'turno/colaturnos' or menuController.pagina == 'turno/iniciar_session' ? 'active' : ''}">
+                                <h:commandLink action="#{menuController.setPagina('turno/colaturnos')}" >
+                                    <span class="fa fa-bullhorn" aria-hidden="true"></span>
+                                    <span>Cola de Turnos</span> 
+                                </h:commandLink>
+                            </li>
+                        </c:if>
+
+                        <c:if test="#{authenticationBean.hasRol(rolEnum.crearTurno)}">
+                            <li class="#{menuController.pagina == 'turno/generar_turno'  ? 'active' : ''}">
+                                <h:commandLink action="#{menuController.setPagina('turno/generar_turno')}" >
+                                    <span class="fa fa-plus-square" aria-hidden="true"></span>
+                                    <span>Generar Turno</span> 
+                                </h:commandLink>
+                            </li>        
+                        </c:if>
+
+                        <c:if test="#{authenticationBean.hasRol(rolEnum.reporteFull) or authenticationBean.hasRol(rolEnum.reporteOficina)}">
+                            <li class="#{menuController.pagina == 'turno/tiempo_turnos'  ? 'active' : ''}">
+                                <h:commandLink action="#{menuController.setPagina('turno/tiempo_turnos')}" >
+                                    <span class="fa fa-clock-o" aria-hidden="true"></span>
+                                    <span>Tiempo Turnos</span> 
+                                </h:commandLink>
+                            </li>     
+<!--                            <li class="#menuController.pagina == 'estacion/monitoreo'  ? 'active' : ''}">
+                                <h:commandLink action="#menuController.setPagina('estacion/monitoreo')}" >
+                                    <span class="fa fa-desktop" aria-hidden="true"></span>
+                                    <span>Monitoreo Estaciones</span> 
+                                </h:commandLink>
+                            </li>     -->
+                        </c:if>
+
+                        <c:if test="#{authenticationBean.hasRol(rolEnum.reporteFull) or authenticationBean.hasRol(rolEnum.reporteOficina)}">
+                            <li class="#{menuController.pagina == 'reporte/reporte' ? 'active' : ''}">
+                                <h:commandLink action="#{menuController.setPagina('reporte/reporte')}" >
+                                    <span class="fa fa-file-pdf-o" aria-hidden="true"></span>
+                                    <span>Reportes</span> 
+                                </h:commandLink>
+                            </li>
+                        </c:if>
+
+
+                        <c:if test="#{authenticationBean.hasRol(rolEnum.admSistema)}">
+
+                            <li class="treeview"> 
+                                <a href="#"> 
+                                    <i class="fa fa-cogs"></i> 
+                                    <span>Administración</span> 
+                                </a> 
+                                <ul class="treeview-menu"> 
+                                    <li>
+                                        <h:commandLink action="#{menuController.setPagina('oficina/oficina')}" >
+                                            <span class="fa fa-building-o" aria-hidden="true"></span>
+                                            <span>Oficinas</span> 
+                                        </h:commandLink>
+                                    </li>
+                                    <li>
+                                        <h:commandLink action="#{menuController.setPagina('estacion/estacion')}" >
+                                            <span class="fa fa-desktop" aria-hidden="true"></span>
+                                            <span>Estaciones</span> 
+                                        </h:commandLink>
+                                    </li>
+                                    <li>
+                                        <h:commandLink action="#{menuController.setPagina('kiosco/kiosco')}" >
+                                            <span class="fa fa-tablet" aria-hidden="true"></span>
+                                            <span>Kioscos</span> 
+                                        </h:commandLink>
+                                    </li>
+                                    <li>
+                                        <h:commandLink action="#{menuController.setPagina('admin/usuario')}" >
+                                            <span class="fa fa-users" aria-hidden="true"></span>
+                                            <span>Usuarios</span> 
+                                        </h:commandLink>
+                                    </li>
+                                    <li>
+                                        <h:commandLink action="#{menuController.setPagina('configuracion/configuracion')}" >
+                                            <span class="fa fa-gear" aria-hidden="true"></span>
+                                            <span>Configuración</span> 
+                                        </h:commandLink>
+                                    </li>
+                                </ul> 
+                            </li> 
+                        </c:if>
+
+
+                    </f:ajax>
+                </ul>
+            </h:form>
+        </section>
+        <!-- /.sidebar -->
+    </aside>
+
+</ui:composition>
+
+

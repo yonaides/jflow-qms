@@ -1,0 +1,267 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:jsf="http://xmlns.jcp.org/jsf"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1><li class="fa fa-desktop fa-1x"></li> Administración de Estaciones<small></small> </h1>
+        <ol class="breadcrumb">
+            <li>
+                <a href="#">
+                    <i class="fa fa-mobile"></i>Inicio
+                </a>
+            </li>
+            <!--<li><a href=""></a></li>-->
+            <li class="active">Estaciones
+            </li>
+        </ol>
+    </section>
+
+    <section class="content">
+        <div class="box box-primary">
+
+            <div class="box-header with-border">
+                <h3 class="box-title">Registro Estación</h3>
+            </div>
+            <div class="box-body">
+                <div class="row">
+                    <h:form class="form form-personalizado form-horizontal"  id="formEstacion">
+                        <div class="col-md-5">
+
+                            <div class="form-group">
+                                <label for="oficinaEstacion" class="col-md-3 control-label">Oficina</label>
+                                <div class="col-md-9">
+                                    <h:selectOneMenu id="oficinaEstacion" class="form-control input-sm"
+                                                     converter="#{oficinaConverter}" value="#{estacionBean.estacion.idoficina}"
+                                                     required="true" requiredMessage="Debe seleccionar oficina" >
+                                        <f:selectItem itemLabel="Seleccionar oficina " itemValue=""/>
+                                        <f:selectItems value="#{estacionBean.oficinas}" 
+                                                       var="o" itemLabel="#{o.numeroOficina} - #{o.nombre}"/>
+                                        <p:ajax event="change" listener="#{estacionBean.onOficinaChanged()}" update="agregarServicio serviciosConTb" />
+                                    </h:selectOneMenu>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="tipoEstacion" class="col-md-3 control-label">Tipo Estación</label>
+                                <div class="col-md-9">
+                                    <h:selectOneMenu id="tipoEstacion" class="form-control input-sm"
+                                                     converter="#{tipoEstacionConverter}" 
+                                                     value="#{estacionBean.estacion.idtipoEstacion}"
+                                                     required="true" requiredMessage="Debe seleccionar tipo estación" >
+                                        <f:selectItem itemLabel="Seleccionar tipo estación" itemValue=""/>
+                                        <f:selectItems value="#{estacionBean.tiposEstacion}" 
+                                                       var="o" itemLabel="#{o.nombre}"/>
+                                    </h:selectOneMenu>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="nombreEstacion" class="col-md-3 control-label">Nombre</label>
+                                <div class="col-md-9">
+                                    <p:inputText id="nombreEstacion" class="form-control input-sm" 
+                                                 value="#{estacionBean.estacion.nombre}"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="descripcionEstacion" class="col-md-3 control-label">Descripción</label>
+                                <div class="col-md-9">
+                                    <p:inputText id="descripcionEstacion" class="form-control input-sm" 
+                                                 value="#{estacionBean.estacion.descripcion}"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="numeroEstacion" class="col-md-3 control-label"># Estación</label>
+                                <div class="col-md-9">
+                                    <p:inputText id="numeroEstacion" class="form-control input-sm" 
+                                                 value="#{estacionBean.estacion.numeroEstacion}"/>
+                                </div>
+                            </div>
+
+
+                        </div>
+
+                        <div class="col-md-5">
+                            <div class="col-md-12"> 
+                                Servicios
+                                <div class="pull-right">
+                                    <p:commandLink id="agregarServicio" class="btn btn-success btn-sm btn-flat"
+                                                   immediate="true" disabled="#{estacionBean.oficinaServicios == null}"
+                                                   onclick="PF('agregarServicioDg').show();
+                                                           return;" type="button" >
+                                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Agregar
+                                    </p:commandLink>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <p:dataTable id="serviciosTb" var="es" editable="true" editMode="cell"
+                                             value="#{estacionBean.estacionServicios}"
+                                             rowKey="#{es.idservicio}"
+                                             paginator="true"
+                                             paginatorPosition="bottom"  rows="5"
+                                             selectionMode="single"
+                                             emptyMessage="No hay registros">
+
+                                    <p:column headerText="Servicio" style="width: 60%">
+                                        <h:outputText value="#{es.idservicio.nombre}" />
+                                    </p:column>
+
+                                    <p:column headerText="Prioridad" style="width: 20%">
+                                        <p:cellEditor>
+                                            <f:facet name="output">
+                                                <h:outputText value="#{es.prioritario == 1 ? 'SI' : 'NO'}" />
+                                            </f:facet>
+                                            <f:facet name="input">
+                                                <h:selectOneMenu value="#{es.prioritario}" class="form-control input-sm">
+                                                    <f:selectItem itemLabel="SI" itemValue="1" />
+                                                    <f:selectItem itemLabel="NO" itemValue="0" />
+                                                </h:selectOneMenu>
+                                            </f:facet>
+                                        </p:cellEditor>
+                                    </p:column>
+
+                                    <p:column headerText="Habilitado" style="width: 20%">
+                                        <p:cellEditor>
+                                            <f:facet name="output"><h:outputText value="#{es.habilitado == 'S'? 'SI' : 'NO'}" /></f:facet>
+                                            <f:facet name="input">
+                                                <h:selectOneMenu value="#{es.habilitado}" class="form-control input-sm">
+                                                    <f:selectItem itemLabel="SI" itemValue="S" />
+                                                    <f:selectItem itemLabel="NO" itemValue="N" />
+                                                </h:selectOneMenu>
+                                            </f:facet>
+                                        </p:cellEditor>
+                                    </p:column>
+
+                                </p:dataTable>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="btn-group btn-group-vertical btn-block">
+                                <p:commandLink id="cancelarBtn" class="btn btn-default btn-sm btn-flat" actionListener="#{estacionBean.nuevo()}"
+                                               resetValues="true" type="reset" immediate="true" update="@form">
+                                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Nueva
+                                </p:commandLink>
+
+                                <p:commandLink id="guardarBtn" class="btn btn-primary btn-sm btn-flat" ajax="true"
+                                               actionListener="${estacionBean.salvar()}" update=":estacionesTb messages @form">
+                                    <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span> Guardar
+                                </p:commandLink>
+                            </div>
+                        </div>
+                    </h:form>
+                </div>
+
+
+                <hr />
+
+                <div class="row">
+                    <div class="col-md-12" >
+
+                        <div class="col-md-12" >
+                            <h:form id="formBusquedaCuenta" >
+                                <p:defaultCommand target="buscarEstacionBtn" />
+                                <div class="input-group">
+                                    <p:inputText id="buscarEstacion" placeholder="Buscar Estación..." value="#{servicioBean.busqueda}"
+                                                 class="form-control input-sm"/>
+                                    <span class="input-group-btn">
+                                        <p:commandLink id="buscarEstacionBtn" class="btn btn-primary btn-sm btn-flat" update=":estacionesTb"
+                                                       type="button" actionListener="#{estacionBean.buscar()}" >
+                                            <span class="glyphicon glyphicon-search"></span>
+                                            Buscar
+                                        </p:commandLink>
+                                    </span>
+                                </div>
+                            </h:form>
+                        </div>
+                        <div class="col-md-12" >
+                            <p:dataTable id="estacionesTb" var="estacion" 
+                                         value="#{estacionBean.estaciones}"
+                                         rowKey="#{estacion.idestacion}"
+                                         paginator="true"
+                                         paginatorPosition="top"  rows="5"
+                                         rowsPerPageTemplate="5,10"
+                                         selectionMode="single"
+                                         emptyMessage="No hay registros">
+
+                                <p:column headerText="# Estación" style="width: 10%">
+                                    <h:outputText value="#{estacion.numeroEstacion}" />
+                                </p:column>
+
+                                <p:column headerText="Nombre Estación" style="width: 20%">
+                                    <h:outputText value="#{estacion.nombre}" />
+                                </p:column>
+
+                                <p:column headerText="Descripción" style="width: 30%">
+                                    <h:outputText value="#{estacion.descripcion}" />
+                                </p:column>
+
+                                <p:column headerText="Oficina" style="width: 30%">
+                                    <h:outputText value="#{estacion.idoficina.numeroOficina} - #{estacion.idoficina.nombre}" />
+                                </p:column>
+
+                                <p:column headerText="" style="width: 10%">
+                                    <div class="btn-group btn-group-justified" role="group" aria-label="...">
+
+                                        <p:commandLink id="editarOficina" actionListener="#{estacionBean.setEstacion(estacion)}"
+                                                       update=":formEstacion :serviciosConTb"
+                                                       class="btn btn-default btn-sm btn-flat" type="button" >
+                                            <span class="glyphicon glyphicon-pencil"></span> 
+                                        </p:commandLink>
+                                    </div>
+                                </p:column>
+
+                            </p:dataTable>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+    <!--Sector-->
+    <p:dialog header="Servicios" resizable="false" draggable="false" closeOnEscape="true"
+              id="agregarServicioDg" widgetVar="agregarServicioDg" modal="true" width="40%">
+
+        <div class="row">
+            <div class="col-md-12">
+                <p:dataTable id="serviciosConTb" var="servicio" 
+                             value="#{estacionBean.oficinaServicios}"
+                             rowKey="#{servicio.idservicio}"
+                             style="margin-top: 10px" selectionMode="single" rows="15"
+                             emptyMessage="No hay registros">
+
+                    <p:column headerText="Prefijo" style="width: 20%">
+                        <h:outputText value="#{servicio.prefijo}" />
+                    </p:column>
+
+                    <p:column headerText="Nombre" style="width: 70%">
+                        <h:outputText value="#{servicio.nombre}" />
+                    </p:column>
+
+                    <p:column headerText="" style="width: 10%">
+                        <div class="btn-group btn-group-justified" role="group" aria-label="...">
+
+                            <p:commandLink id="agregarServicio" actionListener="#{estacionBean.agregarServicio(servicio)}"
+                                           update="formEstacion:serviciosTb"
+                                           class="btn btn-default btn-sm btn-flat" type="button" >
+                                <span class="glyphicon glyphicon-plus"></span> 
+                            </p:commandLink>
+                        </div>
+                    </p:column>
+                </p:dataTable>
+            </div>
+
+        </div>
+    </p:dialog>
+    <!--Fin sector-->
+
+
+
+</ui:composition>
+

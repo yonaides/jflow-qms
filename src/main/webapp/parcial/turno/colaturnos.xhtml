@@ -1,0 +1,387 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:jsf="http://xmlns.jcp.org/jsf"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1><li class="fa fa-bullhorn fa-1x"></li> Cola de Turnos<small></small> </h1>
+        <ol class="breadcrumb">
+            <li>
+                <a href="#">
+                    <i class="fa fa-arrow-right"></i>Inicio
+                </a>
+            </li>
+            <!--<li><a href=""></a></li>-->
+            <li class="active">Cola turnos
+            </li>
+        </ol>
+    </section>
+
+    <section class="content">
+        <div class="box box-primary">
+
+            <div class="box-header with-border">
+                <h3 class="box-title">Atender turno</h3>
+            </div>
+            <div class="box-body">
+
+                <!--<p:hotkey bind="shift+s" handler="siguienteBtn.jq.click();"/>-->
+                <div class="row">
+                    <div class="col-md-1"></div>
+                    <div class="col-md-5">
+                        <dl class="dl-horizontal dlpropio">
+                            <dt>Oficina :</dt>
+                            <dd>#{authenticationBean.usuario.idoficina.numeroOficina} - #{authenticationBean.usuario.idoficina.nombre}</dd>
+
+                            <dt>Estación :</dt>
+                            <dd>#{authenticationBean.session.idestacion.numeroEstacion} - #{authenticationBean.session.idestacion.nombre}</dd>
+                            <dt>Iniciada :</dt>
+                            <dd>
+                                <h:outputText value="#{authenticationBean.session.fechaInicio}" >
+                                    <f:convertDateTime pattern="dd/MM/yyyy hh:mm:ss a"/>
+                                </h:outputText>
+                            </dd>
+                        </dl>
+                    </div>
+
+                    <h:panelGroup id="contentBtn" >
+
+                        <div  class="col-md-4">
+                            <h:panelGroup rendered="#{colaTurnoBean.espera !=null}" >
+                                <dl class="dl-horizontal dlpropio">
+                                    <dt>Espera :</dt>
+                                    <dd>#{colaTurnoBean.espera.idmotivoReceso.descripcion}</dd>
+                                    <dt>Iniciada :</dt>
+                                    <dd>
+                                        <h:outputText value="#{colaTurnoBean.espera.fechaInicio}" >
+                                            <f:convertDateTime pattern="dd/MM/yyyy hh:mm:ss a"/>
+                                        </h:outputText>
+                                    </dd>
+                                </dl>
+                            </h:panelGroup>
+                        </div>
+
+                        <div class="col-md-2">
+
+                            <div class="btn-group btn-group-vertical btn-block">
+                                <p:commandLink id="cerrarSession" class="btn btn-primary btn-sm btn-flat" ajax="true"
+                                               actionListener="${sessionBean.cerrarSession()}" update=":content"
+                                               rendered="#{colaTurnoBean.turnoDetalle.idturnoDetalle == null and colaTurnoBean.espera == null }">
+                                    <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> Cerrar
+                                </p:commandLink>
+
+                                <p:commandLink rendered="#{colaTurnoBean.espera != null}" id="terminarEspera" 
+                                               class="btn btn-primary btn-sm btn-flat" ajax="true"
+                                               actionListener="#{colaTurnoBean.terminarEspera()}" update=":content">
+                                    <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> Terminar Espera
+                                </p:commandLink>
+                            </div>
+
+                        </div>
+                    </h:panelGroup>
+
+                </div>
+                <hr/>
+
+                <h:panelGroup id="contentForm" >
+                    <h:form class="form form-personalizado form-horizontal"  id="formTurno" rendered="#{colaTurnoBean.espera == null}"> 
+                        <div class="row">
+
+                            <div class="col-md-1"></div>
+
+                            <div class="col-md-4">
+
+                                <div class="form-group">
+                                    <label for="contratoCliente" class="col-md-3 control-label">Contrato</label>
+                                    <div class="col-md-9">
+                                        <p:fragment id="framento1">
+                                            <div class="input-group">
+                                                <p:inputText id="contratoCliente" class="form-control input-sm" 
+                                                             value="#{colaTurnoBean.cliente.contrato}"
+                                                             disabled="#{colaTurnoBean.cliente.idcliente != null}"/>
+                                                <span class="input-group-btn">
+                                                    <p:commandLink id="buscarContrato" class="btn btn-success btn-sm btn-flat"
+                                                                   type="button" actionListener="#{colaTurnoBean.buscarNic()}" 
+                                                                   update="@form messages"
+                                                                   disabled="#{colaTurnoBean.cliente.idcliente != null}">
+                                                        <span class="glyphicon glyphicon-ok"></span>
+                                                    </p:commandLink>
+                                                </span>
+                                            </div>
+                                        </p:fragment>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="identificacionCliente" class="col-md-3 control-label">Identificación</label>
+                                    <div class="col-md-9">
+                                        <p:fragment id="framento">
+                                            <div class="input-group">
+                                                <p:inputText id="identificacionCliente" class="form-control input-sm" 
+                                                             value="#{colaTurnoBean.cliente.cedula}"
+                                                             required="true" requiredMessage="Debe indicar cédula"/>
+                                                <span class="input-group-btn">
+                                                    <p:commandLink id="buscarCliente" class="btn btn-success btn-sm btn-flat"
+                                                                   type="button" actionListener="#{colaTurnoBean.buscarCliente()}" 
+                                                                   update="@form messages"
+                                                                   disabled="#{colaTurnoBean.cliente.idcliente != null}">
+                                                        <span class="glyphicon glyphicon-ok"></span>
+                                                    </p:commandLink>
+                                                </span>
+                                            </div>
+                                        </p:fragment>
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group">
+                                    <label for="nombreCliente" class="col-md-3 control-label">Nombre</label>
+                                    <div class="col-md-9">
+                                        <p:inputText id="nombreCliente" class="form-control input-sm" 
+                                                     value="#{colaTurnoBean.cliente.toString()}" required="true"
+                                                     requiredMessage="Debe indicar nombre del cliente"
+                                                     disabled="#{colaTurnoBean.cliente.idcliente != null}"/>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="apellidoCliente" class="col-md-3 control-label">Apellido</label>
+                                    <div class="col-md-9">
+                                        <p:inputText id="apellidoCliente" class="form-control input-sm" 
+                                                     value="#{colaTurnoBean.cliente.apellido}"
+                                                     disabled="#{colaTurnoBean.cliente.idcliente != null}"/>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="telefonoCliente" class="col-md-3 control-label">Teléfono</label>
+                                    <div class="col-md-9">
+                                        <p:inputText id="telefonoCliente" class="form-control input-sm" 
+                                                     value="#{colaTurnoBean.cliente.telefono}" 
+                                                     disabled="#{colaTurnoBean.cliente.idcliente != null}"/>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="col-md-3"></div>
+                                    <div class="col-md-9">
+                                        <h:selectBooleanCheckbox id="esTitular"
+                                                                 value="#{colaTurnoBean.titular}"
+                                                                 disabled="#{colaTurnoBean.cliente.idcliente != null}"/>
+                                        <span>Es titular</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-5">
+
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label"># Turno</label>
+                                    <div class="col-md-9">
+                                        <label class="control-label text-primary text-green" style="font-size: 30px;">#{colaTurnoBean.turnoDetalle.idturno.happyNumber} 
+                                            #{colaTurnoBean.turnoDetalle.idturno.prioridad == 2 ? '(Especial)' : ''}</label>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">Servicio</label>
+                                    <div class="col-md-9">
+                                        <label class="control-label text-primary">
+                                            #{colaTurnoBean.turnoDetalle.idservicio.descripcion}
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">Fecha Turno:</label>
+                                    <div class="col-md-9">
+                                        <h:outputLabel value="#{colaTurnoBean.turnoDetalle.fechaInicio}" 
+                                                       class="control-label text-primary text-bold" >
+                                            <f:convertDateTime pattern="dd/MM/yyyy hh:mm:ss a"/>
+                                        </h:outputLabel>
+
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="observacionTurno" class="col-md-3 control-label">Observación</label>
+                                    <div class="col-md-9">
+                                        <p:inputTextarea id="observacionTurno" class="form-control input-sm" 
+                                                         value="#{colaTurnoBean.turnoDetalle.observacion}" 
+                                                         disabled="#{colaTurnoBean.turnoDetalle.idturnoDetalle == null}"/>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-2">
+                                <div class="btn-group btn-group-vertical btn-block">
+                                    <p:commandLink id="guardarBtn" class="btn btn-primary btn-sm btn-flat" ajax="true"
+                                                   disabled="#{colaTurnoBean.turnoDetalle.idturnoDetalle == null}"
+                                                   onclick="$('#modalCierre').modal('show')" >
+                                        <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span> Terminar
+                                    </p:commandLink>
+
+                                    <p:commandLink id="siguienteBtn" class="btn btn-success btn-sm btn-flat"
+                                                   disabled="#{colaTurnoBean.turnoDetalle.idturnoDetalle != null}" process="@this"
+                                                   actionListener="${colaTurnoBean.siguiente()}" update="@form, messages, :contentBtn">
+                                        <span class="glyphicon glyphicon-step-forward" aria-hidden="true"></span> Siguiente
+                                        <!--<span class="badge">ctrl+shift+s</span>-->
+                                        <!--<kbd><kbd>shift</kbd> + <kbd>s</kbd></kbd>-->
+                                    </p:commandLink>
+
+                                    <p:commandLink id="volverLlamar" class="btn btn-default btn-sm btn-flat btnLlamar" ajax="true"
+                                                   immediate="true" disabled="#{colaTurnoBean.turnoDetalle.idturnoDetalle == null}"
+                                                   onclick="disableOnclick()"
+                                                   actionListener="${colaTurnoBean.llamarTurno(true)}" update="messages">
+                                        <span class="glyphicon glyphicon-bullhorn" aria-hidden="true"></span> Llamar
+                                    </p:commandLink>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="modal" id="modalCierre" tabindex="-1" role="dialog">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header bg-primary">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                        <h4 class="modal-title">Terminar turno</h4>
+                                    </div>
+                                    <div class="modal-body">
+
+                                        <p:selectOneRadio id="customRadio" value="#{colaTurnoBean.tipoOpcionTurno}" layout="custom">
+                                            <f:selectItem itemLabel="1- Terminar turno y llamar proximo cliente." itemValue="0"  />
+                                            <f:selectItem itemLabel="2- Terminar turno y asignar otro servicio." itemValue="1" />
+                                            <f:selectItem itemLabel="3- Terminar turno y tomar un receso." itemValue="2" />
+                                            <f:selectItem itemLabel="4- Abandonar turno y llamar al proximo." itemValue="3" />
+                                            <f:selectItem itemLabel="5- Terminar turno y finalizar dia." itemValue="4" />
+                                            <p:ajax event="change" update="tipoServicio, motivoReceso, motivoAbandono" />
+                                        </p:selectOneRadio>
+
+                                        <div class="form-group">
+                                            <div class="col-md-1">
+
+                                                <p:radioButton id="opt1" for="customRadio" itemIndex="0" />
+                                            </div>
+                                            <label for="contratoCliente" class="col-md-6">1- Terminar turno y llamar proximo cliente.</label>
+                                            <div class="col-md-5">
+
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div class="col-md-1">
+                                                <p:radioButton id="opt2" for="customRadio" itemIndex="1" />
+                                            </div>
+                                            <label for="contratoCliente" class="col-md-6">2- Terminar turno  y asignar otro servicio.</label>
+                                            <div class="col-md-5">
+                                                <div class="input-group">
+                                                    <h:selectOneMenu id="tipoServicio" class="form-control input-sm" disabled="#{colaTurnoBean.tipoOpcionTurno != 1}"
+                                                                     converter="#{servicioConverter}" value="#{colaTurnoBean.servicio}">
+                                                        <f:selectItem itemLabel="Seleccionar Servicio" itemValue=""/>
+                                                        <f:selectItems value="#{colaTurnoBean.servicios}" 
+                                                                       var="o" itemLabel="#{o.descripcion}" />
+                                                    </h:selectOneMenu>
+                                                    <div class="input-group-addon">
+                                                        <h:selectBooleanCheckbox value="#{colaTurnoBean.tomarTurno}" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div class="col-md-1">
+                                                <p:radioButton id="opt3" for="customRadio" itemIndex="2" />
+                                            </div>
+                                            <label for="contratoCliente" class="col-md-6">3- Terminar turno y tomar un receso.</label>
+                                            <div class="col-md-5">
+                                                <h:selectOneMenu id="motivoReceso" class="form-control input-sm"
+                                                                 disabled="#{colaTurnoBean.tipoOpcionTurno != 2}"
+                                                                 converter="#{motivoRecesoConverter}" value="#{colaTurnoBean.motivoReceso}">
+                                                    <f:selectItem itemLabel="Seleccionar Receso" itemValue=""/>
+                                                    <f:selectItems value="#{colaTurnoBean.motivoRecesos}" 
+                                                                   var="o" itemLabel="#{o.descripcion}" />
+                                                </h:selectOneMenu>
+                                            </div>
+
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div class="col-md-1">
+                                                <p:radioButton id="opt4" for="customRadio" itemIndex="3" />
+                                            </div>
+                                            <label for="contratoCliente" class="col-md-6">4- Abandonar turno y llamar al proximo.</label>
+                                            <div class="col-md-5">
+                                                <h:selectOneMenu id="motivoAbandono" class="form-control input-sm"
+                                                                 disabled="#{colaTurnoBean.tipoOpcionTurno != 3}"
+                                                                 converter="#{motivoAbandonoConverter}" value="#{colaTurnoBean.motivoAbandono}">
+                                                    <f:selectItem itemLabel="Seleccionar Abandono" itemValue=""/>
+                                                    <f:selectItems value="#{colaTurnoBean.motivoAbandonos}" 
+                                                                   var="o" itemLabel="#{o.descripcion}" />
+                                                </h:selectOneMenu>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div class="col-md-1">
+                                                <p:radioButton id="opt5" for="customRadio" itemIndex="4" />
+                                            </div>
+                                            <label for="contratoCliente" class="col-md-6">5- Terminar turno y finalizar dia.</label>
+                                            <div class="col-md-5">
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-default pull-left btn-sm btn-flat" data-dismiss="modal">Cerrar</button>
+
+                                        <p:commandLink id="terminarBtn" class="btn btn-primary btn-sm btn-flat" ajax="true"
+                                                       actionListener="#{colaTurnoBean.terminarTurno()}" update="messages contentForm contentBtn" 
+                                                       onclick="$('#modalCierre').modal('hide');">
+                                            <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span> Terminar
+                                        </p:commandLink>
+                                    </div>
+
+                                </div><!-- /.modal-content -->
+                            </div><!-- /.modal-dialog -->
+                        </div><!-- /.modal -->
+
+                        <script >
+                            $("input[type='checkbox']").iCheck({
+                                checkboxClass: 'icheckbox_square-blue',
+                                radioClass: 'iradio_square-blue',
+                                increaseArea: '20%'
+                            });
+
+                            function disableOnclick() {
+                                var btnRellamar = $('.btnLlamar');
+                                var oldValue = btnRellamar.val();
+                                btnRellamar.val('Rellamando');
+                                btnRellamar.attr('disabled', 'true');
+
+                                setTimeout(function () {
+                                    btnRellamar.val(oldValue);
+                                    btnRellamar.removeAttr('disabled');
+                                }, 5000);
+                            }
+                        </script>
+                    </h:form>
+                </h:panelGroup>
+
+            </div>
+
+        </div>
+
+
+    </section>
+
+
+</ui:composition>
+

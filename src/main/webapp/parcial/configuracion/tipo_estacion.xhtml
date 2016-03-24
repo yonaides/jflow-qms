@@ -1,0 +1,87 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <div class="panel panel-primary">
+
+        <div class="panel-heading">Tipo Estación</div>
+        <div class="panel-body">
+            <div class="row">
+                <h:form class="form" id="formTipoEstacion">
+                    <div class="col-md-10">
+                        <div class="form-group">
+                            <label for="nombreTipo" class="col-md-3 control-label">Nombre</label>
+                            <div class="col-md-9">
+                                <p:inputText id="nombreTipo" class="form-control input-sm" 
+                                             value="#{tipoEstacionBean.tipoEstacion.nombre}" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="descripcionTipo" class="col-md-3 control-label">Descripción</label>
+                            <div class="col-md-9">
+                                <p:inputText id="descripcionTipo" class="form-control input-sm" 
+                                             value="#{tipoEstacionBean.tipoEstacion.descripcion}" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="tipoInterno" class="col-md-3 control-label">Tipo Interno</label>
+                            <div class="col-md-9">
+                                <p:inputText id="tipoInterno" class="form-control input-sm" 
+                                             value="#{tipoEstacionBean.tipoEstacion.tipoInterno}" />
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="col-md-2">
+                        <div class="btn-group btn-group-vertical btn-block">
+                            <p:commandLink id="guardarBtn" class="btn btn-primary btn-sm btn-flat" ajax="true"
+                                           actionListener="${tipoEstacionBean.salvar()}" update=":tipoEstacionTb messages @form">
+                                <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span> Guardar
+                            </p:commandLink>
+                        </div>
+                    </div>
+                </h:form>
+            </div>
+
+            <hr />
+
+            <div class="row">
+                <div class="col-md-12">
+                    <p:dataTable id="tipoEstacionTb" var="tipoEstacion" 
+                                 value="#{tipoEstacionBean.tipoEstaciones}"
+                                 rowKey="#{tipoEstacion.descripcion}"
+                                 selectionMode="single" rows="15"
+                                 emptyMessage="No hay registros">
+
+                        <p:column headerText="Nombre" style="width: 45%">
+                            <h:outputText value="#{tipoEstacion.nombre}" />
+                        </p:column>
+
+                        <p:column headerText="Descripción" style="width: 45%">
+                            <h:outputText value="#{tipoEstacion.descripcion}" />
+                        </p:column>
+
+                        <p:column headerText="" style="width: 10%">
+                            <div class="btn-group btn-group-justified" role="group" aria-label="...">
+                                <p:commandLink id="editar" actionListener="#{tipoEstacionBean.setTipoEstacion(tipoEstacion)}"
+                                               update=":formTipoEstacion"
+                                               class="btn btn-default btn-sm btn-flat" type="button" >
+                                    <span class="glyphicon glyphicon-pencil"></span> 
+                                </p:commandLink>
+                            </div>
+                        </p:column>
+
+                    </p:dataTable>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</ui:composition>
+

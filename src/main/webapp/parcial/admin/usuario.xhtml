@@ -1,0 +1,224 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <section class="content-header">
+        <h1><i class="fa fa-users fa-1x"></i> Administración de Usuarios <small></small> </h1>
+    </section>
+
+    <section class="content">
+        <div class="box box-primary">
+
+            <div class="box-header with-border">
+                <h3 class="box-title">Registro y Administración de usuarios</h3>
+            </div>
+            <div class="box-body">
+                <div class="row">
+
+                    <div class="col-sm-8">
+                        <h:form >
+                            <p:defaultCommand target="btnBuscarUsuario" />
+                            <div class="input-group">
+                                <p:inputText id="busquedaUsuario" value="#{administrarUsuarioBean.busqueda}" placeholder="Buscar usuario..."
+                                             class="form-control input-sm"/>
+                                <span class="input-group-btn btn-group-sm">
+                                    <p:commandLink id="btnBuscarUsuario" class="btn btn-primary btn-flat" type="button" 
+                                                   update=":usuariosTb" actionListener="#{administrarUsuarioBean.buscarUsuarios()}" >
+                                        <span class="glyphicon glyphicon-search"></span>
+                                    </p:commandLink>
+
+                                    <p:commandLink id="agregarUsuarioBtn" 
+                                                   class="btn btn-success btn-flat" type="button" onclick="PF('usuarioPn').show()"
+                                                   update=":usuarioForm" immediate="true">
+                                        <span class="glyphicon glyphicon-plus"></span>
+                                    </p:commandLink>
+
+                                </span>
+                            </div>
+                        </h:form>
+
+                        <p:dataTable id="usuariosTb"
+                                     var="usuario" value="#{administrarUsuarioBean.usuarios}" emptyMessage="No hay registros"
+                                     rowKey="#{usuario.idoperador}" selectionMode="single" rows="10"
+                                     paginatorPosition="top" paginator="true"
+                                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}">
+
+                            <p:ajax event="rowSelect" listener="#{administrarUsuarioBean.onRowSelect}" update="listRoles" />
+
+                            <f:facet name="header" > Usuarios </f:facet>
+
+                            <p:column headerText="Usuario" style="width: 15%;">
+                                <h:outputText value="#{usuario.idoperador}" />
+                            </p:column> 
+
+                            <p:column headerText="Nombre" style="width: 35%;">
+                                <h:outputText value="(#{usuario.numeroEmp}) - #{usuario.nombre} #{usuario.apellido}" />
+                            </p:column>
+
+                            <p:column headerText="Oficina" style="width: 35%;">
+                                <h:outputText value="(#{usuario.idoficina.numeroOficina}) - #{usuario.idoficina.nombre}" />
+                            </p:column>
+
+                            <p:column headerText="-" style="width: 15%;">
+
+                                <div class="btn-group btn-group-justified" role="group" aria-label="...">
+                                    <p:commandLink id="habilitarUsuario" actionListener="#{administrarUsuarioBean.habilitarDeshabilitarUsuario(usuario)}"
+                                                   class="btn #{usuario.habilitado eq 'S' ? 'btn-default' : 'btn-success'} btn-sm btn-flat" type="button" 
+                                                   update="usuariosTb">
+                                        <span class="glyphicon  #{usuario.habilitado eq 'S' ? 'glyphicon-remove' : 'glyphicon-ok'}"></span>
+
+                                    </p:commandLink>
+
+                                    <p:commandLink id="editarUsuario" actionListener="#{administrarUsuarioBean.setUsuario(usuario)}"
+                                                   class="btn btn-default btn-sm btn-flat" type="button" oncomplete="PF('usuarioPn').show()"
+                                                   update=":usuarioForm" >
+                                        <span class="glyphicon  glyphicon-edit"></span>
+                                    </p:commandLink>
+
+                                </div>
+                            </p:column>
+
+                        </p:dataTable>
+                    </div>
+
+                    <div class="col-sm-4">
+                        <h:panelGroup id="listRoles">
+                            <div class="list-group">
+                                <a href="#" class="list-group-item">
+                                    Roles del Usuario - <b class="text text-primary"> #{administrarUsuarioBean.usuario.nombre} #{administrarUsuarioBean.usuario.apellido}</b>
+                                </a>
+
+                                <ui:repeat value="#{administrarUsuarioBean.rolList}" var="rol" >
+                                    <div class="list-group-item">
+                                        <div class="list-group-item-heading">
+                                            <h5> #{rol.nombre} </h5>
+                                        </div>
+                                        <p class="list-group-item-text">
+                                            <p:commandLink class="btn btn-flat btn-sm #{administrarUsuarioBean.hasRol(rol) ? 'btn-danger': 'btn-default'} " 
+                                                           type="button" update="@this"
+                                                           actionListener="#{administrarUsuarioBean.agregarRolUsuario(rol)}">
+                                                <span class="glyphicon #{administrarUsuarioBean.hasRol(rol) ? 'glyphicon-remove': 'glyphicon-plus'}"></span> 
+                                            </p:commandLink> #{rol.descripcion}</p>
+                                    </div>
+                                </ui:repeat>
+
+
+                            </div>
+                        </h:panelGroup>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+
+    </section>
+
+    <!--Agregar Usuario-->
+    <p:dialog header="Agregar Usuario" resizable="false" draggable="false"
+              id="usuarioPn" widgetVar="usuarioPn" modal="true" width="50%">
+
+        <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+                <li class="active"><a href="#usuario" data-toggle="tab">Usuario</a></li>
+
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane active" id="usuario">
+                    <div class="row">
+
+                        <div class="col-sm-3">
+                            <img src="resources/img/mprofile.jpg" class="img-circle" alt="User Image" />
+
+                        </div>
+                        <div class="col-sm-9">
+                            <h:form class="form-horizontal form-personalizado" id="usuarioForm">
+                                <div class="form-group">
+                                    <label for="idUsuario" class="col-sm-3 control-label">Usuario</label>
+                                    <div class="col-sm-9">
+                                        <p:inputText id="idUsuario" validatorMessage="Especifique usuario"
+                                                     value="#{administrarUsuarioBean.usuario.idoperador}" 
+                                                     class="form-control input-sm" required="true" />                                       
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="numEmpleado" class="col-sm-3 control-label"># Empleado</label>
+                                    <div class="col-sm-9">
+                                        <p:inputText id="numEmpleado" value="#{administrarUsuarioBean.usuario.numeroEmp}" 
+                                                     class="form-control input-sm" />
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="nombre" class="col-sm-3 control-label">Nombre</label>
+                                    <div class="col-sm-9">
+                                        <p:inputText id="nombre" value="#{administrarUsuarioBean.usuario.nombre}" 
+                                                     class="form-control input-sm" required="true" 
+                                                     validatorMessage="Especifique nombre de usuario"/>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="apellido" class="col-sm-3 control-label">Apellido</label>
+                                    <div class="col-sm-9">
+                                        <p:inputText id="apellido" value="#{administrarUsuarioBean.usuario.apellido}" 
+                                                     class="form-control input-sm" />
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="correo" class="col-sm-3 control-label">Correo</label>
+                                    <div class="col-sm-9">
+                                        <p:inputText id="correo" value="#{administrarUsuarioBean.usuario.correoElectronico}" 
+                                                     class="form-control input-sm" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="oficina" class="col-md-3 control-label">Oficina</label>
+                                    <div class="col-md-9">
+                                        <h:selectOneMenu id="oficina" class="form-control input-sm"
+                                                         converter="#{oficinaConverter}" value="#{administrarUsuarioBean.usuario.idoficina}"
+                                                         required="true" requiredMessage="Debe seleccionar oficina" >
+                                            <f:selectItem itemLabel="Seleccionar oficina" itemValue=""/>
+                                            <f:selectItems value="#{administrarUsuarioBean.oficinas}" 
+                                                           var="o" itemLabel="#{o.numeroOficina} - #{o.nombre}" />
+                                            <!--<p:ajax  event="change"  />-->
+                                        </h:selectOneMenu>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        <div class="btn-group pull-right">
+                                            <p:commandLink id="btnNuevo" class="btn btn-default btn-flat" ajax="true" 
+                                                           actionListener="#{administrarUsuarioBean.nuevoUsuario()}"
+                                                           update=":usuarioForm">
+                                                <span class="glyphicon glyphicon-remove"></span> Nuevo
+                                            </p:commandLink>
+                                            <p:commandLink id="loginbtn" class="btn btn-success btn-flat" ajax="true" 
+                                                           actionListener="#{administrarUsuarioBean.agregarNuevoUsuario()}"
+                                                           onclick="PF('usuarioPn').hide()" update=":usuariosTb">
+                                                <span class="glyphicon glyphicon-floppy-disk"></span> Guardar
+                                            </p:commandLink>
+                                        </div>
+                                    </div>
+                                </div>
+                            </h:form>
+                        </div>
+                    </div>
+
+                </div><!-- /#usuario -->
+
+
+            </div><!-- /.tab-content -->
+        </div><!-- nav-tabs-custom -->
+    </p:dialog>
+    <!--Fin Agregar usuario-->
+
+
+</ui:composition>
+

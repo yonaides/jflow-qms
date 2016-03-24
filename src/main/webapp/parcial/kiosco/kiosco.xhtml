@@ -1,0 +1,208 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:jsf="http://xmlns.jcp.org/jsf"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1><li class="fa fa-tablet fa-1x"></li> Administracion de Kioscos<small></small> </h1>
+        <ol class="breadcrumb">
+            <li>
+                <a href="#">
+                    <i class="fa fa-tablet"></i>Inicio
+                </a>
+            </li>
+            <!--<li><a href=""></a></li>-->
+            <li class="active">Kioscos
+            </li>
+        </ol>
+    </section>
+
+    <section class="content"><style>
+            .status { 
+                width: 15px;
+                height: 15px;
+                border-radius: 50px;
+            }
+        </style>
+        <div class="box box-primary">
+
+            <div class="box-header with-border">
+                <h3 class="box-title">Registro Kiosco</h3>
+            </div>
+            <div class="box-body">
+                <div class="row">
+                    <h:form class="form form-personalizado form-horizontal"  id="formKiosco">
+                        <div class="col-md-5">
+
+                            <div class="form-group">
+                                <label for="oficinaKiosco" class="col-md-3 control-label">Oficina</label>
+                                <div class="col-md-9">
+                                    <h:selectOneMenu id="oficinaKiosco" class="form-control input-sm"
+                                                     converter="#{oficinaConverter}" value="#{kioscoBean.kiosco.idoficina}"
+                                                     required="true" requiredMessage="Debe seleccionar oficina" >
+                                        <f:selectItem itemLabel="Seleccionar oficina " itemValue=""/>
+                                        <f:selectItems value="#{estacionBean.oficinas}" 
+                                                       var="o" itemLabel="#{o.numeroOficina} - #{o.nombre}"/>
+                                    </h:selectOneMenu>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="descripcionKiosco" class="col-md-3 control-label">Descripción</label>
+                                <div class="col-md-9">
+                                    <p:inputText id="descripcionKiosco" class="form-control input-sm" 
+                                                 value="#{kioscoBean.kiosco.descripcion}"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-3"></div>
+                                <div class="col-md-9">
+
+                                    <h:selectBooleanCheckbox id="kisocoAutoservicio"
+                                                             value="#{kioscoBean.autoservicio}"/>
+                                    <span >Autoservicio</span>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-5">
+                            <div class="form-group">
+                                <label for="tokenKiosco" class="col-md-3 control-label">ID (Token)</label>
+                                <div class="col-md-9">
+                                    <p:inputText id="tokenKiosco" class="form-control input-sm" 
+                                                 value="#{kioscoBean.kiosco.idkiosco}" readonly="true"/>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="tokenKiosco" class="col-md-3 control-label">Estatus</label>
+                                <div class="col-md-9">
+                                    <label class="status control-label #{kioscoBean.isConnected(kioscoBean.kiosco) ? 'label-success' : 'label-danger'}"/>
+                                    <label for="tokenKiosco" class="control-label">#{kioscoBean.isConnected(kioscoBean.kiosco) ? 'Conectado' : 'Desconectado'}</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-2">
+                            <div class="btn-group btn-group-vertical btn-block">
+                                <p:commandLink id="cancelarBtn" class="btn btn-default btn-sm btn-flat" actionListener="#{kioscoBean.nuevo()}"
+                                               resetValues="true" type="reset" immediate="true" update="@form">
+                                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Nuevo
+                                </p:commandLink>
+
+                                <p:commandLink id="guardarBtn" class="btn btn-primary btn-sm btn-flat" ajax="true"
+                                               actionListener="${kioscoBean.salvar()}" update=":kioscosTb messages @form">
+                                    <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span> Guardar
+                                </p:commandLink>
+                            </div>
+                        </div>
+
+                        <script >
+                            $('input').iCheck({
+                                checkboxClass: 'icheckbox_square-blue',
+                                radioClass: 'iradio_square-blue',
+                                increaseArea: '20%'
+                            });
+                        </script>
+                    </h:form>
+                </div>
+
+
+                <hr />
+
+                <div class="row">
+                    <div class="col-md-12" >
+
+                        <div class="col-md-12" >
+                            <h:form id="formBusqueda" >
+                                <p:defaultCommand target="buscarBtn" />
+                                <div class="input-group">
+                                    <p:inputText id="buscarKiosco" placeholder="Buscar Kiosco..." value="#{kioscoBean.busqueda}"
+                                                 class="form-control input-sm"/>
+                                    <span class="input-group-btn">
+                                        <p:commandLink id="buscarBtn" class="btn btn-primary btn-sm btn-flat" update=":kioscosTb"
+                                                       type="button" actionListener="#{kioscoBean.buscar()}" >
+                                            <span class="glyphicon glyphicon-search"></span>
+                                            Buscar
+                                        </p:commandLink>
+                                    </span>
+                                </div>
+                            </h:form>
+                        </div>
+                        <div class="col-md-12" >
+                            <p:dataTable id="kioscosTb" var="kiosco" 
+                                         value="#{kioscoBean.kioscos}"
+                                         rowKey="#{kiosco.idkiosco}"
+                                         paginator="true"
+                                         paginatorPosition="top"  rows="5"
+                                         rowsPerPageTemplate="5,10"
+                                         selectionMode="single"
+                                         emptyMessage="No hay registros">
+
+
+                                <p:column headerText="-" style="width: 3%" class="text text-center">
+                                    <label class="status #{kioscoBean.isConnected(kiosco) ? 'label-success' : 'label-danger'} "></label>
+
+                                </p:column>
+
+                                <p:column headerText="Descripción" style="width: 20%">
+                                    <h:outputText value="#{kiosco.descripcion}" />
+                                </p:column>
+
+                                <p:column headerText="Versión Detectada" style="width: 10%" class="text text-center">
+                                    <h:outputText value="#{kiosco.versionKiosco}" />
+                                </p:column>
+
+                                <p:column headerText="Ultima conexión" style="width: 20%" class="text text-center">
+                                    <h:outputText value="#{kiosco.ultimaConexion}" >
+                                        <f:convertDateTime pattern="dd/MM/yyyy hh:mm:ss a"/>
+                                    </h:outputText>
+                                </p:column>
+
+                                <p:column headerText="Auto Servicio" style="width: 10%" class="text text-center">
+                                    <h:outputText value="#{kiosco.autoservicio == 1 ? 'Autoservicio' : 'Informativa'}" />
+                                </p:column>
+
+                                <p:column headerText="Oficina" style="width: 20%">
+                                    <h:outputText value="#{kiosco.idoficina.numeroOficina} - #{kiosco.idoficina.nombre}" />
+                                </p:column>
+
+
+
+
+                                <p:column headerText="" style="width: 10%">
+                                    <div class="btn-group btn-group-justified" role="group" aria-label="...">
+
+                                        <p:commandLink id="editarKiosco" actionListener="#{kioscoBean.setKiosco(kiosco)}"
+                                                       update=":formKiosco"
+                                                       class="btn btn-default btn-sm btn-flat" type="button" >
+                                            <span class="glyphicon glyphicon-pencil"></span> 
+                                        </p:commandLink>
+                                        <p:commandLink id="refresh" actionListener="#{kioscoBean.refreshKiosco(kiosco)}"
+                                                       update=":formKiosco" disabled="#{!kioscoBean.isConnected(kiosco)}"
+                                                       class="btn btn-default btn-sm btn-flat" type="button" >
+                                            <span class="glyphicon glyphicon-refresh"></span> 
+                                        </p:commandLink>
+                                    </div>
+                                </p:column>
+
+                            </p:dataTable>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+
+
+
+</ui:composition>
+

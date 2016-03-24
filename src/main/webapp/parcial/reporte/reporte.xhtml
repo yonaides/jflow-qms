@@ -1,0 +1,100 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:jsf="http://xmlns.jcp.org/jsf"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1><li class="fa fa-file-pdf-o fa-1x"></li> Reportes<small></small> </h1>
+        <ol class="breadcrumb">
+            <li>
+                <a href="#">
+                    <i class="fa fa-building-o"></i>Inicio
+                </a>
+            </li>
+            <!--<li><a href=""></a></li>-->
+            <li class="active">Reportes
+            </li>
+        </ol>
+    </section>
+
+    <section class="content">
+        <div class="box box-primary">
+
+            <div class="box-header with-border">
+                <h3 class="box-title">Reportes</h3>
+            </div>
+            <div class="box-body">
+                <div class="row">
+                    <h:form class="form form-personalizado form-horizontal"  id="formReporte" prependId="false" target="_blank">
+                        <div class="col-md-5">
+
+                            <div class="form-group">
+                                <label for="tipoReporte" class="col-md-4 control-label">Tipo Reporte</label>
+                                <div class="col-md-8">
+                                    <h:selectOneMenu id="tipoReporte" class="form-control input-sm"
+                                                     value="#{reporteBean.reportFile}"
+                                                     required="true" requiredMessage="Debe seleccionar tipoReporte" >
+                                        <f:selectItem itemLabel="Seleccionar tipo reporte " itemValue=""/>
+                                        <f:selectItems value="#{reporteBean.reportes}" 
+                                                       var="o" itemLabel="#{o.key}" itemValue="#{o.value}"/>
+                                    </h:selectOneMenu>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="oficina" class="col-md-4 control-label">Oficina</label>
+                                <div class="col-md-8">
+                                    <h:selectOneMenu id="oficina" class="form-control input-sm"
+                                                     converter="#{oficinaConverter}" value="#{reporteBean.oficina}"
+                                                     required="true" requiredMessage="Debe seleccionar oficina" >
+                                        <f:selectItem itemLabel="Seleccionar oficina " itemValue=""/>
+                                        <f:selectItems value="#{reporteBean.oficinas}" 
+                                                       var="o" itemLabel="#{o.numeroOficina} - #{o.nombre}"/>
+                                    </h:selectOneMenu>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="tokenPda" class="col-md-4 control-label">Rango de Fecha</label>
+                                <div class="col-md-8">
+                                    <div class='input-group date'>
+                                        <input type="text" id="fechaRuta" data-daterangetime="true" data-date-end-date="0d"
+                                               jsf:value="#{reporteBean.dateRange}" jsf:converter="dateRangeTimeConverter"
+                                               class="form-control input-sm" placeholder="22/09/2015 01:00 AM - 22/09/2015 02:00 PM"/>
+                                        <span id="btnCanlendar" class="input-group-addon" style="cursor:pointer;">
+                                            <li class="fa fa-calendar"></li>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-5">
+
+                        </div>
+                        <div class="col-md-2">
+                            <div class="btn-group btn-group-vertical btn-block">
+                                <p:commandLink id="guadarBtn" class="btn btn-primary btn-sm btn-flat" ajax="false"
+
+                                               actionListener="${reporteBean.imprimirReporte()}" update="messages @form">
+                                    <span class="glyphicon glyphicon-print" aria-hidden="true"></span> Ejecutar
+                                </p:commandLink>
+                            </div>
+                        </div>
+                    </h:form>
+                </div>
+
+            </div>
+        </div>
+
+    </section>
+
+
+</ui:composition>
+

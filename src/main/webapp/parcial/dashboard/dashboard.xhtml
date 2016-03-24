@@ -1,0 +1,138 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:jsf="http://xmlns.jcp.org/jsf"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1><li class="fa fa-dashboard fa-1x"></li> Panel Central<small style="font-size: 10px;" class="text text-bold">#{authenticationBean.usuario.idoficina.nombre}</small> </h1>
+        <ol class="breadcrumb">
+            <li>
+                <a href="#">
+                    <i class="fa fa-dashboard"></i>Inicio
+                </a>
+            </li>
+
+            <li class="active">Panel Central
+            </li>
+        </ol>
+    </section>
+
+    <section class="content">
+
+        <div class="row">
+            <h:form >
+                <f:ajax render=":content">
+                    <div class="col-lg-3 col-xs-6">
+                        <div class="small-box bg-yellow">
+                            <div class="inner">
+                                <h3>#{dashboardBean.turnoGenerados}</h3>
+                                <p>Turnos generados</p>
+                            </div>
+                            <div class="icon">
+                                <i class="fa fa-user"></i>
+                            </div>
+                            <a href="#" class="small-box-footer">Más información <i class="fa fa-arrow-circle-right"></i></a>
+                        </div>
+                    </div> 
+
+                    <div class="col-lg-3 col-xs-6">
+                        <div class="small-box bg-green">
+                            <div class="inner">
+                                <h3>#{dashboardBean.turnoAtendidos}</h3>
+                                <p>Turnos atendidos</p>
+                            </div>
+                            <div class="icon">
+                                <i class="fa fa-quote-right"></i>
+                            </div>
+                            <a href="#" class="small-box-footer">Más información <i class="fa fa-arrow-circle-right"></i></a>
+                        </div>
+                    </div> 
+
+                    <div class="col-lg-3 col-xs-6">
+                        <div class="small-box bg-red">
+                            <div class="inner">
+                                <h3>#{dashboardBean.turnoAbandonados}</h3>
+                                <p>Turnos abandonados</p>
+                            </div>
+                            <div class="icon">
+                                <i class="fa fa-user-times"></i>
+                            </div>
+                            <a href="#" class="small-box-footer">Más información <i class="fa fa-arrow-circle-right"></i></a>
+                        </div>
+                    </div> 
+
+                    <div class="col-lg-3 col-xs-6">
+                        <div class="small-box bg-green">
+                            <div class="inner">
+                                <h3> <h:outputText value="#{dashboardBean.tiempoAtencion}">
+                                        <f:convertNumber pattern="00.00"/>
+                                    </h:outputText><sup style="font-size: 20px">%</sup></h3>
+                                <p>Atendidos en menos de 40 Min.</p>
+                            </div>
+                            <div class="icon">
+                                <i class="fa fa-clock-o"></i>
+                            </div>
+                            <a href="#" class="small-box-footer">Más información <i class="fa fa-arrow-circle-right"></i></a>
+                        </div>
+                    </div> 
+
+                    <div class="col-lg-3 col-xs-6">
+                        <div class="small-box bg-yellow">
+                            <div class="inner">
+                                <h3>#{dashboardBean.turnoEspera}</h3>
+                                <p>En espera</p>
+                            </div>
+                            <div class="icon">
+                                <i class="fa fa-pause"></i>
+                            </div>
+                            <a href="#" class="small-box-footer">Más información <i class="fa fa-arrow-circle-right"></i></a>
+                        </div>
+                    </div> 
+
+                    <div class="col-lg-3 col-xs-6">
+                        <div class="small-box bg-green-gradient">
+                            <div class="inner">
+                                <h3>#{dashboardBean.sessionesEstaciones}</h3>
+                                <p>Sessiones Activas</p>
+                            </div>
+                            <div class="icon">
+                                <i class="fa fa-desktop"></i>
+                            </div>
+
+                            <h:commandLink class="small-box-footer" action="#{menuController.setPagina('dashboard/monitoreo')}" >
+                                Más información <i class="fa fa-arrow-circle-right"></i>
+                            </h:commandLink>
+
+                            <!--                        <a href="#" class="small-box-footer">
+                                                        Más información <i class="fa fa-arrow-circle-right"></i></a>-->
+
+                        </div>
+                    </div> 
+                    <!--
+                    <div class="col-lg-3 col-xs-6">
+        
+                        <div class="small-box bg-red">
+                            <div class="inner">
+                                <h3>2</h3>
+                                <p>Turnos sobre 40 minutos</p>
+                            </div>
+                            <div class="icon">
+                                <i class="fa fa-user"></i>
+                            </div>
+                            <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                        </div>
+                    </div> -->
+                </f:ajax>
+            </h:form>
+        </div> 
+
+    </section>
+
+
+</ui:composition>
+

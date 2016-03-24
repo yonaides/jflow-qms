@@ -1,0 +1,79 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:jsf="http://xmlns.jcp.org/jsf"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1><li class="fa fa-arrow-right fa-1x"></li> Iniciar Session<small></small> </h1>
+        <ol class="breadcrumb">
+            <li>
+                <a href="#">
+                    <i class="fa fa-arrow-right"></i>Inicio
+                </a>
+            </li>
+            <!--<li><a href=""></a></li>-->
+            <li class="active">Cola turnos
+            </li>
+        </ol>
+    </section>
+
+    <section class="content">
+        <div class="box box-primary">
+
+            <div class="box-header with-border">
+                <h3 class="box-title">Iniciar Session</h3>
+            </div>
+            <div class="box-body">
+                <div class="row">
+                    <h:form class="form form-personalizado form-horizontal"  id="formTurno" >
+
+                        <div class="col-md-5">
+                            <div class="form-group">
+                                <label for="oficinaKiosco" class="col-md-3 control-label">Estación</label>
+                                <div class="col-md-9">
+                                    <h:selectOneMenu id="estacionSession" class="form-control input-sm"
+                                                     converter="#{estacionConverter}" value="#{sessionBean.estacion}"
+                                                     required="true" requiredMessage="Debe seleccionar una estación" >
+                                        <f:selectItem itemLabel="Seleccionar Estación " itemValue=""/>
+                                        <f:selectItems value="#{sessionBean.estaciones}" 
+                                                       var="o" itemLabel="#{o.nombre}" />
+                                       
+                                        <p:ajax  event="change"  update="iniciarSessionBtn"/>
+                                    </h:selectOneMenu>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <p:commandLink id="iniciarSessionBtn" class="btn btn-primary btn-sm btn-flat pull-right"
+                                                   disabled="#{sessionBean.estacion == null}"
+                                                   actionListener="${sessionBean.salvar()}" update="messages :content">
+                                        <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span> Iniciar
+                                    </p:commandLink>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-5">
+
+                        </div>
+
+                        <div class="col-md-2">
+
+                        </div>
+                    </h:form>
+                </div>
+
+            </div>
+        </div>
+
+    </section>
+
+
+</ui:composition>
+
