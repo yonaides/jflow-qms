@@ -1,5 +1,9 @@
 # TEMAS POR RESOLVER #
 
+### Investigar licencia GPL ###
+
+* Hacer la inclusión de un proyecto GPL
+* Publicar el fuente en Git
 
 ### Migracion de Base de Datos: Oracle a Postgres ###
 
