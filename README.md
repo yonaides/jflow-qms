@@ -15,13 +15,17 @@
 * Subir a Bitbucket
 * Clonar localmente estos proyectos y ponerlos en el IDE
 
-### Contribution guidelines ###
+### Implementar facturacion ###
 
-* Writing tests
-* Code review
-* Other guidelines
+* Analizar los casos de uso
+* Desarrollar el modelo físico 
 
-### Who do I talk to? ###
+### Estos son los requerimientos más necesarios de la aplicación hasta el momento ###
 
-* Repo owner or admin
-* Other community or team contact
+* Pruebas funcionales
+* i18n = multiidioma
+* Instalador .msi para Kiosko, Server Impresion
+* Configuraciones: Parametrizacion
+* Administrador Publicidad: capturar el tiempo de video para calcular la factura. 
+* Administrador de Voces y Sonidos:  Habria voces femeninas, masculinas.
+* Otros que se irán listando sobre la marcha.
