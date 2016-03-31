@@ -9,7 +9,7 @@
 
     <!-- Content Header (Page header) -->
     <section class="content-header">
-        <h1><li class="fa fa-clock-o fa-1x"></li> Tiempo Turnos<small></small> </h1>
+        <h1><li class="fa fa-clock-o fa-1x"></li> Tiempo Ticket<small></small> </h1>
         <ol class="breadcrumb">
             <li>
                 <a href="#">
@@ -17,7 +17,7 @@
                 </a>
             </li>
             <li><a href=""></a></li>
-            <li class="active">Monitorear turnos
+            <li class="active">Monitorear tickets
             </li>
         </ol>
     </section>
@@ -122,39 +122,39 @@
                             <p:poll widgetVar="poll" interval="10" update="tbTurnos tbTurnoProceso" autoStart="false" />
                         </h:form>
 
-                        <p:dataTable id="tbTurnos" var="turno" 
-                                     value="#{monitorearTurno.turnosEspera}"
-                                     rowKey="#{turno.turno}" 
+                        <p:dataTable id="tbTurnos" var="ticket" 
+                                     value="#{monitorearTicket.ticketsEspera}"
+                                     rowKey="#{ticket.ticket}" 
                                      style="margin-top: 10px" selectionMode="single" rows="15"
-                                     rowStyleClass="#{turno.tiempoEspera > 40 ? 'text-danger' : 'text-success' } "
+                                     rowStyleClass="#{ticket.tiempoEspera > 40 ? 'text-danger' : 'text-success' } "
                                      emptyMessage="No hay registros">
 
                             <f:facet name="header">
-                                <span class="text text-primary">Turnos en Espera</span>
+                                <span class="text text-primary">Tickets en Espera</span>
                             </f:facet>
 
                             <p:column headerText="-" style="width: 5%" class="text text-center">
-                                <label class="status control-label #{turno.tiempoEspera > 40 ? 'label-danger' : 'label-success' }"/>
+                                <label class="status control-label #{ticket.tiempoEspera > 40 ? 'label-danger' : 'label-success' }"/>
                             </p:column>
 
                             <p:column headerText="Turno" style="width: 5%" class="text text-center">
-                                <h:outputText value="#{turno.turno}" />
+                                <h:outputText value="#{ticket.ticket}" />
                             </p:column>
 
                             <p:column headerText="Servicio" style="width: 10%" class="text text-center">
-                                <h:outputText value="#{turno.servicio}" />
+                                <h:outputText value="#{ticket.servicio}" />
                             </p:column>
 
                             <p:column headerText="NIC" style="width: 10%" class="text text-center">
-                                <h:outputText value="#{turno.nic}" />
+                                <h:outputText value="#{ticket.nic}" />
                             </p:column>
 
                             <p:column headerText="Cliente" style="width: 20%">
-                                <h:outputText value="#{turno.cliente}" />
+                                <h:outputText value="#{ticket.cliente}" />
                             </p:column>
 
                             <p:column headerText="Minutos Espera " style="width: 10%" class="text text-center">
-                                <h:outputText value="#{turno.tiempoEspera}" >
+                                <h:outputText value="#{ticket.tiempoEspera}" >
                                     <f:convertNumber pattern="#,##0.00"/>
                                 </h:outputText>
                             </p:column>
@@ -163,11 +163,11 @@
                         </p:dataTable>
 
 
-                        <p:dataTable id="tbTurnoProceso" var="turno" 
-                                     value="#{monitorearTurno.turnosProceso}"
-                                     rowKey="#{turno.turno}" 
+                        <p:dataTable id="tbTurnoProceso" var="ticket" 
+                                     value="#{monitorearTicket.ticketsProceso}"
+                                     rowKey="#{ticket.ticket}" 
                                      style="margin-top: 10px" selectionMode="single" rows="15"
-                                     rowStyleClass="#{turno.tiempoProceso > 40 ? 'text-danger' : 'text-success' } "
+                                     rowStyleClass="#{ticket.tiempoProceso > 40 ? 'text-danger' : 'text-success' } "
                                      emptyMessage="No hay registros">
 
                             <f:facet name="header">
@@ -175,41 +175,41 @@
                             </f:facet>
 
                             <p:column headerText="-" style="width: 5%" class="text text-center">
-                                <label class="status control-label #{turno.tiempoProceso > 40 ? 'label-danger' : 'label-success' }"/>
+                                <label class="status control-label #{ticket.tiempoProceso > 40 ? 'label-danger' : 'label-success' }"/>
                             </p:column>
 
                             <p:column headerText="Turno" style="width: 5%" class="text text-center">
-                                <h:outputText value="#{turno.turno}" />
+                                <h:outputText value="#{ticket.ticket}" />
                             </p:column>
 
                             <p:column headerText="Servicio" style="width: 15%" class="text text-center">
-                                <h:outputText value="#{turno.servicio}" />
+                                <h:outputText value="#{ticket.servicio}" />
                             </p:column>
 
                             <p:column headerText="NIC" style="width: 10%" class="text text-center">
-                                <h:outputText value="#{turno.nic}" />
+                                <h:outputText value="#{ticket.nic}" />
                             </p:column>
 
                             <p:column headerText="Cliente" style="width: 20%">
-                                <h:outputText value="#{turno.cliente}" />
+                                <h:outputText value="#{ticket.cliente}" />
                             </p:column>
 
                             <p:column headerText="Representante" style="width: 15%">
-                                <h:outputText value="#{turno.usuario}" />
+                                <h:outputText value="#{ticket.usuario}" />
                             </p:column>
 
                             <p:column headerText="Estación" style="width: 10%">
-                                <h:outputText value="#{turno.estacion}" />
+                                <h:outputText value="#{ticket.estacion}" />
                             </p:column>
 
                             <p:column headerText="Minutos Espera " style="width: 10%" class="text text-center">
-                                <h:outputText value="#{turno.tiempoEspera}" >
+                                <h:outputText value="#{ticket.tiempoEspera}" >
                                     <f:convertNumber pattern="#,##0.00"/>
                                 </h:outputText>
                             </p:column>
 
                             <p:column headerText="Minutos Proceso " style="width: 10%" class="text text-center">
-                                <h:outputText value="#{turno.tiempoProceso}" >
+                                <h:outputText value="#{ticket.tiempoProceso}" >
                                     <f:convertNumber pattern="#,##0.00"/>
                                 </h:outputText>
                             </p:column>

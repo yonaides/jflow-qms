@@ -5,8 +5,8 @@
  */
 package com.aniuska.jflow.utils.converter;
 
-import com.aniuska.jflow.ejb.OficinaFacade;
-import com.aniuska.jflow.entity.Oficina;
+import com.aniuska.jflow.ejb.SucursalFacade;
+import com.aniuska.jflow.entity.Sucursal;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.component.UIComponent;
@@ -16,19 +16,19 @@ import javax.inject.Named;
 
 /**
  *
- * @author hventura@citrus.com.do
+ * @author hectorvent@gmail.com
  */
 @RequestScoped
 @Named
-public class OficinaConverter implements Converter {
+public class SucursalConverter implements Converter {
 
     @EJB
-    private OficinaFacade oficinaCtrl;
+    private SucursalFacade sucursalCtrl;
 
     @Override
     public Object getAsObject(FacesContext context, UIComponent component, String value) {
         if (value != null && value.matches("[0-9]+")) {
-            return oficinaCtrl.find(Integer.parseInt(value));
+            return sucursalCtrl.find(Integer.parseInt(value));
         }
 
         return null;
@@ -36,15 +36,15 @@ public class OficinaConverter implements Converter {
 
     @Override
     public String getAsString(FacesContext context, UIComponent component, Object value) {
-        return value == null || (value instanceof String) ? "" : ((Oficina) value).getIdoficina().toString();
+        return value == null || (value instanceof String) ? "" : ((Sucursal) value).getIdsucursal().toString();
     }
 
-    public OficinaFacade getOficinaFacade() {
-        return oficinaCtrl;
+    public SucursalFacade getSucursalCtrl() {
+        return sucursalCtrl;
     }
 
-    public void setOficinaFacade(OficinaFacade oficinaFacade) {
-        this.oficinaCtrl = oficinaFacade;
+    public void setSucursalCtrl(SucursalFacade sucursalCtrl) {
+        this.sucursalCtrl = sucursalCtrl;
     }
 
 }

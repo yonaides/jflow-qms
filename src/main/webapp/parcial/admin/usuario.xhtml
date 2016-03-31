@@ -59,7 +59,7 @@
                             </p:column>
 
                             <p:column headerText="Oficina" style="width: 35%;">
-                                <h:outputText value="(#{usuario.idoficina.numeroOficina}) - #{usuario.idoficina.nombre}" />
+                                <h:outputText value="(#{usuario.idsucursal.numeroSucursal}) - #{usuario.idsucursal.nombre}" />
                             </p:column>
 
                             <p:column headerText="-" style="width: 15%;">
@@ -181,11 +181,11 @@
                                     <label for="oficina" class="col-md-3 control-label">Oficina</label>
                                     <div class="col-md-9">
                                         <h:selectOneMenu id="oficina" class="form-control input-sm"
-                                                         converter="#{oficinaConverter}" value="#{administrarUsuarioBean.usuario.idoficina}"
+                                                         converter="#{sucursalConverter}" value="#{administrarUsuarioBean.usuario.idsucursal}"
                                                          required="true" requiredMessage="Debe seleccionar oficina" >
                                             <f:selectItem itemLabel="Seleccionar oficina" itemValue=""/>
                                             <f:selectItems value="#{administrarUsuarioBean.oficinas}" 
-                                                           var="o" itemLabel="#{o.numeroOficina} - #{o.nombre}" />
+                                                           var="o" itemLabel="#{o.numeroSucursal} - #{o.nombre}" />
                                             <!--<p:ajax  event="change"  />-->
                                         </h:selectOneMenu>
                                     </div>

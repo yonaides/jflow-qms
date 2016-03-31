@@ -7,22 +7,21 @@ package com.aniuska.jflow.managedbean;
 
 import com.aniuska.jflow.auth.AuthenticationBean;
 import com.aniuska.jflow.ejb.ClienteFacade;
-import com.aniuska.jflow.ejb.OficinaFacade;
+import com.aniuska.jflow.ejb.SucursalFacade;
 import com.aniuska.jflow.ejb.ServicioFacade;
-import com.aniuska.jflow.ejb.TurnoFacade;
+import com.aniuska.jflow.ejb.TicketFacade;
 import com.aniuska.jflow.entity.Cliente;
-import com.aniuska.jflow.entity.Oficina;
+import com.aniuska.jflow.entity.Sucursal;
 import com.aniuska.jflow.entity.Servicio;
-import com.aniuska.jflow.entity.Turno;
-import com.aniuska.jflow.entity.TurnoDetalle;
+import com.aniuska.jflow.entity.Ticket;
+import com.aniuska.jflow.entity.TicketDetalle;
 import com.aniuska.jflow.utils.Estados;
 import com.aniuska.jflow.websocket.Message;
 import com.aniuska.jflow.websocket.MessageType;
 import com.aniuska.jflow.websocket.WSPrinter;
 import com.aniuska.jflow.ws.ConsultaContratoWS;
-import com.aniuska.jflow.ws.DatosCliente;
-import com.edenorte.utils.MessageUtils;
-import com.edenorte.utils.date.DateUtils;
+import com.aniuska.utils.MessageUtils;
+import com.aniuska.utils.date.DateUtils;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Arrays;
@@ -36,40 +35,40 @@ import javax.inject.Inject;
 
 /**
  *
- * @author hventura@citrus.com.do
+ * @author hectorvent@gmail.com
  */
 @Named
 @ViewScoped
-public class GenerarTurnoBean implements Serializable {
+public class GenerarTicketBean implements Serializable {
 
     private final long serialVersionUID = 23L;
 
     @EJB
-    private TurnoFacade turnoCtrl;
+    private TicketFacade turnoCtrl;
     @EJB
     private ClienteFacade clienteCtrl;
     @EJB
     private ServicioFacade servicioCtrl;
     @EJB
-    private OficinaFacade ctrlOficina;
+    private SucursalFacade ctrlOficina;
     @Inject
     private AuthenticationBean authenticationBean;
 
     @EJB
     private WSPrinter wsPrinter;
 
-    private TurnoDetalle turnoDetalle;
+    private TicketDetalle ticketDetalle;
     private Cliente cliente;
     private boolean prioritario;
 
     @PostConstruct
     public void init() {
-        turnoDetalle = new TurnoDetalle();
+        ticketDetalle = new TicketDetalle();
         cliente = new Cliente();
         prioritario = false;
     }
 
-    public void setTurnoCtrl(TurnoFacade turnoCtrl) {
+    public void setTurnoCtrl(TicketFacade turnoCtrl) {
         this.turnoCtrl = turnoCtrl;
     }
 
@@ -85,17 +84,17 @@ public class GenerarTurnoBean implements Serializable {
         this.servicioCtrl = servicioCtrl;
     }
 
-    public TurnoDetalle getTurnoDetalle() {
-        return turnoDetalle;
+    public TicketDetalle getTicketDetalle() {
+        return ticketDetalle;
     }
 
     public List<Servicio> getServicios() {
-        Oficina oficina = authenticationBean.getUsuario().getIdoficina();
-        return servicioCtrl.findByOficina(oficina);
+        Sucursal sucursal = authenticationBean.getUsuario().getIdsucursal();
+        return servicioCtrl.findBySucursal(sucursal);
     }
 
-    public void setTurnoDetalle(TurnoDetalle turnoDetalle) {
-        this.turnoDetalle = turnoDetalle;
+    public void setTicketDetalle(TicketDetalle ticketDetalle) {
+        this.ticketDetalle = ticketDetalle;
     }
 
     public Cliente getCliente() {
@@ -106,7 +105,7 @@ public class GenerarTurnoBean implements Serializable {
         this.cliente = cliente;
     }
 
-    public void setCtrlOficina(OficinaFacade ctrlOficina) {
+    public void setCtrlOficina(SucursalFacade ctrlOficina) {
         this.ctrlOficina = ctrlOficina;
     }
 
@@ -134,13 +133,13 @@ public class GenerarTurnoBean implements Serializable {
         this.wsPrinter = wsPrinter;
     }
 
-    public List<Turno> getTurnos() {
-        Oficina oficina = authenticationBean.getUsuario().getIdoficina();
-        return turnoCtrl.findLast10(oficina);
+    public List<Ticket> getTurnos() {
+        Sucursal sucursal = authenticationBean.getUsuario().getIdsucursal();
+        return turnoCtrl.findLast10(sucursal);
     }
 
     public boolean isPrinterConnected() {
-        Oficina ofi = authenticationBean.getUsuario().getIdoficina();
+        Sucursal ofi = authenticationBean.getUsuario().getIdsucursal();
         return wsPrinter.isConnected(ofi);
     }
 
@@ -152,9 +151,9 @@ public class GenerarTurnoBean implements Serializable {
             clienteCtrl.create(cliente);
         }
 
-        Oficina ofi = authenticationBean.getUsuario().getIdoficina();
-        ofi = ctrlOficina.find(ofi.getIdoficina());
-//        Oficina ofi = authenticationBean.getUsuario().getIdoficina();
+        Sucursal ofi = authenticationBean.getUsuario().getIdsucursal();
+        ofi = ctrlOficina.find(ofi.getIdsucursal());
+//        Oficina ofi = authenticationBean.getUsuario().getIdsucursal();
         int num = ofi.getSecuencia() + 1;
 
         // Se el numero es 100 resetiar a 1, (1-99)
@@ -163,25 +162,25 @@ public class GenerarTurnoBean implements Serializable {
         }
         ofi.setSecuencia(num);
 
-        // Se actualiza la secuencia de la oficina
+        // Se actualiza la secuencia de la sucursal
         ctrlOficina.edit(ofi);
-        Servicio ser = turnoDetalle.getIdservicio();
+        Servicio ser = ticketDetalle.getIdservicio();
 
-        Turno turno = new Turno();
+        Ticket turno = new Ticket();
         turno.setFechaCreacion(new Date());
         turno.setHappyNumber(ser.getPrefijo() + "-" + num);
-        turno.setIdoficina(ofi);
+        turno.setIdsucursal(ofi);
         turno.setIdcliente(cliente);
         turno.setPrioridad(prioritario ? 2 : 1);
         turno.setIdestado(Estados.EN_ESPERA);
 
-        turnoDetalle.setIdturno(turno);
-        turnoDetalle.setFechaInicio(turno.getFechaCreacion());
-        turnoDetalle.setIdestado(Estados.EN_ESPERA);
-        turnoDetalle.setTiempoEspera(BigDecimal.ZERO);
-        turnoDetalle.setTiempoProceso(BigDecimal.ZERO);
+        ticketDetalle.setIdticket(turno);
+        ticketDetalle.setFechaInicio(turno.getFechaCreacion());
+        ticketDetalle.setIdestado(Estados.EN_ESPERA);
+        ticketDetalle.setTiempoEspera(BigDecimal.ZERO);
+        ticketDetalle.setTiempoProceso(BigDecimal.ZERO);
 
-        turno.setTurnoDetalleList(Arrays.asList(turnoDetalle));
+        turno.setTicketDetalleList(Arrays.asList(ticketDetalle));
 
         try {
             turnoCtrl.create(turno);
@@ -221,28 +220,28 @@ public class GenerarTurnoBean implements Serializable {
             cliente = cli;
         } else {
 
-            DatosCliente dc = ConsultaContratoWS.findClienteByNic(cliente.getContrato().intValue());
-
-            if (dc == null) {
-                MessageUtils.sendSuccessfulMessage("Error al consultar los clientes!!");
-                return;
-            }
-
-            if ("M02".equals(dc.getMensaje().getCodigo())) {
-                MessageUtils.sendSuccessfulMessage("Este contrato no existe!!");
-                return;
-            }
-
-            cliente.setApellido(dc.getApellidos());
-            cliente.setCedula(dc.getCedulaCliente());
-            cliente.setNombre(dc.getNombreCliente());
-            cliente.setTelefono(dc.getTelefonos());
-            cliente.setTitular((short) 1);
+//            DatosCliente dc = ConsultaContratoWS.findClienteByNic(cliente.getContrato().intValue());
+//
+//            if (dc == null) {
+            MessageUtils.sendSuccessfulMessage("Error al consultar los clientes!!");
+            return;
+//            }
+//
+//            if ("M02".equals(dc.getMensaje().getCodigo())) {
+//                MessageUtils.sendSuccessfulMessage("Este contrato no existe!!");
+//                return;
+//            }
+//
+//            cliente.setApellido(dc.getApellidos());
+//            cliente.setCedula(dc.getCedulaCliente());
+//            cliente.setNombre(dc.getNombreCliente());
+//            cliente.setTelefono(dc.getTelefonos());
+//            cliente.setTitular((short) 1);
         }
 
     }
 
-    public void imprimir(Turno turno) {
+    public void imprimir(Ticket turno) {
 
         if (!isPrinterConnected()) {
 
@@ -252,16 +251,16 @@ public class GenerarTurnoBean implements Serializable {
 
         Message mes = new Message(MessageType.PRINT);
         Cliente cli = turno.getIdcliente();
-        TurnoDetalle td = turno.getTurnoDetalleList().get(0);
+        TicketDetalle td = turno.getTicketDetalleList().get(0);
 
         mes.put("contrato", cli.getContrato().toString())
                 .put("fecha", DateUtils.dateTime2String(turno.getFechaCreacion()))
                 .put("nombreCliente", cli.getNombre() + " " + cli.getApellido())
-                .put("oficina", turno.getIdoficina().getNombre())
+                .put("sucursal", turno.getIdsucursal().getNombre())
                 .put("servicio", td.getIdservicio().getNombre())
                 .put("turno", turno.getHappyNumber());
 
-        wsPrinter.sendMessage(turno.getIdoficina(), mes);
+        wsPrinter.sendMessage(turno.getIdsucursal(), mes);
 
         MessageUtils.sendSuccessfulMessage("El turno se envio a imprimir!");
     }

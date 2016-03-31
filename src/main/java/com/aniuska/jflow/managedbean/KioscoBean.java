@@ -6,12 +6,12 @@
 package com.aniuska.jflow.managedbean;
 
 import com.aniuska.jflow.ejb.KioscoFacade;
-import com.aniuska.jflow.ejb.OficinaFacade;
+import com.aniuska.jflow.ejb.SucursalFacade;
 import com.aniuska.jflow.entity.Kiosco;
 import com.aniuska.jflow.websocket.Message;
 import com.aniuska.jflow.websocket.MessageType;
 import com.aniuska.jflow.websocket.WSNotification;
-import com.edenorte.utils.MessageUtils;
+import com.aniuska.utils.MessageUtils;
 import java.io.Serializable;
 import java.util.List;
 import java.util.UUID;
@@ -22,7 +22,7 @@ import javax.faces.view.ViewScoped;
 
 /**
  *
- * @author hventura@citrus.com.do
+ * @author hectorvent@gmail.com
  */
 @ViewScoped
 @Named
@@ -31,7 +31,7 @@ public class KioscoBean implements Serializable {
     private final long serialVersionUID = 23L;
 
     @EJB
-    private OficinaFacade oficinaCtrl;
+    private SucursalFacade sucursalCtrl;
     @EJB
     private KioscoFacade kioscoCtrl;
     @EJB
@@ -55,12 +55,12 @@ public class KioscoBean implements Serializable {
         this.busqueda = busqueda;
     }
 
-    public OficinaFacade getOficinaCtrl() {
-        return oficinaCtrl;
+    public SucursalFacade getSucursalCtrl() {
+        return sucursalCtrl;
     }
 
-    public void setOficinaCtrl(OficinaFacade oficinaCtrl) {
-        this.oficinaCtrl = oficinaCtrl;
+    public void setSucursalCtrl(SucursalFacade sucursalCtrl) {
+        this.sucursalCtrl = sucursalCtrl;
     }
 
     public KioscoFacade getKioscoCtrl() {
@@ -128,10 +128,10 @@ public class KioscoBean implements Serializable {
         kiosco = new Kiosco();
         kioscos = kioscoCtrl.findAll();
     }
-    
-    public void refreshKiosco(Kiosco k){
+
+    public void refreshKiosco(Kiosco k) {
         Message ms = new Message(MessageType.REFRESH);
-        wsNotificacion.sendMessage(k.getIdoficina(), ms);
+        wsNotificacion.sendMessage(k.getIdsucursal(), ms);
     }
 
     public void buscar() {

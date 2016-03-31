@@ -32,23 +32,23 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author hventura@citrus.com.do
+ * @author hectorvent@gmail.com
  */
 @Entity
-@Table(name = "TURNO")
+@Table(name = "TICKET")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Turno.findAll", query = "SELECT t FROM Turno t")})
-public class Turno implements Serializable {
+    @NamedQuery(name = "Ticket.findAll", query = "SELECT t FROM Ticket t")})
+public class Ticket implements Serializable {
 
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull
-    @Column(name = "IDTURNO")
-    @SequenceGenerator(name = "SEC_TURNO", sequenceName = "SEC_TURNO", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEC_TURNO")
+    @Column(name = "IDTICKET")
+    @SequenceGenerator(name = "SEC_TICKET", sequenceName = "SEC_TICKET", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEC_TICKET")
     private BigDecimal idturno;
     @Column(name = "FECHA_CREACION")
     @Temporal(TemporalType.TIMESTAMP)
@@ -65,26 +65,26 @@ public class Turno implements Serializable {
     @Column(name = "FECHA_FIN")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaFin;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idturno")
-    private List<TurnoDetalle> turnoDetalleList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idticket")
+    private List<TicketDetalle> ticketDetalleList;
     @JoinColumn(name = "IDCLIENTE", referencedColumnName = "IDCLIENTE")
     @ManyToOne(optional = false)
     private Cliente idcliente;
     @JoinColumn(name = "IDESTADO", referencedColumnName = "IDESTADO")
     @ManyToOne
     private Estado idestado;
-    @JoinColumn(name = "IDOFICINA", referencedColumnName = "IDOFICINA")
+    @JoinColumn(name = "IDSUCURSAL", referencedColumnName = "IDSUCURSAL")
     @ManyToOne(optional = false)
-    private Oficina idoficina;
+    private Sucursal idsucursal;
 
-    public Turno() {
+    public Ticket() {
     }
 
-    public Turno(BigDecimal idturno) {
+    public Ticket(BigDecimal idturno) {
         this.idturno = idturno;
     }
 
-    public Turno(BigDecimal idturno, int prioridad) {
+    public Ticket(BigDecimal idturno, int prioridad) {
         this.idturno = idturno;
         this.prioridad = prioridad;
     }
@@ -130,12 +130,12 @@ public class Turno implements Serializable {
     }
 
     @XmlTransient
-    public List<TurnoDetalle> getTurnoDetalleList() {
-        return turnoDetalleList;
+    public List<TicketDetalle> getTicketDetalleList() {
+        return ticketDetalleList;
     }
 
-    public void setTurnoDetalleList(List<TurnoDetalle> turnoDetalleList) {
-        this.turnoDetalleList = turnoDetalleList;
+    public void setTicketDetalleList(List<TicketDetalle> turnoDetalleList) {
+        this.ticketDetalleList = turnoDetalleList;
     }
 
     public Cliente getIdcliente() {
@@ -154,12 +154,12 @@ public class Turno implements Serializable {
         this.idestado = idestado;
     }
 
-    public Oficina getIdoficina() {
-        return idoficina;
+    public Sucursal getIdsucursal() {
+        return idsucursal;
     }
 
-    public void setIdoficina(Oficina idoficina) {
-        this.idoficina = idoficina;
+    public void setIdsucursal(Sucursal idsucursal) {
+        this.idsucursal = idsucursal;
     }
 
     @Override
@@ -172,10 +172,10 @@ public class Turno implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Turno)) {
+        if (!(object instanceof Ticket)) {
             return false;
         }
-        Turno other = (Turno) object;
+        Ticket other = (Ticket) object;
         if ((this.idturno == null && other.idturno != null) || (this.idturno != null && !this.idturno.equals(other.idturno))) {
             return false;
         }
@@ -184,7 +184,7 @@ public class Turno implements Serializable {
 
     @Override
     public String toString() {
-        return "com.edenorte.turnos.entity.Turno[ idturno=" + idturno + " ]";
+        return "com.aniuska.turnos.entity.Turno[ idturno=" + idturno + " ]";
     }
 
 }

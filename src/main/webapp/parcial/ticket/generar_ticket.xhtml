@@ -9,7 +9,7 @@
 
     <!-- Content Header (Page header) -->
     <section class="content-header">
-        <h1><li class="fa fa-plus-square fa-1x"></li> Generar Turno<small></small> </h1>
+        <h1><li class="fa fa-plus-square fa-1x"></li> Generar Ticket<small></small> </h1>
         <ol class="breadcrumb">
             <li>
                 <a href="#">
@@ -17,7 +17,7 @@
                 </a>
             </li>
             <!--<li><a href=""></a></li>-->
-            <li class="active">Generar turno
+            <li class="active">Generar ticket
             </li>
         </ol>
     </section>
@@ -33,7 +33,7 @@
         <div class="box box-primary">
 
             <div class="box-header with-border">
-                <h3 class="box-title">Generar nuevo turno</h3>
+                <h3 class="box-title">Generar nuevo ticket</h3>
             </div>
             <div class="box-body">
                 <div class="row">
@@ -46,11 +46,11 @@
                                     <p:fragment>
                                         <div class="input-group">
                                             <p:inputText id="contratoCliente" class="form-control input-sm" 
-                                                         value="#{generarTurnoBean.cliente.contrato}" required="true"
+                                                         value="#{generarTicketBean.cliente.contrato}" required="true"
                                                          requiredMessage="Se debe indicar NIC "/>
                                             <span class="input-group-btn">
                                                 <p:commandLink id="buscarNic" class="btn btn-success btn-sm btn-flat"
-                                                               type="button" actionListener="#{generarTurnoBean.buscarNic()}" 
+                                                               type="button" actionListener="#{generarTicketBean.buscarNic()}" 
                                                                update="@form :messages">
                                                     <span class="glyphicon glyphicon-ok"></span>
                                                 </p:commandLink>
@@ -65,11 +65,11 @@
                                     <p:fragment>
                                         <div class="input-group">
                                             <p:inputText id="identificacionCliente" class="form-control input-sm" 
-                                                         value="#{generarTurnoBean.cliente.cedula}" required="true"
+                                                         value="#{generarTicketBean.cliente.cedula}" required="true"
                                                          requiredMessage="Debe introducir Identificación"/>
                                             <span class="input-group-btn">
                                                 <p:commandLink id="buscarCliente" class="btn btn-success btn-sm btn-flat"
-                                                               type="button" actionListener="#{generarTurnoBean.buscarCliente()}" 
+                                                               type="button" actionListener="#{generarTicketBean.buscarCliente()}" 
                                                                update="@form messages">
                                                     <span class="glyphicon glyphicon-ok"></span>
                                                 </p:commandLink>
@@ -83,7 +83,7 @@
                                 <label for="nombreCliente" class="col-md-3 control-label">Nombre</label>
                                 <div class="col-md-9">
                                     <p:inputText id="nombreCliente" class="form-control input-sm" 
-                                                 value="#{generarTurnoBean.cliente.nombre}" required="true"
+                                                 value="#{generarTicketBean.cliente.nombre}" required="true"
                                                  requiredMessage="Debe introducir nombre"/>
                                 </div>
                             </div>
@@ -92,7 +92,7 @@
                                 <label for="apellidoCliente" class="col-md-3 control-label">Apellido</label>
                                 <div class="col-md-9">
                                     <p:inputText id="apellidoCliente" class="form-control input-sm" 
-                                                 value="#{generarTurnoBean.cliente.apellido}" required="true"
+                                                 value="#{generarTicketBean.cliente.apellido}" required="true"
                                                  requiredMessage="Debe introducir apellido"/>
                                 </div>
                             </div>
@@ -101,7 +101,7 @@
                                 <label for="telefonoCliente" class="col-md-3 control-label">Teléfono</label>
                                 <div class="col-md-9">
                                     <p:inputText id="telefonoCliente" class="form-control input-sm" 
-                                                 value="#{generarTurnoBean.cliente.telefono}"/>
+                                                 value="#{generarTicketBean.cliente.telefono}"/>
                                 </div>
                             </div>
 
@@ -109,7 +109,7 @@
                                 <div class="col-md-3"></div>
                                 <div class="col-md-9">
                                     <h:selectBooleanCheckbox id="esTitular"
-                                                             value="#{generarTurnoBean.titular}"/>
+                                                             value="#{generarTicketBean.titular}"/>
                                     <span>Es titular</span>
                                 </div>
                             </div>
@@ -121,10 +121,10 @@
                                 <label for="tipoServicio" class="col-md-3 control-label">Servicio</label>
                                 <div class="col-md-9">
                                     <h:selectOneMenu id="tipoServicio" class="form-control input-sm"
-                                                     converter="#{servicioConverter}" value="#{generarTurnoBean.turnoDetalle.idservicio}"
+                                                     converter="#{servicioConverter}" value="#{generarTicketBean.ticketDetalle.idservicio}"
                                                      required="true" requiredMessage="Debe seleccionar el servicio" >
                                         <f:selectItem itemLabel="Seleccionar Servicio" itemValue=""/>
-                                        <f:selectItems value="#{generarTurnoBean.servicios}" 
+                                        <f:selectItems value="#{generarTicketBean.servicios}" 
                                                        var="o" itemLabel="#{o.nombre}" />
 
                                     </h:selectOneMenu>
@@ -135,7 +135,7 @@
                                 <div class="col-md-3"></div>
                                 <div class="col-md-9">
                                     <h:selectBooleanCheckbox id="esPrioritario"
-                                                             value="#{generarTurnoBean.prioritario}"/>
+                                                             value="#{generarTicketBean.prioritario}"/>
                                     <span>Especial</span>
                                 </div>
                             </div>
@@ -143,8 +143,8 @@
                             <div class="form-group">
                                 <label for="tokenKiosco" class="col-md-3 control-label"></label>
                                 <div class="col-md-9">
-                                    <label class="status control-label #{generarTurnoBean.printerConnected ? 'label-success' : 'label-danger'}"/>
-                                    <label for="tokenKiosco" class="control-label">#{generarTurnoBean.printerConnected ? 'Printer Disponible' : 'Printer Desconectado'}</label>
+                                    <label class="status control-label #{generarTicketBean.printerConnected ? 'label-success' : 'label-danger'}"/>
+                                    <label for="tokenKiosco" class="control-label">#{generarTicketBean.printerConnected ? 'Printer Disponible' : 'Printer Desconectado'}</label>
                                 </div>
                             </div>
 
@@ -153,13 +153,13 @@
                         <div class="col-md-2">
                             <div class="btn-group btn-group-vertical btn-block">
                                 <p:commandLink id="cancelarBtn" class="btn btn-default btn-sm btn-flat" 
-                                               actionListener="#{generarTurnoBean.nuevo()}"
+                                               actionListener="#{generarTicketBean.nuevo()}"
                                                resetValues="true" type="reset" immediate="true" update="@form">
                                     <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Limpiar
                                 </p:commandLink>
 
                                 <p:commandLink id="siguienteBtn" class="btn btn-primary btn-sm btn-flat" ajax="true"
-                                               actionListener="${generarTurnoBean.salvar()}" update="messages @form :tbTurnos">
+                                               actionListener="${generarTicketBean.salvar()}" update="messages @form :tbTurnos">
                                     <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span> Generar Turno
                                 </p:commandLink>
                             </div>
@@ -177,7 +177,7 @@
                 <div class="row">
                     <div class="col-md-12" >
                         <p:dataTable id="tbTurnos" var="turno" 
-                                     value="#{generarTurnoBean.turnos}"
+                                     value="#{generarTicketBean.turnos}"
                                      rowKey="#{turno.idturno}" 
                                      style="margin-top: 10px" selectionMode="single" rows="15"
                                      emptyMessage="No hay registros">
@@ -206,7 +206,7 @@
                                 <div class="btn-group btn-group-justified" role="group" aria-label="...">
 
                                     <p:commandLink id="editarKiosco" update="messages"
-                                                   actionListener="#{generarTurnoBean.imprimir(turno)}"
+                                                   actionListener="#{generarTicketBean.imprimir(turno)}"
 
                                                    class="btn btn-default btn-sm btn-flat" type="button" >
                                         <span class="glyphicon glyphicon-print"></span> 

@@ -6,12 +6,12 @@
 package com.aniuska.jflow.managedbean;
 
 import com.aniuska.jflow.auth.AuthenticationBean;
-import com.aniuska.jflow.ejb.OficinaFacade;
-import com.aniuska.jflow.entity.Oficina;
+import com.aniuska.jflow.ejb.SucursalFacade;
+import com.aniuska.jflow.entity.Sucursal;
 import com.aniuska.jflow.utils.GenericType;
-import com.edenorte.utils.date.DateRange;
-import com.edenorte.utils.report.JasperReportExcepcion;
-import com.edenorte.utils.report.JasperReportUtils;
+import com.aniuska.utils.date.DateRange;
+import com.aniuska.utils.report.JasperReportExcepcion;
+import com.aniuska.utils.report.JasperReportUtils;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Date;
@@ -19,8 +19,8 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.ejb.EJB;
-import javax.faces.bean.ManagedProperty;
 import javax.faces.view.ViewScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 import javax.sql.DataSource;
 import org.apache.logging.log4j.LogManager;
@@ -28,7 +28,7 @@ import org.apache.logging.log4j.Logger;
 
 /**
  *
- * @author hventura@citrus.com.do
+ * @author hectorvent@gmail.com
  */
 @Named
 @ViewScoped
@@ -36,15 +36,15 @@ public class ReporteBean implements Serializable {
 
     private static final Logger LOGGER = LogManager.getLogger(ReporteBean.class);
 
-    @Resource(lookup = "jdbc/turnos")
+    @Resource(lookup = "jdbc/jflow")
     private DataSource dataSource;
 
     @EJB
-    private OficinaFacade oficinaCtrl;
-    private Oficina oficina;
+    private SucursalFacade sucursalCtrl;
+    private Sucursal sucursal;
     private DateRange dateRange;
 
-    @ManagedProperty(value = "#{authenticationBean}")
+    @Inject
     private AuthenticationBean authenticationBean;
     private List<GenericType> reportes;
     private String reportFile;
@@ -62,12 +62,12 @@ public class ReporteBean implements Serializable {
         );
     }
 
-    public Oficina getOficina() {
-        return oficina;
+    public Sucursal getSucursal() {
+        return sucursal;
     }
 
-    public void setOficina(Oficina oficina) {
-        this.oficina = oficina;
+    public void setSucursal(Sucursal sucursal) {
+        this.sucursal = sucursal;
     }
 
     public DateRange getDateRange() {
@@ -78,12 +78,12 @@ public class ReporteBean implements Serializable {
         this.dateRange = dateRange;
     }
 
-    public void setOficinaCtrl(OficinaFacade oficinaCtrl) {
-        this.oficinaCtrl = oficinaCtrl;
+    public void setSucursalCtrl(SucursalFacade sucursalCtrl) {
+        this.sucursalCtrl = sucursalCtrl;
     }
 
-    public List<Oficina> getOficinas() {
-        return oficinaCtrl.findAll();
+    public List<Sucursal> getSucursales() {
+        return sucursalCtrl.findAll();
     }
 
     public AuthenticationBean getAuthenticationBean() {
@@ -111,16 +111,16 @@ public class ReporteBean implements Serializable {
         try {
 
 //            System.out.println("DateRange : " + dateRange);
-//            System.out.println("Oficina = " + oficina.getNombre());
+//            System.out.println("Sucursal = " + sucursal.getNombre());
             LOGGER.info("Imprimiendo reporte");
 
-//            Oficina oficina = authenticationBean.getUsuario().getIdoficina();
+//            Sucursal sucursal = authenticationBean.getUsuario().getIdsucursal();
             JasperReportUtils.newReport()
-                    .setJaspersDir("/com/edenorte/turnos/reports/")
+                    .setJaspersDir("/com/aniuska/turnos/reports/")
                     .setJasperFile(reportFile)
                     .setDataSource(dataSource)
-                    .put("oficinaNombre", oficina.getNombre())
-                    .put("oficinaId", oficina.getIdoficina())
+                    .put("sucursalNombre", sucursal.getNombre())
+                    .put("sucursalId", sucursal.getIdsucursal())
                     .put("fechaIni", dateRange.getFirstDate())
                     .put("fechaFin", dateRange.getEndDate())
                     .executeReport();

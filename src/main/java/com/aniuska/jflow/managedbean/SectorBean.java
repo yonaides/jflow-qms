@@ -15,7 +15,7 @@ import javax.inject.Named;
 
 /**
  *
- * @author hventura@citrus.com.do
+ * @author hectorvent@gmail.com
  */
 @ViewScoped
 @Named

@@ -5,10 +5,10 @@
  */
 package com.aniuska.jflow.managedbean;
 
-import com.aniuska.jflow.ejb.OficinaFacade;
+import com.aniuska.jflow.ejb.SucursalFacade;
 import com.aniuska.jflow.ejb.RolFacade;
 import com.aniuska.jflow.ejb.UsuarioFacade;
-import com.aniuska.jflow.entity.Oficina;
+import com.aniuska.jflow.entity.Sucursal;
 import com.aniuska.jflow.entity.Rol;
 import com.aniuska.jflow.entity.Usuario;
 import java.io.Serializable;
@@ -22,7 +22,7 @@ import org.primefaces.event.SelectEvent;
 
 /**
  *
- * @author hventura@citrus.com.do
+ * @author hectorvent@gmail.com
  */
 @Named
 @ViewScoped
@@ -35,7 +35,7 @@ public class AdministrarUsuarioBean implements Serializable {
     @EJB
     RolFacade rolFacade;
     @EJB
-    OficinaFacade oficinaCtrl;
+    SucursalFacade sucursalCtrl;
     private Usuario usuario;
     private List<Rol> usuarioRol;
     private List<Rol> rolList;
@@ -93,8 +93,8 @@ public class AdministrarUsuarioBean implements Serializable {
         usuarios = new ArrayList();
     }
 
-    public List<Oficina> getOficinas() {
-        return oficinaCtrl.findAll();
+    public List<Sucursal> getOficinas() {
+        return sucursalCtrl.findAll();
     }
 
     public void habilitarDeshabilitarUsuario(Usuario usuario) {

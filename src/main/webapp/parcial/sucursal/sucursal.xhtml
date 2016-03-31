@@ -9,7 +9,7 @@
 
     <!-- Content Header (Page header) -->
     <section class="content-header">
-        <h1><li class="fa fa-building-o fa-1x"></li> Administracion de Oficinas<small></small> </h1>
+        <h1><li class="fa fa-building-o fa-1x"></li> Administracion de Sucursales<small></small> </h1>
         <ol class="breadcrumb">
             <li>
                 <a href="#">
@@ -17,7 +17,7 @@
                 </a>
             </li>
             <!--<li><a href=""></a></li>-->
-            <li class="active">Oficinas
+            <li class="active">Sucursales
             </li>
         </ol>
     </section>
@@ -26,7 +26,7 @@
         <div class="box box-primary">
 
             <div class="box-header with-border">
-                <h3 class="box-title">Registro Oficina</h3>
+                <h3 class="box-title">Registro Sucursal</h3>
             </div>
             <div class="box-body">
                 <div class="row">
@@ -42,22 +42,22 @@
                                 <div class="col-md-9">
                                     <p:inputText id="nombreOficina" class="form-control input-sm" 
                                                  required="true" requiredMessage="Debe especificar nombre oficina"
-                                                 value="#{oficinaBean.oficina.nombre}"/>
+                                                 value="#{sucursalBean.sucursal.nombre}"/>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="numeroOficina" class="col-md-3 control-label"># Oficina</label>
+                                <label for="numeroOficina" class="col-md-3 control-label"># Sucursal</label>
                                 <div class="col-md-9">
                                     <p:inputText id="numeroOficina" class="form-control input-sm" 
                                                  required="true" requiredMessage="Debe especificar número oficina"
-                                                 value="#{oficinaBean.oficina.numeroOficina}"/>
+                                                 value="#{sucursalBean.sucursal.numeroSucursal}"/>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label for="sectorOficina" class="col-md-3 control-label">Sector</label>
                                 <div class="col-md-9">
                                     <h:selectOneMenu id="sectorOficina" class="form-control input-sm"
-                                                     converter="#{sectorConverter}" value="#{oficinaBean.oficina.idsector}"
+                                                     converter="#{sectorConverter}" value="#{sucursalBean.sucursal.idsector}"
                                                      required="true" requiredMessage="Debe seleccionar sector" >
                                         <f:selectItem itemLabel="Seleccionar sector " itemValue=""/>
                                         <f:selectItems value="#{sectorBean.sectores}" 
@@ -69,14 +69,14 @@
                                 <label for="direccionOficina" class="col-md-3 control-label">Dirección</label>
                                 <div class="col-md-9">
                                     <p:inputText id="direccionOficina" class="form-control input-sm" 
-                                                 value="#{oficinaBean.oficina.direccion}"/>
+                                                 value="#{sucursalBean.sucursal.direccion}"/>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label for="telefonoOficina" class="col-md-3 control-label">Teléfono</label>
                                 <div class="col-md-9">
                                     <p:inputText id="telefonoOficina" class="form-control input-sm" 
-                                                 value="#{oficinaBean.oficina.telefono}"/>
+                                                 value="#{sucursalBean.sucursal.telefono}"/>
                                 </div>
                             </div>
                         </div>
@@ -95,11 +95,11 @@
                             </div>
                             <div class="col-md-12">
                                 <p:dataTable id="serviciosTb" var="servicio" 
-                                             value="#{oficinaBean.servicios}"
+                                             value="#{sucursalBean.servicios}"
                                              rowKey="#{servicio.idservicio}"
                                              paginator="true"
                                              paginatorPosition="bottom"  rows="5"
-                                             style="margin-top: 1px" selectionMode="single"
+                                             style="margin-top: 1px"
                                              emptyMessage="No hay registros">
 
                                     <p:column headerText="Servicio" style="width: 80%">
@@ -108,7 +108,7 @@
 
                                     <p:column headerText="Quitar" style="width: 20%">
                                         <div class="btn-group btn-group-justified" role="group" aria-label="...">
-                                            <p:commandLink id="quitarServicio" actionListener="#{oficinaBean.quitarServicio(servicio)}"
+                                            <p:commandLink id="quitarServicio" actionListener="#{sucursalBean.quitarServicio(servicio)}"
                                                            update=":formOficina:serviciosTb"
                                                            class="btn btn-default btn-sm btn-flat" type="button" >
                                                 <span class="glyphicon glyphicon-remove"></span> 
@@ -121,13 +121,13 @@
                         </div>
                         <div class="col-md-2">
                             <div class="btn-group btn-group-vertical btn-block">
-                                <p:commandLink id="cancelarBtn" class="btn btn-default btn-sm btn-flat" actionListener="#{oficinaBean.nuevo()}"
+                                <p:commandLink id="cancelarBtn" class="btn btn-default btn-sm btn-flat" actionListener="#{sucursalBean.nuevo()}"
                                                resetValues="true" type="reset" immediate="true" update="@form">
                                     <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Nuevo
                                 </p:commandLink>
 
                                 <p:commandLink id="guadarBtn" class="btn btn-primary btn-sm btn-flat" ajax="true"
-                                               actionListener="${oficinaBean.salvar()}" update=":oficinasTb messages @form">
+                                               actionListener="${sucursalBean.salvar()}" update=":oficinasTb messages @form">
                                     <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span> Guardar
                                 </p:commandLink>
                             </div>
@@ -145,7 +145,7 @@
                             <h:form id="formBusquedaCuenta" >
                                 <p:defaultCommand target="buscarOficinaBtn" />
                                 <div class="input-group">
-                                    <p:inputText id="buscarPda" placeholder="Buscar Oficina..." value="#{oficinaBean.busqueda}"
+                                    <p:inputText id="buscarPda" placeholder="Buscar Oficina..." value="#{sucursalBean.busqueda}"
                                                  class="form-control input-sm"/>
                                     <span class="input-group-btn">
                                         <p:commandLink id="buscarOficinaBtn" class="btn btn-primary btn-sm btn-flat" update=":oficinasTb"
@@ -158,31 +158,31 @@
                             </h:form>
                         </div>
                         <div class="col-md-12" >
-                            <p:dataTable id="oficinasTb" var="oficina" 
-                                         value="#{oficinaBean.oficinas}"
-                                         rowKey="#{oficina.idoficina}"
+                            <p:dataTable id="oficinasTb" var="sucursal" 
+                                         value="#{sucursalBean.sucursales}"
+                                         rowKey="#{oficina.idsucursal}"
                                          paginator="true"
                                          paginatorPosition="top"  rows="5"
                                          rowsPerPageTemplate="5,10"
-                                         selectionMode="single" 
+
                                          emptyMessage="No hay registros">
 
-                                <p:column headerText="# Oficina" style="width: 10%">
-                                    <h:outputText value="#{oficina.numeroOficina}" />
+                                <p:column headerText="# Sucursal" style="width: 10%">
+                                    <h:outputText value="#{sucursal.numeroSucursal}" />
                                 </p:column>
 
                                 <p:column headerText="Nombre" style="width: 60%">
-                                    <h:outputText value="#{oficina.nombre}" />
+                                    <h:outputText value="#{sucursal.nombre}" />
                                 </p:column>
 
                                 <p:column headerText="Sector" style="width: 20%">
-                                    <h:outputText value="#{oficina.idsector.nombre}" />
+                                    <h:outputText value="#{sucursal.idsector.nombre}" />
                                 </p:column>
 
                                 <p:column headerText="" style="width: 10%">
                                     <div class="btn-group btn-group-justified" role="group" aria-label="...">
 
-                                        <p:commandLink id="editarOficina" actionListener="#{oficinaBean.setOficina(oficina)}"
+                                        <p:commandLink id="editarOficina" actionListener="#{sucursalBean.setSucursal(sucursal)}"
                                                        update=":formOficina"
                                                        class="btn btn-default btn-sm btn-flat" type="button" >
                                             <span class="glyphicon glyphicon-pencil"></span> 
@@ -260,7 +260,7 @@
                     <p:dataTable id="serviciosConTb" var="servicio" 
                                  value="#{servicioBean.servicios}"
                                  rowKey="#{servicio.idservicio}"
-                                 style="margin-top: 10px" selectionMode="single" rows="15"
+                                 style="margin-top: 10px"  rows="15"
                                  emptyMessage="No hay registros">
 
                         <p:column headerText="Prefijo" style="width: 20%">
@@ -279,7 +279,7 @@
                                     <span class="glyphicon glyphicon-pencil"></span> 
                                 </p:commandLink>
 
-                                <p:commandLink id="agregarServicio" actionListener="#{oficinaBean.agregarServicio(servicio)}"
+                                <p:commandLink id="agregarServicio" actionListener="#{sucursalBean.agregarServicio(servicio)}"
                                                update=":formOficina:serviciosTb"
                                                class="btn btn-default btn-sm btn-flat" type="button" >
                                     <span class="glyphicon glyphicon-plus"></span> 

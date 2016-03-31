@@ -25,7 +25,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author hventura@citrus.com.do
+ * @author hectorvent@gmail.com
  */
 @Entity
 @Table(name = "SECTOR")
@@ -48,7 +48,7 @@ public class Sector implements Serializable {
     @Column(name = "NOMBRE")
     private String nombre;
     @OneToMany(mappedBy = "idsector")
-    private List<Oficina> oficinaList;
+    private List<Sucursal> sucursalList;
 
     public Sector() {
     }
@@ -79,12 +79,12 @@ public class Sector implements Serializable {
     }
 
     @XmlTransient
-    public List<Oficina> getOficinaList() {
-        return oficinaList;
+    public List<Sucursal> getSucursalList() {
+        return sucursalList;
     }
 
-    public void setOficinaList(List<Oficina> oficinaList) {
-        this.oficinaList = oficinaList;
+    public void setSucursalList(List<Sucursal> sucursalList) {
+        this.sucursalList = sucursalList;
     }
 
     @Override
@@ -109,7 +109,7 @@ public class Sector implements Serializable {
 
     @Override
     public String toString() {
-        return "com.edenorte.turnos.entity.Sector[ idsector=" + idsector + " ]";
+        return "com.aniuska.turnos.entity.Sector[ idsector=" + idsector + " ]";
     }
 
 }

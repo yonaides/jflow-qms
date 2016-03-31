@@ -25,7 +25,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  * 
- * @author hventura@citrus.com.do
+ * @author hectorvent@gmail.com
  */
 @Entity
 @Table(name = "ROL")
@@ -50,7 +50,7 @@ public class Rol implements Serializable {
     private String descripcion;
     @JoinTable(name = "USUARIO_ROL", joinColumns = {
         @JoinColumn(name = "ROL_ID", referencedColumnName = "ID")}, inverseJoinColumns = {
-        @JoinColumn(name = "USUARIO_ID", referencedColumnName = "IDOPERADOR")})
+        @JoinColumn(name = "IDOPERADOR", referencedColumnName = "IDOPERADOR")})
     @ManyToMany
     private List<Usuario> usuarioList;
 
@@ -121,7 +121,7 @@ public class Rol implements Serializable {
 
     @Override
     public String toString() {
-        return "com.edenorte.turnos.entity.Rol[ id=" + id + " ]";
+        return "com.aniuska.turnos.entity.Rol[ id=" + id + " ]";
     }
 
 }

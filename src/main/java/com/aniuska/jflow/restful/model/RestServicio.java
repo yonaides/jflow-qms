@@ -7,7 +7,7 @@ package com.aniuska.jflow.restful.model;
 
 /**
  *
- * @author hventura@citrus.com.do
+ * @author hectorvent@gmail.com
  */
 public class RestServicio {
 

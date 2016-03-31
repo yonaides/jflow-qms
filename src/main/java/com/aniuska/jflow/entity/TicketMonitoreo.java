@@ -11,11 +11,11 @@ import java.util.Date;
 
 /**
  *
- * @author hventura@citrus.com.do
+ * @author hectorvent@gmail.com
  */
-public class TurnoMonitoreo implements Serializable {
+public class TicketMonitoreo implements Serializable {
 
-    private String turno;
+    private String ticket;
     private String servicio;
     private Date fecha;
     private boolean especial;
@@ -26,12 +26,12 @@ public class TurnoMonitoreo implements Serializable {
     private String usuario;
     private String estacion;
 
-    public String getTurno() {
-        return turno;
+    public String getTicket() {
+        return ticket;
     }
 
-    public void setTurno(String turno) {
-        this.turno = turno;
+    public void setTicket(String ticket) {
+        this.ticket = ticket;
     }
 
     public String getServicio() {
@@ -112,7 +112,7 @@ public class TurnoMonitoreo implements Serializable {
 //    }
     @Override
     public String toString() {
-        return "TurnoMonitoreo{" + "turno=" + turno + ", servicio=" + servicio + ", fecha=" + fecha + ", especial=" + especial + ", nic=" + nic + ", cliente=" + cliente + ", tiempoEspera=" + tiempoEspera + ", tiempoProceso=" + tiempoProceso + ", usuario=" + usuario + ", estacion=" + estacion + '}';
+        return "TurnoMonitoreo{" + "turno=" + ticket + ", servicio=" + servicio + ", fecha=" + fecha + ", especial=" + especial + ", nic=" + nic + ", cliente=" + cliente + ", tiempoEspera=" + tiempoEspera + ", tiempoProceso=" + tiempoProceso + ", usuario=" + usuario + ", estacion=" + estacion + '}';
     }
 
 }

@@ -28,14 +28,14 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author hventura@citrus.com.do
+ * @author hectorvent@gmail.com
  */
 @Entity
-@Table(name = "TURNO_DETALLE")
+@Table(name = "TICKET_DETALLE")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TurnoDetalle.findAll", query = "SELECT t FROM TurnoDetalle t")})
-public class TurnoDetalle implements Serializable {
+    @NamedQuery(name = "TicketDetalle.findAll", query = "SELECT t FROM TicketDetalle t")})
+public class TicketDetalle implements Serializable {
 
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Basic(optional = false)
@@ -52,10 +52,10 @@ public class TurnoDetalle implements Serializable {
     @Id
     @Basic(optional = false)
     @NotNull
-    @Column(name = "IDTURNO_DETALLE")
-    @SequenceGenerator(name = "SEC_TURNO_DETALLE", sequenceName = "SEC_TURNO_DETALLE", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEC_TURNO_DETALLE")
-    private BigDecimal idturnoDetalle;
+    @Column(name = "IDTICKET_DETALLE")
+    @SequenceGenerator(name = "SEC_TICKET_DETALLE", sequenceName = "SEC_TICKET_DETALLE", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEC_TICKET_DETALLE")
+    private BigDecimal idticketDetalle;
     @Basic(optional = false)
     @NotNull
     @Column(name = "FECHA_INICIO")
@@ -82,31 +82,31 @@ public class TurnoDetalle implements Serializable {
     @JoinColumn(name = "IDSERVICIO", referencedColumnName = "IDSERVICIO")
     @ManyToOne(optional = false)
     private Servicio idservicio;
-    @JoinColumn(name = "IDTURNO", referencedColumnName = "IDTURNO")
+    @JoinColumn(name = "IDTICKET", referencedColumnName = "IDTICKET")
     @ManyToOne(optional = false)
-    private Turno idturno;
+    private Ticket idticket;
     @JoinColumn(name = "IDOPERADOR", referencedColumnName = "IDOPERADOR")
     @ManyToOne
     private Usuario idoperador;
 
-    public TurnoDetalle() {
+    public TicketDetalle() {
     }
 
-    public TurnoDetalle(BigDecimal idturnoDetalle) {
-        this.idturnoDetalle = idturnoDetalle;
+    public TicketDetalle(BigDecimal idturnoDetalle) {
+        this.idticketDetalle = idturnoDetalle;
     }
 
-    public TurnoDetalle(BigDecimal idturnoDetalle, Date fechaInicio) {
-        this.idturnoDetalle = idturnoDetalle;
+    public TicketDetalle(BigDecimal idturnoDetalle, Date fechaInicio) {
+        this.idticketDetalle = idturnoDetalle;
         this.fechaInicio = fechaInicio;
     }
 
-    public BigDecimal getIdturnoDetalle() {
-        return idturnoDetalle;
+    public BigDecimal getIdticketDetalle() {
+        return idticketDetalle;
     }
 
-    public void setIdturnoDetalle(BigDecimal idturnoDetalle) {
-        this.idturnoDetalle = idturnoDetalle;
+    public void setIdticketDetalle(BigDecimal idticketDetalle) {
+        this.idticketDetalle = idticketDetalle;
     }
 
     public Date getFechaInicio() {
@@ -173,12 +173,12 @@ public class TurnoDetalle implements Serializable {
         this.idservicio = idservicio;
     }
 
-    public Turno getIdturno() {
-        return idturno;
+    public Ticket getIdticket() {
+        return idticket;
     }
 
-    public void setIdturno(Turno idturno) {
-        this.idturno = idturno;
+    public void setIdticket(Ticket idticket) {
+        this.idticket = idticket;
     }
 
     public Usuario getIdoperador() {
@@ -192,18 +192,18 @@ public class TurnoDetalle implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (idturnoDetalle != null ? idturnoDetalle.hashCode() : 0);
+        hash += (idticketDetalle != null ? idticketDetalle.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof TurnoDetalle)) {
+        if (!(object instanceof TicketDetalle)) {
             return false;
         }
-        TurnoDetalle other = (TurnoDetalle) object;
-        if ((this.idturnoDetalle == null && other.idturnoDetalle != null) || (this.idturnoDetalle != null && !this.idturnoDetalle.equals(other.idturnoDetalle))) {
+        TicketDetalle other = (TicketDetalle) object;
+        if ((this.idticketDetalle == null && other.idticketDetalle != null) || (this.idticketDetalle != null && !this.idticketDetalle.equals(other.idticketDetalle))) {
             return false;
         }
         return true;
@@ -211,7 +211,7 @@ public class TurnoDetalle implements Serializable {
 
     @Override
     public String toString() {
-        return "com.edenorte.turnos.entity.TurnoDetalle[ idturnoDetalle=" + idturnoDetalle + " ]";
+        return "com.aniuska.turnos.entity.TurnoDetalle[ idturnoDetalle=" + idticketDetalle + " ]";
     }
 
     public BigDecimal getTiempoEspera() {

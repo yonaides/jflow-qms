@@ -13,12 +13,12 @@ import javax.persistence.PersistenceContext;
 
 /**
  * 
- * @author hventura@citrus.com.do
+ * @author hectorvent@gmail.com
  */
 @Stateless
 public class MotivoRecesoFacade extends AbstractFacade<MotivoReceso> {
 
-    @PersistenceContext(unitName = "Turnos")
+    @PersistenceContext(unitName = "JFLOW")
     private EntityManager em;
 
     @Override

@@ -17,7 +17,7 @@ import org.primefaces.event.SelectEvent;
 
 /**
  *
- * @author hventura@citrus.com.do
+ * @author hectorvent@gmail.com
  */
 @ViewScoped
 @Named

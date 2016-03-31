@@ -7,7 +7,7 @@ package com.aniuska.jflow.managedbean;
 
 import com.aniuska.jflow.ejb.TipoEstacionFacade;
 import com.aniuska.jflow.entity.TipoEstacion;
-import com.edenorte.utils.MessageUtils;
+import com.aniuska.utils.MessageUtils;
 import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -17,7 +17,7 @@ import javax.faces.view.ViewScoped;
 
 /**
  *
- * @author hventura@citrus.com.do
+ * @author hectorvent@gmail.com
  */
 @ViewScoped
 @Named

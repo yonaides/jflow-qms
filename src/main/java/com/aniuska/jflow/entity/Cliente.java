@@ -32,7 +32,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author hventura@citrus.com.do
+ * @author hectorvent@gmail.com
  */
 @Entity
 @Table(name = "CLIENTE")
@@ -52,7 +52,7 @@ public class Cliente implements Serializable {
     @NotNull
     @Column(name = "IDCLIENTE")
     @SequenceGenerator(name = "SEC_CLIENTE", sequenceName = "SEC_CLIENTE", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEC_CLIENTE")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEC_CLIENTE" )
     private BigDecimal idcliente;
     @Size(max = 100)
     @Basic(optional = false)
@@ -79,7 +79,7 @@ public class Cliente implements Serializable {
     @ManyToOne(optional = false)
     private Usuario idusuarioIngreso;
     @OneToMany(mappedBy = "idcliente")
-    private List<Turno> turnoList;
+    private List<Ticket> turnoList;
 
     public Cliente() {
     }
@@ -153,11 +153,11 @@ public class Cliente implements Serializable {
     }
 
     @XmlTransient
-    public List<Turno> getTurnoList() {
+    public List<Ticket> getTurnoList() {
         return turnoList;
     }
 
-    public void setTurnoList(List<Turno> turnoList) {
+    public void setTurnoList(List<Ticket> turnoList) {
         this.turnoList = turnoList;
     }
 

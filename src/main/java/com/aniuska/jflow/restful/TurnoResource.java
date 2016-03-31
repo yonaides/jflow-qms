@@ -6,18 +6,18 @@
 package com.aniuska.jflow.restful;
 
 import com.aniuska.jflow.ejb.KioscoFacade;
-import com.aniuska.jflow.ejb.OficinaFacade;
+import com.aniuska.jflow.ejb.SucursalFacade;
 import com.aniuska.jflow.ejb.ServicioFacade;
-import com.aniuska.jflow.ejb.TurnoFacade;
+import com.aniuska.jflow.ejb.TicketFacade;
 import com.aniuska.jflow.entity.Cliente;
 import com.aniuska.jflow.entity.Kiosco;
-import com.aniuska.jflow.entity.Oficina;
+import com.aniuska.jflow.entity.Sucursal;
 import com.aniuska.jflow.entity.Servicio;
-import com.aniuska.jflow.entity.Turno;
-import com.aniuska.jflow.entity.TurnoDetalle;
-import com.aniuska.jflow.restful.model.RestTurno;
+import com.aniuska.jflow.entity.Ticket;
+import com.aniuska.jflow.entity.TicketDetalle;
+import com.aniuska.jflow.restful.model.RestTicket;
 import com.aniuska.jflow.utils.Estados;
-import com.edenorte.utils.date.DateUtils;
+import com.aniuska.utils.date.DateUtils;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
@@ -36,7 +36,7 @@ import org.apache.logging.log4j.Logger;
 
 /**
  *
- * @author hventura@citrus.com.do
+ * @author hectorvent@gmail.com
  */
 @Path("turno")
 public class TurnoResource {
@@ -45,15 +45,15 @@ public class TurnoResource {
     @EJB
     KioscoFacade kioscoCtrl;
     @EJB
-    TurnoFacade turnoCtrl;
+    TicketFacade turnoCtrl;
     @EJB
     ServicioFacade servicioCtrl;
     @EJB
-    OficinaFacade oficinaCtrl;
+    SucursalFacade sucursalCtrl;
 
     @POST
     @Consumes({MediaType.APPLICATION_JSON})
-    public Response createTurno(RestTurno rt) {
+    public Response createTurno(RestTicket rt) {
 
         LOG.info("Buscando Kiosco by Token {}", rt.getTokenApi());
         Kiosco k = kioscoCtrl.find(rt.getTokenApi());
@@ -65,7 +65,7 @@ public class TurnoResource {
         }
 
         LOG.info("Kiosco {}, creando turno ", k.getDescripcion());
-        Oficina ofi = k.getIdoficina();
+        Sucursal ofi = k.getIdsucursal();
         int num = ofi.getSecuencia() + 1;
 
         // Se el numero es 100 resetiar a 1, (1-99)
@@ -74,38 +74,38 @@ public class TurnoResource {
         }
         ofi.setSecuencia(num);
 
-        // Se actualiza la secuencia de la oficina
-        oficinaCtrl.edit(ofi);
+        // Se actualiza la secuencia de la sucursal
+        sucursalCtrl.edit(ofi);
 
         // se busca el tipo de servicio solicitado
         Servicio ser = servicioCtrl.find(rt.getServicioId());
 
-        Turno turno = new Turno();
+        Ticket turno = new Ticket();
         turno.setFechaCreacion(new Date());
         turno.setHappyNumber(ser.getPrefijo() + "-" + num);
         turno.setPrioridad(rt.getPrioridad());
         turno.setIdestado(Estados.EN_ESPERA);
         turno.setIdcliente(new Cliente(BigDecimal.ONE));
-        turno.setIdoficina(ofi);
+        turno.setIdsucursal(ofi);
 
-        TurnoDetalle td = new TurnoDetalle();
-        td.setIdturno(turno);
+        TicketDetalle td = new TicketDetalle();
+        td.setIdticket(turno);
         td.setFechaInicio(turno.getFechaCreacion());
         td.setIdestado(Estados.EN_ESPERA);
         td.setIdservicio(new Servicio(rt.getServicioId()));
         td.setTiempoEspera(BigDecimal.ZERO);
         td.setTiempoProceso(BigDecimal.ZERO);
 
-        List<TurnoDetalle> detalle = new ArrayList();
+        List<TicketDetalle> detalle = new ArrayList();
 
         detalle.add(td);
-        turno.setTurnoDetalleList(detalle);
+        turno.setTicketDetalleList(detalle);
 
         turnoCtrl.create(turno);
 
         rt.setServicio(ser.getNombre());
         rt.setTurno(turno.getHappyNumber());
-        rt.setOficina(ofi.getNombre());
+        rt.setSucursal(ofi.getNombre());
         rt.setFecha(DateUtils.dateTime2String(turno.getFechaCreacion()));
 
         return Response.ok(rt).build();
@@ -129,14 +129,14 @@ public class TurnoResource {
         k.setUltimaConexion(new Date());
         kioscoCtrl.edit(k);
 
-        List<TurnoDetalle> ts = turnoCtrl.getTurnoEnProcesoByOficina(k.getIdoficina());
-        RestTurno turnos[] = new RestTurno[ts.size()];
+        List<TicketDetalle> ts = turnoCtrl.getTurnoEnProcesoBySucursal(k.getIdsucursal());
+        RestTicket turnos[] = new RestTicket[ts.size()];
         int i = 0;
-        for (TurnoDetalle td : ts) {
-            turnos[i] = new RestTurno();
+        for (TicketDetalle td : ts) {
+            turnos[i] = new RestTicket();
             turnos[i].setServicio(td.getIdservicio().getNombre());
 //            turnos[i].set(td.getIdestacion().getNumeroEstacion() + "");
-            turnos[i].setTurno(td.getIdturno().getHappyNumber());
+            turnos[i].setTurno(td.getIdticket().getHappyNumber());
             i++;
         }
 

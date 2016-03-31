@@ -28,7 +28,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author hventura@citrus.com.do
+ * @author hectorvent@gmail.com
  */
 @Entity
 @Table(name = "ESTACION")
@@ -59,16 +59,16 @@ public class Estacion implements Serializable {
     @NotNull
     @Column(name = "NUMERO_ESTACION")
     private int numeroEstacion;
-    @JoinColumn(name = "IDOFICINA", referencedColumnName = "IDOFICINA")
+    @JoinColumn(name = "IDSUCURSAL", referencedColumnName = "IDSUCURSAL")
     @ManyToOne(optional = false)
-    private Oficina idoficina;
+    private Sucursal idsucursal;
     @JoinColumn(name = "IDTIPO_ESTACION", referencedColumnName = "IDTIPO_ESTACION")
     @ManyToOne(optional = false)
     private TipoEstacion idtipoEstacion;
     @OneToMany(mappedBy = "idestacion")
-    private List<TurnoDetalle> turnoDetalleList;
+    private List<TicketDetalle> turnoDetalleList;
     @OneToMany( mappedBy = "idestacion")
-    private List<Sessiones> sessionesList;
+    private List<Session> sessionesList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idestacion")
     private List<EstacionServicio> estacionServicioList;
 
@@ -118,12 +118,12 @@ public class Estacion implements Serializable {
         this.numeroEstacion = numeroEstacion;
     }
 
-    public Oficina getIdoficina() {
-        return idoficina;
+    public Sucursal getIdsucursal() {
+        return idsucursal;
     }
 
-    public void setIdoficina(Oficina idoficina) {
-        this.idoficina = idoficina;
+    public void setIdsucursal(Sucursal idsucursal) {
+        this.idsucursal = idsucursal;
     }
 
     public TipoEstacion getIdtipoEstacion() {
@@ -135,20 +135,20 @@ public class Estacion implements Serializable {
     }
 
     @XmlTransient
-    public List<TurnoDetalle> getTurnoDetalleList() {
+    public List<TicketDetalle> getTurnoDetalleList() {
         return turnoDetalleList;
     }
 
-    public void setTurnoDetalleList(List<TurnoDetalle> turnoDetalleList) {
+    public void setTurnoDetalleList(List<TicketDetalle> turnoDetalleList) {
         this.turnoDetalleList = turnoDetalleList;
     }
 
     @XmlTransient
-    public List<Sessiones> getSessionesList() {
+    public List<Session> getSessionesList() {
         return sessionesList;
     }
 
-    public void setSessionesList(List<Sessiones> sessionesList) {
+    public void setSessionesList(List<Session> sessionesList) {
         this.sessionesList = sessionesList;
     }
 
@@ -183,7 +183,7 @@ public class Estacion implements Serializable {
 
     @Override
     public String toString() {
-        return "com.edenorte.turnos.entity.Estacion[ idestacion=" + idestacion + " ]";
+        return "com.aniuska.turnos.entity.Estacion[ idestacion=" + idestacion + " ]";
     }
 
 }

@@ -6,14 +6,14 @@
 package com.aniuska.jflow.managedbean;
 
 import com.aniuska.jflow.ejb.EstacionFacade;
-import com.aniuska.jflow.ejb.OficinaFacade;
+import com.aniuska.jflow.ejb.SucursalFacade;
 import com.aniuska.jflow.ejb.TipoEstacionFacade;
 import com.aniuska.jflow.entity.Estacion;
 import com.aniuska.jflow.entity.EstacionServicio;
-import com.aniuska.jflow.entity.Oficina;
+import com.aniuska.jflow.entity.Sucursal;
 import com.aniuska.jflow.entity.Servicio;
 import com.aniuska.jflow.entity.TipoEstacion;
-import com.edenorte.utils.MessageUtils;
+import com.aniuska.utils.MessageUtils;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +24,7 @@ import javax.faces.view.ViewScoped;
 
 /**
  *
- * @author hventura@citrus.com.do
+ * @author hectorvent@gmail.com
  */
 @ViewScoped
 @Named
@@ -33,16 +33,16 @@ public class EstacionBean implements Serializable {
     private final long serialVersionUID = 24L;
 
     @EJB
-    private OficinaFacade oficinaCtrl;
+    private SucursalFacade sucursalCtrl;
     @EJB
     private EstacionFacade estacionCtrl;
     @EJB
     private TipoEstacionFacade tipoEstacionCtrl;
     private Estacion estacion;
     private List<EstacionServicio> estacionServicios;
-    private List<Servicio> oficinaServicios;
+    private List<Servicio> sucursalServicios;
     private List<Estacion> estaciones;
-    private List<Oficina> oficinas;
+    private List<Sucursal> sucursals;
     private List<TipoEstacion> tiposEstacion;
     private String busqueda;
 
@@ -51,8 +51,8 @@ public class EstacionBean implements Serializable {
         estacion = new Estacion();
         estacionServicios = new ArrayList();
         estaciones = estacionCtrl.findAll();
-        oficinas = oficinaCtrl.findAll();
-        oficinaServicios = null;
+        sucursals = sucursalCtrl.findAll();
+        sucursalServicios = null;
         tiposEstacion = tipoEstacionCtrl.findAll();
     }
 
@@ -64,12 +64,28 @@ public class EstacionBean implements Serializable {
         this.busqueda = busqueda;
     }
 
-    public List<Oficina> getOficinas() {
-        return oficinas;
+    public SucursalFacade getSucursalCtrl() {
+        return sucursalCtrl;
     }
 
-    public void setOficinas(List<Oficina> oficinas) {
-        this.oficinas = oficinas;
+    public void setSucursalCtrl(SucursalFacade sucursalCtrl) {
+        this.sucursalCtrl = sucursalCtrl;
+    }
+
+    public List<Servicio> getSucursalServicios() {
+        return sucursalServicios;
+    }
+
+    public void setSucursalServicios(List<Servicio> sucursalServicios) {
+        this.sucursalServicios = sucursalServicios;
+    }
+
+    public List<Sucursal> getSucursals() {
+        return sucursals;
+    }
+
+    public void setSucursals(List<Sucursal> sucursals) {
+        this.sucursals = sucursals;
     }
 
     public EstacionFacade getEstacionCtrl() {
@@ -78,14 +94,6 @@ public class EstacionBean implements Serializable {
 
     public void setEstacionCtrl(EstacionFacade estacionCtrl) {
         this.estacionCtrl = estacionCtrl;
-    }
-
-    public OficinaFacade getOficinaCtrl() {
-        return oficinaCtrl;
-    }
-
-    public void setOficinaCtrl(OficinaFacade oficinaCtrl) {
-        this.oficinaCtrl = oficinaCtrl;
     }
 
     public List<EstacionServicio> getEstacionServicios() {
@@ -112,7 +120,7 @@ public class EstacionBean implements Serializable {
         this.estacion = estacionCtrl.find(est.getIdestacion());
 
         estacionServicios = estacion.getEstacionServicioList();
-        oficinaServicios = estacion.getIdoficina().getServicioList();
+        sucursalServicios = estacion.getIdsucursal().getServicioList();
     }
 
     public List<Estacion> getEstaciones() {
@@ -121,14 +129,6 @@ public class EstacionBean implements Serializable {
 
     public void setEstaciones(List<Estacion> estaciones) {
         this.estaciones = estaciones;
-    }
-
-    public List<Servicio> getOficinaServicios() {
-        return oficinaServicios;
-    }
-
-    public void setOficinaServicios(List<Servicio> oficinaServicios) {
-        this.oficinaServicios = oficinaServicios;
     }
 
     public void salvar() {
@@ -151,7 +151,7 @@ public class EstacionBean implements Serializable {
     public void nuevo() {
         estacion = new Estacion();
         estacionServicios = new ArrayList();
-        oficinaServicios = null;
+        sucursalServicios = null;
     }
 
     public void agregarServicio(Servicio servicio) {
@@ -176,7 +176,7 @@ public class EstacionBean implements Serializable {
     }
 
     public void onOficinaChanged() {
-        oficinaServicios = estacion.getIdoficina().getServicioList();
+        sucursalServicios = estacion.getIdsucursal().getServicioList();
     }
 
 }

@@ -21,8 +21,8 @@
             <version>5.2</version>
         </dependency>
         <dependency>
-            <groupId>com.edenorte</groupId>
-            <artifactId>edenorte-utils</artifactId>
+            <groupId>com.aniuska</groupId>
+            <artifactId>aniuska-utils</artifactId>
             <version>1.0-SNAPSHOT</version>
             <exclusions>
                 <exclusion>
@@ -47,6 +47,12 @@
             <version>2.5.2</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>9.2-1004-jdbc41</version>
+        </dependency>
+
         <!--        <dependency>
             <groupId>org.eclipse.persistence</groupId>
             <artifactId>org.eclipse.persistence.jpa.modelgen.processor</artifactId>

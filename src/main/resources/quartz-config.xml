@@ -11,7 +11,7 @@
             <name>CierreAutomaticoJob</name>
             <group>AGroup</group>
             <description>Print a welcome message</description>
-            <job-class>com.edenorte.turnos.quartz.CierreAutomatico</job-class>
+            <job-class>com.aniuska.jflow.quartz.CierreAutomatico</job-class>
         </job>
 
         <trigger>

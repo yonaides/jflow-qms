@@ -7,9 +7,9 @@ package com.aniuska.jflow.restful.model;
 
 /**
  *
- * @author hventura@citrus.com.do
+ * @author hectorvent@gmail.com
  */
-public class RestTurno {
+public class RestTicket {
 
     private String tokenApi;
     private int servicioId;
@@ -18,7 +18,7 @@ public class RestTurno {
     // Solo para respuesta del servidor
     private String turno;
     private String servicio;
-    private String oficina;
+    private String sucursal;
     private String fecha;
 
     public int getServicioId() {
@@ -61,12 +61,12 @@ public class RestTurno {
         this.servicio = servicio;
     }
 
-    public String getOficina() {
-        return oficina;
+    public String getSucursal() {
+        return sucursal;
     }
 
-    public void setOficina(String oficina) {
-        this.oficina = oficina;
+    public void setSucursal(String sucursal) {
+        this.sucursal = sucursal;
     }
 
     public String getFecha() {

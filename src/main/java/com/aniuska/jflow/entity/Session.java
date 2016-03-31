@@ -32,14 +32,14 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author hventura@citrus.com.do
+ * @author hectorvent@gmail.com
  */
 @Entity
-@Table(name = "SESSIONES")
+@Table(name = "SESSION")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Sessiones.findAll", query = "SELECT s FROM Sessiones s")})
-public class Sessiones implements Serializable {
+    @NamedQuery(name = "Session.findAll", query = "SELECT s FROM Session s")})
+public class Session implements Serializable {
 
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
@@ -72,14 +72,14 @@ public class Sessiones implements Serializable {
     @ManyToOne(optional = false)
     private Usuario idoperador;
 
-    public Sessiones() {
+    public Session() {
     }
 
-    public Sessiones(BigDecimal idsession) {
+    public Session(BigDecimal idsession) {
         this.idsession = idsession;
     }
 
-    public Sessiones(BigDecimal idsession, Date fechaInicio) {
+    public Session(BigDecimal idsession, Date fechaInicio) {
         this.idsession = idsession;
         this.fechaInicio = fechaInicio;
     }
@@ -159,10 +159,10 @@ public class Sessiones implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Sessiones)) {
+        if (!(object instanceof Session)) {
             return false;
         }
-        Sessiones other = (Sessiones) object;
+        Session other = (Session) object;
         if ((this.idsession == null && other.idsession != null) || (this.idsession != null && !this.idsession.equals(other.idsession))) {
             return false;
         }
@@ -171,7 +171,7 @@ public class Sessiones implements Serializable {
 
     @Override
     public String toString() {
-        return "com.edenorte.turnos.entity.Sessiones[ idsession=" + idsession + " ]";
+        return "com.aniuska.turnos.entity.Sessiones[ idsession=" + idsession + " ]";
     }
 
 }

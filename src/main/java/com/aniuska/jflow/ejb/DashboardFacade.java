@@ -17,12 +17,12 @@ import javax.persistence.PersistenceContext;
 
 /**
  *
- * @author hventura@citrus.com.do
+ * @author hectorvent@gmail.com
  */
 @Stateless
 public class DashboardFacade extends AbstractFacade<Object> {
 
-    @PersistenceContext(unitName = "Turnos")
+    @PersistenceContext(unitName = "JFLOW")
     private EntityManager em;
 
     private static final SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
@@ -38,32 +38,32 @@ public class DashboardFacade extends AbstractFacade<Object> {
 
     public BigDecimal getCountTurnosToday(Usuario usuario) {
         return (BigDecimal) em.createNativeQuery("SELECT COUNT(*) "
-                + "FROM TURNO T WHERE TO_CHAR(T.FECHA_CREACION, 'DD/MM/YYYY') = ?1 "
-                + "AND T.IDOFICINA = ?2")
+                + "FROM TICKET T WHERE TO_CHAR(T.FECHA_CREACION, 'DD/MM/YYYY') = ?1 "
+                + "AND T.IDSUCURSAL = ?2")
                 .setParameter(1, df.format(new Date()))
-                .setParameter(2, usuario.getIdoficina().getIdoficina())
+                .setParameter(2, usuario.getIdsucursal().getIdsucursal())
                 .getSingleResult();
     }
 
     public BigDecimal getCountTurnosStatus(Usuario usuario, Estado estado) {
         return (BigDecimal) em.createNativeQuery("SELECT COUNT(*) "
-                + "FROM TURNO T INNER JOIN TURNO_DETALLE TD ON (T.IDTURNO = TD.IDTURNO) "
+                + "FROM TICKET T INNER JOIN TICKET_DETALLE TD ON (T.IDTICKET = TD.IDTICKET) "
                 + "WHERE TO_CHAR(T.FECHA_CREACION, 'DD/MM/YYYY') = ?1 "
-                + "AND T.IDOFICINA = ?2 AND TD.IDESTADO = ?3")
+                + "AND T.IDSUCURSAL = ?2 AND TD.IDESTADO = ?3")
                 .setParameter(1, df.format(new Date()))
-                .setParameter(2, usuario.getIdoficina().getIdoficina())
+                .setParameter(2, usuario.getIdsucursal().getIdsucursal())
                 .setParameter(3, estado.getIdestado())
                 .getSingleResult();
     }
 
     public BigDecimal getCountTurnosStatusTiempo(Usuario usuario, Estado estado, Double tiempo) {
         return (BigDecimal) em.createNativeQuery("SELECT COUNT(*) "
-                + "FROM TURNO T INNER JOIN TURNO_DETALLE TD ON (T.IDTURNO = TD.IDTURNO) "
+                + "FROM TICKET T INNER JOIN TICKET_DETALLE TD ON (T.IDTICKET = TD.IDTICKET) "
                 + "WHERE TO_CHAR(T.FECHA_CREACION, 'DD/MM/YYYY') = ?1 "
-                + "AND T.IDOFICINA = ?2 AND TD.IDESTADO = ?3 "
+                + "AND T.IDTICKET = ?2 AND TD.IDESTADO = ?3 "
                 + "AND TD.TIEMPO_ESPERA+TD.TIEMPO_PROCESO < ?4 AND TD.TIEMPO_ESPERA>0")
                 .setParameter(1, df.format(new Date()))
-                .setParameter(2, usuario.getIdoficina().getIdoficina())
+                .setParameter(2, usuario.getIdsucursal().getIdsucursal())
                 .setParameter(3, estado.getIdestado())
                 .setParameter(4, tiempo)
                 .getSingleResult();
@@ -71,9 +71,9 @@ public class DashboardFacade extends AbstractFacade<Object> {
 
     public BigDecimal getCountSessionesEstaciones(Usuario usuario) {
         return (BigDecimal) em.createNativeQuery("SELECT COUNT (*) "
-                + "FROM SESSIONES S INNER JOIN USUARIO U ON (S.IDOPERADOR = U.IDOPERADOR) "
-                + "WHERE U.IDOFICINA = ?1 AND S.IDESTADO = ?2")
-                .setParameter(1, usuario.getIdoficina().getIdoficina())
+                + "FROM SESSION S INNER JOIN USUARIO U ON (S.IDOPERADOR = U.IDOPERADOR) "
+                + "WHERE U.IDSUCURSAL = ?1 AND S.IDESTADO = ?2")
+                .setParameter(1, usuario.getIdsucursal().getIdsucursal())
                 .setParameter(2, Estados.ABIERTA.getIdestado())
                 .getSingleResult();
     }

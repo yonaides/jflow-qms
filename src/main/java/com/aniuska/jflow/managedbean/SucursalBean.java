@@ -5,10 +5,10 @@
  */
 package com.aniuska.jflow.managedbean;
 
-import com.aniuska.jflow.ejb.OficinaFacade;
-import com.aniuska.jflow.entity.Oficina;
+import com.aniuska.jflow.ejb.SucursalFacade;
+import com.aniuska.jflow.entity.Sucursal;
 import com.aniuska.jflow.entity.Servicio;
-import com.edenorte.utils.MessageUtils;
+import com.aniuska.utils.MessageUtils;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,25 +19,25 @@ import javax.faces.view.ViewScoped;
 
 /**
  *
- * @author hventura@citrus.com.do
+ * @author hectorvent@gmail.com
  */
 @ViewScoped
 @Named
-public class OficinaBean implements Serializable {
+public class SucursalBean implements Serializable {
 
     private final long serialVersionUID = 23L;
 
     @EJB
-    private OficinaFacade oficinaCtrl;
+    private SucursalFacade sucursalCtrl;
 
-    private Oficina oficina;
+    private Sucursal sucursal;
     private List<Servicio> servicios;
 
     private String busqueda = "";
 
     @PostConstruct
     public void init() {
-        oficina = new Oficina();
+        sucursal = new Sucursal();
         servicios = new ArrayList();
     }
 
@@ -49,32 +49,32 @@ public class OficinaBean implements Serializable {
         this.busqueda = busqueda;
     }
 
-    public OficinaFacade getOficinaCtrl() {
-        return oficinaCtrl;
+    public SucursalFacade getSucursalCtrl() {
+        return sucursalCtrl;
     }
 
-    public void setOficinaCtrl(OficinaFacade oficinaCtrl) {
-        this.oficinaCtrl = oficinaCtrl;
+    public void setSucursalCtrl(SucursalFacade sucursalCtrl) {
+        this.sucursalCtrl = sucursalCtrl;
     }
 
-    public Oficina getOficina() {
-        return oficina;
+    public Sucursal getSucursal() {
+        return sucursal;
     }
 
-    public void setOficina(Oficina oficina) {
-        this.oficina = oficinaCtrl.find(oficina.getIdoficina());
-        servicios = oficina.getServicioList();
+    public void setSucursal(Sucursal sucursal) {
+        this.sucursal = sucursalCtrl.find(sucursal.getIdsucursal());
+        servicios = sucursal.getServicioList();
     }
 
     public List<Servicio> getServicios() {
         return servicios;
     }
 
-    public List<Oficina> getOficinas() {
+    public List<Sucursal> getSucursales() {
         if (busqueda.isEmpty()) {
-            return oficinaCtrl.findAll();
+            return sucursalCtrl.findAll();
         } else {
-            return oficinaCtrl.findAll(busqueda);
+            return sucursalCtrl.findAll(busqueda);
         }
     }
 
@@ -84,15 +84,15 @@ public class OficinaBean implements Serializable {
 
     public void salvar() {
 
-        oficina.setServicioList(servicios);
+        sucursal.setServicioList(servicios);
 
-        if (oficina.getIdoficina() == null) {
-            oficina.setSecuencia(0);
-            oficinaCtrl.create(oficina);
+        if (sucursal.getIdsucursal() == null) {
+            sucursal.setSecuencia(0);
+            sucursalCtrl.create(sucursal);
 
-            MessageUtils.sendSuccessfulMessage("Nueva oficina Creada");
+            MessageUtils.sendSuccessfulMessage("Nueva sucursal Creada");
         } else {
-            oficinaCtrl.edit(oficina);
+            sucursalCtrl.edit(sucursal);
             MessageUtils.sendSuccessfulMessage("Oficina actualizada");
         }
 
@@ -100,7 +100,7 @@ public class OficinaBean implements Serializable {
     }
 
     public void nuevo() {
-        oficina = new Oficina();
+        sucursal = new Sucursal();
         servicios = new ArrayList();
     }
 

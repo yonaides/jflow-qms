@@ -3,8 +3,8 @@
  */
 package com.aniuska.jflow.websocket;
 
-import com.aniuska.jflow.ejb.OficinaFacade;
-import com.aniuska.jflow.entity.Oficina;
+import com.aniuska.jflow.ejb.SucursalFacade;
+import com.aniuska.jflow.entity.Sucursal;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
@@ -24,16 +24,16 @@ import org.apache.logging.log4j.Logger;
 
 /**
  *
- * @author hventura@citrus.com.do
+ * @author hectorvent@gmail.com
  */
 @Singleton
 @ServerEndpoint("/printer")
 public class WSPrinter {
 
     @EJB
-    private OficinaFacade oficinaCtrl;
+    private SucursalFacade sucursalCtrl;
     private final Logger LOG = LogManager.getLogger(WSPrinter.class);
-    private final Map<Oficina, Session> clients = Collections.synchronizedMap(new HashMap<Oficina, Session>());
+    private final Map<Sucursal, Session> clients = Collections.synchronizedMap(new HashMap<Sucursal, Session>());
 
     @OnOpen
     public void open(Session session) {
@@ -50,21 +50,21 @@ public class WSPrinter {
 
             case MessageType.LOGIN:
 
-                Integer oficinaId = nm.getMensaje().get("oficina").getAsInt();
-                Oficina oficina = oficinaCtrl.findOficinaByNumero(oficinaId);
+                Integer sucursalId = nm.getMensaje().get("sucursal").getAsInt();
+                Sucursal sucursal = sucursalCtrl.findSucursalByNumero(sucursalId);
 
-                LOG.info("Office with #{} is {}", oficinaId, oficina);
-                if (oficina == null) {
+                LOG.info("Sucursal with #{} is {}", sucursalId, sucursal);
+                if (sucursal == null) {
                     try {
                         session.close(new CloseReason(CloseReason.CloseCodes.VIOLATED_POLICY,
-                                "Error login, office (" + oficinaId + ") not found"));
+                                "Error login, office (" + sucursalId + ") not found"));
                     } catch (IOException ex) {
                     }
                 } else {
                     // Si el mensaje es de tipo LOGIN, lo agregarlo a la lista de Clientes (KIOSCOS)
-                    clients.put(oficina, session);
+                    clients.put(sucursal, session);
                     Message ms = new Message(MessageType.SUCCESS_LOGIN);
-                    ms.put("nombreOficina", oficina.getNombre());
+                    ms.put("nombreSucursal", sucursal.getNombre());
                     sendMessage(session, ms);
                 }
 
@@ -76,9 +76,9 @@ public class WSPrinter {
     public void close(Session session) {
 
         synchronized (clients) {
-            for (Map.Entry<Oficina, Session> entry : clients.entrySet()) {
+            for (Map.Entry<Sucursal, Session> entry : clients.entrySet()) {
                 if (entry.getValue().equals(session)) {
-                    LOG.info("Removing printer office {}", entry.getKey().getIdoficina());
+                    LOG.info("Removing printer sucursal {}", entry.getKey().getIdsucursal());
                     clients.remove(entry.getKey());
                 }
             }
@@ -106,16 +106,16 @@ public class WSPrinter {
         }
     }
 
-    public void sendMessage(Oficina oficina, Message nm) {
+    public void sendMessage(Sucursal sucursal, Message nm) {
 
         synchronized (clients) {
             LOG.info("Sending message to ofice {} - {}'s printer",
-                    oficina.getIdoficina(), oficina.getNombre());
+                    sucursal.getIdsucursal(), sucursal.getNombre());
 
             LOG.info("Printers connected : {}", clients.size());
-            Session session = clients.get(oficina);
+            Session session = clients.get(sucursal);
 
-            if (clients.containsKey(oficina)) {
+            if (clients.containsKey(sucursal)) {
                 sendMessage(session, nm);
             }
         }
@@ -134,7 +134,7 @@ public class WSPrinter {
 
     }
 
-    public boolean isConnected(Oficina ofi) {
+    public boolean isConnected(Sucursal ofi) {
         return clients.containsKey(ofi);
     }
 }

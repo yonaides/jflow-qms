@@ -25,7 +25,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author hventura@citrus.com.do
+ * @author hectorvent@gmail.com
  */
 @Entity
 @Table(name = "MOTIVO_ABANDONO")
@@ -46,7 +46,7 @@ public class MotivoAbandono implements Serializable {
     @Column(name = "DESCRIPCION")
     private String descripcion;
     @OneToMany(mappedBy = "idmotivoAbandono")
-    private List<TurnoDetalle> turnoDetalleList;
+    private List<TicketDetalle> turnoDetalleList;
 
     public MotivoAbandono() {
     }
@@ -72,11 +72,11 @@ public class MotivoAbandono implements Serializable {
     }
 
     @XmlTransient
-    public List<TurnoDetalle> getTurnoDetalleList() {
+    public List<TicketDetalle> getTurnoDetalleList() {
         return turnoDetalleList;
     }
 
-    public void setTurnoDetalleList(List<TurnoDetalle> turnoDetalleList) {
+    public void setTurnoDetalleList(List<TicketDetalle> turnoDetalleList) {
         this.turnoDetalleList = turnoDetalleList;
     }
 
@@ -102,7 +102,7 @@ public class MotivoAbandono implements Serializable {
 
     @Override
     public String toString() {
-        return "com.edenorte.turnos.entity.MotivoAbandono[ idmotivoAbandono=" + idmotivoAbandono + " ]";
+        return "com.aniuska.turnos.entity.MotivoAbandono[ idmotivoAbandono=" + idmotivoAbandono + " ]";
     }
 
 }

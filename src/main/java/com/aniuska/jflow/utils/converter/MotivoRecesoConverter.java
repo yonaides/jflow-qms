@@ -16,7 +16,7 @@ import javax.inject.Named;
 
 /**
  *
- * @author hventura@citrus.com.do
+ * @author hectorvent@gmail.com
  */
 @Named("motivoRecesoConverter")
 @RequestScoped

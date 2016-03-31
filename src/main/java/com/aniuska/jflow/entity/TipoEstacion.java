@@ -25,7 +25,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author hventura@citrus.com.do
+ * @author hectorvent@gmail.com
  */
 @Entity
 @Table(name = "TIPO_ESTACION")
@@ -124,7 +124,7 @@ public class TipoEstacion implements Serializable {
 
     @Override
     public String toString() {
-        return "com.edenorte.turnos.entity.TipoEstacion[ idtipoEstacion=" + idtipoEstacion + " ]";
+        return "com.aniuska.turnos.entity.TipoEstacion[ idtipoEstacion=" + idtipoEstacion + " ]";
     }
 
 }

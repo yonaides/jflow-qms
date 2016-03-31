@@ -9,7 +9,7 @@ import com.google.gson.JsonObject;
 
 /**
  *
- * @author hventura@citrus.com.do
+ * @author hectorvent@gmail.com
  */
 public class GsonUtils {
 

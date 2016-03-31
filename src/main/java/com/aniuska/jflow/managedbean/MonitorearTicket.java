@@ -6,11 +6,11 @@
 package com.aniuska.jflow.managedbean;
 
 import com.aniuska.jflow.auth.AuthenticationBean;
-import com.aniuska.jflow.ejb.TurnoFacade;
-import com.aniuska.jflow.entity.Oficina;
-import com.aniuska.jflow.entity.Turno;
-import com.aniuska.jflow.entity.TurnoDetalle;
-import com.aniuska.jflow.entity.TurnoMonitoreo;
+import com.aniuska.jflow.ejb.TicketFacade;
+import com.aniuska.jflow.entity.Sucursal;
+import com.aniuska.jflow.entity.Ticket;
+import com.aniuska.jflow.entity.TicketDetalle;
+import com.aniuska.jflow.entity.TicketMonitoreo;
 import com.aniuska.jflow.utils.Estados;
 import com.aniuska.jflow.utils.TimeUtils;
 import java.io.Serializable;
@@ -27,17 +27,17 @@ import javax.inject.Inject;
 
 /**
  *
- * @author hventura@citrus.com.do
+ * @author hectorvent@gmail.com
  */
 @Named
 @ViewScoped
-public class MonitorearTurno implements Serializable {
+public class MonitorearTicket implements Serializable {
 
     private final long serialVersionUID = 23L;
-    private static final java.util.logging.Logger LOG = java.util.logging.Logger.getLogger(MonitorearTurno.class.getName());
+    private static final java.util.logging.Logger LOG = java.util.logging.Logger.getLogger(MonitorearTicket.class.getName());
 
     @EJB
-    private TurnoFacade turnoCtrl;
+    private TicketFacade ticketCtrl;
     @Inject
     private AuthenticationBean authenticationBean;
 
@@ -46,56 +46,56 @@ public class MonitorearTurno implements Serializable {
 
     }
 
-    public void setTurnoCtrl(TurnoFacade turnoCtrl) {
-        this.turnoCtrl = turnoCtrl;
+    public void setTicketCtrl(TicketFacade ticketCtrl) {
+        this.ticketCtrl = ticketCtrl;
     }
 
     public void setAuthenticationBean(AuthenticationBean authenticationBean) {
         this.authenticationBean = authenticationBean;
     }
 
-    public List<TurnoMonitoreo> getTurnosEspera() {
+    public List<TicketMonitoreo> getTicketsEspera() {
 
-        Oficina oficina = authenticationBean.getUsuario().getIdoficina();
-        List<TurnoDetalle> turnos = turnoCtrl.findTurnosByOficinaAndEstado(oficina, Estados.EN_ESPERA);
-        List<TurnoMonitoreo> mTurnos = new ArrayList();
+        Sucursal sucursal = authenticationBean.getUsuario().getIdsucursal();
+        List<TicketDetalle> tickets = ticketCtrl.findTurnosBySucursalAndEstado(sucursal, Estados.EN_ESPERA);
+        List<TicketMonitoreo> mTickets = new ArrayList();
 
-        for (TurnoDetalle td : turnos) {
-            TurnoMonitoreo tm = new TurnoMonitoreo();
+        for (TicketDetalle td : tickets) {
+            TicketMonitoreo tm = new TicketMonitoreo();
 
-            Turno turno = td.getIdturno();
+            Ticket turno = td.getIdticket();
             tm.setCliente(turno.getIdcliente().toString());
             tm.setEspecial(turno.getPrioridad() == 2);
             tm.setFecha(turno.getFechaCreacion());
             tm.setNic(turno.getIdcliente().getContrato().toString());
             tm.setTiempoEspera(TimeUtils.getDiffTimeMinutes(turno.getFechaCreacion(), new Date()));
             tm.setServicio(td.getIdservicio().getNombre());
-            tm.setTurno(turno.getHappyNumber());
+            tm.setTicket(turno.getHappyNumber());
 
-            mTurnos.add(tm);
+            mTickets.add(tm);
         }
 
-        Collections.sort(mTurnos, new Comparator<TurnoMonitoreo>() {
+        Collections.sort(mTickets, new Comparator<TicketMonitoreo>() {
             @Override
-            public int compare(TurnoMonitoreo o1, TurnoMonitoreo o2) {
+            public int compare(TicketMonitoreo o1, TicketMonitoreo o2) {
                 return o2.getTiempoEspera().subtract(o1.getTiempoEspera()).intValue();
             }
         });
 
-        return mTurnos;
+        return mTickets;
     }
 
-    public List<TurnoMonitoreo> getTurnosProceso() {
+    public List<TicketMonitoreo> getTicketsProceso() {
 
-        Oficina oficina = authenticationBean.getUsuario().getIdoficina();
-        List<TurnoDetalle> turnos = turnoCtrl.findTurnosByOficinaAndEstado(oficina, Estados.EN_PROCESO);
-        List<TurnoMonitoreo> mTurnos = new ArrayList();
+        Sucursal sucursal = authenticationBean.getUsuario().getIdsucursal();
+        List<TicketDetalle> turnos = ticketCtrl.findTurnosBySucursalAndEstado(sucursal, Estados.EN_PROCESO);
+        List<TicketMonitoreo> mTurnos = new ArrayList();
 
-        for (TurnoDetalle td : turnos) {
+        for (TicketDetalle td : turnos) {
 
-            TurnoMonitoreo tm = new TurnoMonitoreo();
+            TicketMonitoreo tm = new TicketMonitoreo();
 
-            Turno turno = td.getIdturno();
+            Ticket turno = td.getIdticket();
             tm.setCliente(turno.getIdcliente().toString());
             tm.setEspecial(turno.getPrioridad() == 2);
             tm.setFecha(turno.getFechaCreacion());
@@ -107,14 +107,14 @@ public class MonitorearTurno implements Serializable {
             tm.setUsuario(td.getIdoperador().toString());
             tm.setTiempoProceso(TimeUtils.getDiffTimeMinutes(td.getFechaInicioAtencion(), new Date()));
             tm.setServicio(td.getIdservicio().getNombre());
-            tm.setTurno(turno.getHappyNumber());
+            tm.setTicket(turno.getHappyNumber());
 
             mTurnos.add(tm);
         }
 
-        Collections.sort(mTurnos, new Comparator<TurnoMonitoreo>() {
+        Collections.sort(mTurnos, new Comparator<TicketMonitoreo>() {
             @Override
-            public int compare(TurnoMonitoreo o1, TurnoMonitoreo o2) {
+            public int compare(TicketMonitoreo o1, TicketMonitoreo o2) {
                 return o2.getTiempoProceso().subtract(o1.getTiempoProceso()).intValue();
             }
         });

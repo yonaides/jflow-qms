@@ -10,7 +10,7 @@ import javax.faces.bean.ManagedBean;
 
 /**
  *
- * @author hventura@citrus.com.do
+ * @author hectorvent@gmail.com
  */
 @ManagedBean
 @ApplicationScoped

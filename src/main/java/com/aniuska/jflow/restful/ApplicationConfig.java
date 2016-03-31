@@ -11,7 +11,7 @@ import javax.ws.rs.core.Application;
 
 /**
  *
- * @author hventura@citrus.com.do
+ * @author hectorvent@gmail.com
  */
 @ApplicationPath("api/v1")
 public class ApplicationConfig extends Application {

@@ -24,7 +24,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  * 
- * @author hventura@citrus.com.do
+ * @author hectorvent@gmail.com
  */
 @Entity
 @Table(name = "ESTADO")
@@ -43,11 +43,11 @@ public class Estado implements Serializable {
     @Column(name = "DESCRIPCION")
     private String descripcion;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idestado")
-    private List<TurnoDetalle> turnoDetalleList;
+    private List<TicketDetalle> turnoDetalleList;
     @OneToMany(mappedBy = "idestado")
-    private List<Turno> turnoList;
+    private List<Ticket> turnoList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idestado")
-    private List<Sessiones> sessionesList;
+    private List<Session> sessionesList;
 
     public Estado() {
     }
@@ -73,29 +73,29 @@ public class Estado implements Serializable {
     }
 
     @XmlTransient
-    public List<TurnoDetalle> getTurnoDetalleList() {
+    public List<TicketDetalle> getTurnoDetalleList() {
         return turnoDetalleList;
     }
 
-    public void setTurnoDetalleList(List<TurnoDetalle> turnoDetalleList) {
+    public void setTurnoDetalleList(List<TicketDetalle> turnoDetalleList) {
         this.turnoDetalleList = turnoDetalleList;
     }
 
     @XmlTransient
-    public List<Turno> getTurnoList() {
+    public List<Ticket> getTurnoList() {
         return turnoList;
     }
 
-    public void setTurnoList(List<Turno> turnoList) {
+    public void setTurnoList(List<Ticket> turnoList) {
         this.turnoList = turnoList;
     }
 
     @XmlTransient
-    public List<Sessiones> getSessionesList() {
+    public List<Session> getSessionesList() {
         return sessionesList;
     }
 
-    public void setSessionesList(List<Sessiones> sessionesList) {
+    public void setSessionesList(List<Session> sessionesList) {
         this.sessionesList = sessionesList;
     }
 
@@ -121,7 +121,7 @@ public class Estado implements Serializable {
 
     @Override
     public String toString() {
-        return "com.edenorte.turnos.entity.Estado[ idestado=" + idestado + " ]";
+        return "com.aniuska.turnos.entity.Estado[ idestado=" + idestado + " ]";
     }
 
 }

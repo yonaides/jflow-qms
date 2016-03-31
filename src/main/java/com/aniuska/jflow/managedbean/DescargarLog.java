@@ -22,7 +22,7 @@ import org.primefaces.model.TreeNode;
 
 /**
  *
- * @author hventura@citrus.com.do
+ * @author hectorvent@gmail.com
  */
 @Named
 @ViewScoped

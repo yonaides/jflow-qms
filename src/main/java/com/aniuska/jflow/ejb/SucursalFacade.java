@@ -5,7 +5,7 @@
  */
 package com.aniuska.jflow.ejb;
 
-import com.aniuska.jflow.entity.Oficina;
+import com.aniuska.jflow.entity.Sucursal;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -13,12 +13,12 @@ import javax.persistence.PersistenceContext;
 
 /**
  *
- * @author hventura@citrus.com.do
+ * @author hectorvent@gmail.com
  */
 @Stateless
-public class OficinaFacade extends AbstractFacade<Oficina> {
+public class SucursalFacade extends AbstractFacade<Sucursal> {
 
-    @PersistenceContext(unitName = "Turnos")
+    @PersistenceContext(unitName = "JFLOW")
     private EntityManager em;
 
     @Override
@@ -26,14 +26,14 @@ public class OficinaFacade extends AbstractFacade<Oficina> {
         return em;
     }
 
-    public OficinaFacade() {
-        super(Oficina.class);
+    public SucursalFacade() {
+        super(Sucursal.class);
     }
 
-    public Oficina findOficinaByNumero(Integer numOficina) {
+    public Sucursal findSucursalByNumero(Integer numSucursal) {
         try {
-            return (Oficina) em.createQuery("FROM Oficina o WHERE o.numeroOficina = :numOficina")
-                    .setParameter("numOficina", numOficina)
+            return (Sucursal) em.createQuery("FROM Sucursal o WHERE o.numeroSucursal = :numSucursal")
+                    .setParameter("numSucursal", numSucursal)
                     .setMaxResults(1)
                     .getSingleResult();
         } catch (Exception ex) {
@@ -41,10 +41,10 @@ public class OficinaFacade extends AbstractFacade<Oficina> {
         }
     }
 
-    public List<Oficina> findAll(String busqueda) {
+    public List<Sucursal> findAll(String busqueda) {
         return em.createNativeQuery("SELECT O.* "
-                + "FROM OFICINA O "
-                + " WHERE LOWER(O.NOMBRE) LIKE ?1 ", Oficina.class)
+                + "FROM SUCURSAL O "
+                + " WHERE LOWER(O.NOMBRE) LIKE ?1 ", Sucursal.class)
                 .setParameter(1, "%" + busqueda.toLowerCase().trim() + "%")
                 .getResultList();
 

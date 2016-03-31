@@ -6,7 +6,7 @@ package com.aniuska.jflow.websocket;
 
 import com.aniuska.jflow.ejb.KioscoFacade;
 import com.aniuska.jflow.entity.Kiosco;
-import com.aniuska.jflow.entity.Oficina;
+import com.aniuska.jflow.entity.Sucursal;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Date;
@@ -27,7 +27,7 @@ import org.apache.logging.log4j.Logger;
 
 /**
  *
- * @author hventura@citrus.com.do
+ * @author hectorvent@gmail.com
  */
 @Singleton
 @ServerEndpoint("/notification")
@@ -96,16 +96,16 @@ public class WSNotification {
         }
     }
 
-    public void sendMessage(Oficina oficina, Message nm) {
+    public void sendMessage(Sucursal sucursal, Message nm) {
 
         synchronized (clients) {
 
             LOG.info("Sending to all kiosk from ofice id = {}, name = {}",
-                    oficina.getIdoficina(), oficina.getNombre());
+                    sucursal.getIdsucursal(), sucursal.getNombre());
             LOG.info("Kiosk conneted : {}", clients.size());
 
             for (Map.Entry<Session, Kiosco> entry : clients.entrySet()) {
-                if (oficina.equals(entry.getValue().getIdoficina())) {
+                if (sucursal.equals(entry.getValue().getIdsucursal())) {
                     sendMessage(entry.getKey(), nm);
                 }
 
@@ -153,7 +153,7 @@ public class WSNotification {
 
                     clients.put(session, k);
                     Message ms = new Message(MessageType.SUCCESS_LOGIN);
-                    ms.put("nombreOficina", k.getIdoficina().getNombre());
+                    ms.put("nombreOficina", k.getIdsucursal().getNombre());
 
                     sendMessage(session, ms);
                     LOG.info("Success connected kiosk {} ", k.getDescripcion());

@@ -6,7 +6,7 @@
 package com.aniuska.jflow.ejb;
 
 import com.aniuska.jflow.entity.Espera;
-import com.aniuska.jflow.entity.Sessiones;
+import com.aniuska.jflow.entity.Session;
 import java.util.Date;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -14,12 +14,12 @@ import javax.persistence.PersistenceContext;
 
 /**
  *
- * @author hventura@citrus.com.do
+ * @author hectorvent@gmail.com
  */
 @Stateless
 public class EsperaFacade extends AbstractFacade<Espera> {
 
-    @PersistenceContext(unitName = "Turnos")
+    @PersistenceContext(unitName = "JFLOW")
     private EntityManager em;
 
     @Override
@@ -31,7 +31,7 @@ public class EsperaFacade extends AbstractFacade<Espera> {
         super(Espera.class);
     }
 
-    public Espera findEsperaActiva(Sessiones session) {
+    public Espera findEsperaActiva(Session session) {
 
         String jpsql = "FROM Espera e "
                 + "WHERE e.enespera = 'S' AND e.idsession = :session";

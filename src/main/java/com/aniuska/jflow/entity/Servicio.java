@@ -27,7 +27,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author hventura@citrus.com.do
+ * @author hectorvent@gmail.com
  */
 @Entity
 @Table(name = "SERVICIO")
@@ -59,9 +59,9 @@ public class Servicio implements Serializable {
     @Column(name = "PREFIJO")
     private String prefijo;
     @ManyToMany(mappedBy = "servicioList")
-    private List<Oficina> oficinaList;
+    private List<Sucursal> sucursalList;
     @OneToMany( mappedBy = "idservicio")
-    private List<TurnoDetalle> turnoDetalleList;
+    private List<TicketDetalle> turnoDetalleList;
     @OneToMany( mappedBy = "idservicio")
     private List<EstacionServicio> estacionServicioList;
 
@@ -121,20 +121,20 @@ public class Servicio implements Serializable {
     }
 
     @XmlTransient
-    public List<Oficina> getOficinaList() {
-        return oficinaList;
+    public List<Sucursal> getSucursalList() {
+        return sucursalList;
     }
 
-    public void setOficinaList(List<Oficina> oficinaList) {
-        this.oficinaList = oficinaList;
+    public void setSucursalList(List<Sucursal> sucursalList) {
+        this.sucursalList = sucursalList;
     }
 
     @XmlTransient
-    public List<TurnoDetalle> getTurnoDetalleList() {
+    public List<TicketDetalle> getTurnoDetalleList() {
         return turnoDetalleList;
     }
 
-    public void setTurnoDetalleList(List<TurnoDetalle> turnoDetalleList) {
+    public void setTurnoDetalleList(List<TicketDetalle> turnoDetalleList) {
         this.turnoDetalleList = turnoDetalleList;
     }
 
@@ -169,7 +169,7 @@ public class Servicio implements Serializable {
 
     @Override
     public String toString() {
-        return "com.edenorte.turnos.entity.Servicio[ idservicio=" + idservicio + " ]";
+        return "com.aniuska.turnos.entity.Servicio[ idservicio=" + idservicio + " ]";
     }
 
 }

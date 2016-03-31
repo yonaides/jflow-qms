@@ -6,7 +6,7 @@
 package com.aniuska.jflow.ejb;
 
 import com.aniuska.jflow.entity.Estacion;
-import com.aniuska.jflow.entity.Oficina;
+import com.aniuska.jflow.entity.Sucursal;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -14,12 +14,12 @@ import javax.persistence.PersistenceContext;
 
 /**
  *
- * @author hventura@citrus.com.do
+ * @author hectorvent@gmail.com
  */
 @Stateless
 public class EstacionFacade extends AbstractFacade<Estacion> {
 
-    @PersistenceContext(unitName = "Turnos")
+    @PersistenceContext(unitName = "JFLOW")
     private EntityManager em;
 
     @Override
@@ -31,10 +31,10 @@ public class EstacionFacade extends AbstractFacade<Estacion> {
         super(Estacion.class);
     }
 
-    public List<Estacion> getEstacionByOficina(Oficina oficina) {
-        String jpql = "FROM Estacion e WHERE e.idoficina = :oficina";
+    public List<Estacion> getEstacionByOficina(Sucursal sucursal) {
+        String jpql = "FROM Estacion e WHERE e.idsucursal = :sucursal";
         return em.createQuery(jpql)
-                .setParameter("oficina", oficina)
+                .setParameter("sucursal", sucursal)
                 .getResultList();
     }
 

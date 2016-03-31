@@ -3,11 +3,10 @@ package com.aniuska.jflow.auth;
 import com.aniuska.jflow.ejb.SessionesFacade;
 import com.aniuska.jflow.ejb.UsuarioFacade;
 import com.aniuska.jflow.entity.Rol;
-import com.aniuska.jflow.entity.Sessiones;
+import com.aniuska.jflow.entity.Session;
 import com.aniuska.jflow.entity.Usuario;
 import com.aniuska.jflow.utils.MenuController;
-import com.edenorte.utils.MessageUtils;
-import com.edenorte.utils.auth.WsAutenticacion;
+import com.aniuska.utils.MessageUtils;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
@@ -20,7 +19,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 /**
- * @author hventura@citrus.com.do
+ * @author hectorvent@gmail.com
  */
 @Named
 @SessionScoped
@@ -40,7 +39,7 @@ public class AuthenticationBean implements Serializable {
     @EJB
     private SessionesFacade sessionCtrl;
 
-    private Sessiones session;
+    private Session session;
 
     @Inject
     private MenuController menuController;
@@ -85,11 +84,11 @@ public class AuthenticationBean implements Serializable {
         return usuario;
     }
 
-    public Sessiones getSession() {
+    public Session getSession() {
         return session;
     }
 
-    public void setSession(Sessiones session) {
+    public void setSession(Session session) {
         this.session = session;
         menuController.setSession(session);
     }
@@ -109,8 +108,8 @@ public class AuthenticationBean implements Serializable {
 
     public String doLogin() {
 
-//        boolean success = true;
-        boolean success = WsAutenticacion.login(username, password);
+        boolean success = true;
+//        boolean success = WsAutenticacion.login(username, password);
 
         /// Se usa el nombre de usuario minimizado y trimeado
         username = username.toLowerCase().trim();
@@ -160,9 +159,9 @@ public class AuthenticationBean implements Serializable {
 //        System.out.println("MenuController : " + menuController);
 //
         if (rols.contains(RolEnum.CREAR_TURNO)) {
-            menuController.setPagina("turno/generar_turno");
+            menuController.setPagina("ticket/generar_ticket");
         } else if (rols.contains(RolEnum.ATENDER_TURNO)) {
-            menuController.setPagina("turno/colaturnos");
+            menuController.setPagina("ticket/colaticket");
         } else {
             menuController.setPagina("usuario/perfil");
         }

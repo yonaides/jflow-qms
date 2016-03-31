@@ -9,7 +9,7 @@ import com.aniuska.jflow.ejb.MotivoAbandonoFacade;
 import com.aniuska.jflow.ejb.MotivoRecesoFacade;
 import com.aniuska.jflow.entity.MotivoAbandono;
 import com.aniuska.jflow.entity.MotivoReceso;
-import com.edenorte.utils.MessageUtils;
+import com.aniuska.utils.MessageUtils;
 import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -19,7 +19,7 @@ import javax.faces.view.ViewScoped;
 
 /**
  *
- * @author hventura@citrus.com.do
+ * @author hectorvent@gmail.com
  */
 @ViewScoped
 @Named

@@ -25,36 +25,36 @@
                         </li>-->
 
                         <c:if test="#{authenticationBean.hasRol(rolEnum.atenderTurno)}">
-                            <li class="#{menuController.pagina == 'turno/colaturnos' or menuController.pagina == 'turno/iniciar_session' ? 'active' : ''}">
-                                <h:commandLink action="#{menuController.setPagina('turno/colaturnos')}" >
+                            <li class="#{menuController.pagina == 'ticket/colatickets' or menuController.pagina == 'turno/iniciar_session' ? 'active' : ''}">
+                                <h:commandLink action="#{menuController.setPagina('ticket/colatickets')}" >
                                     <span class="fa fa-bullhorn" aria-hidden="true"></span>
-                                    <span>Cola de Turnos</span> 
+                                    <span>Cola de Ticket</span> 
                                 </h:commandLink>
                             </li>
                         </c:if>
 
                         <c:if test="#{authenticationBean.hasRol(rolEnum.crearTurno)}">
-                            <li class="#{menuController.pagina == 'turno/generar_turno'  ? 'active' : ''}">
-                                <h:commandLink action="#{menuController.setPagina('turno/generar_turno')}" >
+                            <li class="#{menuController.pagina == 'ticket/generar_ticket'  ? 'active' : ''}">
+                                <h:commandLink action="#{menuController.setPagina('ticket/generar_ticket')}" >
                                     <span class="fa fa-plus-square" aria-hidden="true"></span>
-                                    <span>Generar Turno</span> 
+                                    <span>Generar Ticket</span> 
                                 </h:commandLink>
                             </li>        
                         </c:if>
 
                         <c:if test="#{authenticationBean.hasRol(rolEnum.reporteFull) or authenticationBean.hasRol(rolEnum.reporteOficina)}">
-                            <li class="#{menuController.pagina == 'turno/tiempo_turnos'  ? 'active' : ''}">
-                                <h:commandLink action="#{menuController.setPagina('turno/tiempo_turnos')}" >
+                            <li class="#{menuController.pagina == 'ticket/tiempo_tickets'  ? 'active' : ''}">
+                                <h:commandLink action="#{menuController.setPagina('ticket/tiempo_tickets')}" >
                                     <span class="fa fa-clock-o" aria-hidden="true"></span>
-                                    <span>Tiempo Turnos</span> 
+                                    <span>Tiempo Tickets</span> 
                                 </h:commandLink>
                             </li>     
-<!--                            <li class="#menuController.pagina == 'estacion/monitoreo'  ? 'active' : ''}">
-                                <h:commandLink action="#menuController.setPagina('estacion/monitoreo')}" >
-                                    <span class="fa fa-desktop" aria-hidden="true"></span>
-                                    <span>Monitoreo Estaciones</span> 
-                                </h:commandLink>
-                            </li>     -->
+                            <!--                            <li class="#menuController.pagina == 'estacion/monitoreo'  ? 'active' : ''}">
+                                                            <h:commandLink action="#menuController.setPagina('estacion/monitoreo')}" >
+                                                                <span class="fa fa-desktop" aria-hidden="true"></span>
+                                                                <span>Monitoreo Estaciones</span> 
+                                                            </h:commandLink>
+                                                        </li>     -->
                         </c:if>
 
                         <c:if test="#{authenticationBean.hasRol(rolEnum.reporteFull) or authenticationBean.hasRol(rolEnum.reporteOficina)}">
@@ -76,9 +76,9 @@
                                 </a> 
                                 <ul class="treeview-menu"> 
                                     <li>
-                                        <h:commandLink action="#{menuController.setPagina('oficina/oficina')}" >
+                                        <h:commandLink action="#{menuController.setPagina('sucursal/sucursal')}" >
                                             <span class="fa fa-building-o" aria-hidden="true"></span>
-                                            <span>Oficinas</span> 
+                                            <span>Sucursales</span> 
                                         </h:commandLink>
                                     </li>
                                     <li>

@@ -22,7 +22,7 @@ import org.apache.logging.log4j.Logger;
 
 /**
  *
- * @author hventura@citrus.com.do
+ * @author hectorvent@gmail.com
  */
 @Path("servicio")
 public class ServicioResource {
@@ -47,7 +47,7 @@ public class ServicioResource {
 
         LOG.info("Kiosco {} id ", k.getDescripcion());
 
-        List<Servicio> sers = k.getIdoficina().getServicioList();
+        List<Servicio> sers = k.getIdsucursal().getServicioList();
         RestServicio servicios[] = new RestServicio[sers.size()];
         int i = 0;
         for (Servicio servicio : sers) {

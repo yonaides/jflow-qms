@@ -23,7 +23,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author hventura@citrus.com.do
+ * @author hectorvent@gmail.com
  */
 @Entity
 @Table(name = "ESTACION_SERVICIO")
@@ -131,7 +131,7 @@ public class EstacionServicio implements Serializable {
 
     @Override
     public String toString() {
-        return "com.edenorte.turnos.entity.EstacionServicio[ idestacionServicio=" + idestacionServicio + " ]";
+        return "com.aniuska.turnos.entity.EstacionServicio[ idestacionServicio=" + idestacionServicio + " ]";
     }
 
 }

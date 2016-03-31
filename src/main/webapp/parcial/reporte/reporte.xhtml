@@ -47,14 +47,14 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="oficina" class="col-md-4 control-label">Oficina</label>
+                                <label for="oficina" class="col-md-4 control-label">Sucursal</label>
                                 <div class="col-md-8">
                                     <h:selectOneMenu id="oficina" class="form-control input-sm"
-                                                     converter="#{oficinaConverter}" value="#{reporteBean.oficina}"
+                                                     converter="#{sucursalConverter}" value="#{reporteBean.sucursal}"
                                                      required="true" requiredMessage="Debe seleccionar oficina" >
                                         <f:selectItem itemLabel="Seleccionar oficina " itemValue=""/>
-                                        <f:selectItems value="#{reporteBean.oficinas}" 
-                                                       var="o" itemLabel="#{o.numeroOficina} - #{o.nombre}"/>
+                                        <f:selectItems value="#{reporteBean.sucursales}" 
+                                                       var="o" itemLabel="#{o.numeroSucursal} - #{o.nombre}"/>
                                     </h:selectOneMenu>
                                 </div>
                             </div>

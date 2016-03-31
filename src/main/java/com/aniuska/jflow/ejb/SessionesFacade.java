@@ -6,7 +6,7 @@
 package com.aniuska.jflow.ejb;
 
 import com.aniuska.jflow.entity.Estacion;
-import com.aniuska.jflow.entity.Sessiones;
+import com.aniuska.jflow.entity.Session;
 import com.aniuska.jflow.entity.Usuario;
 import com.aniuska.jflow.utils.Estados;
 import javax.ejb.Stateless;
@@ -15,12 +15,12 @@ import javax.persistence.PersistenceContext;
 
 /**
  *
- * @author hventura@citrus.com.do
+ * @author hectorvent@gmail.com
  */
 @Stateless
-public class SessionesFacade extends AbstractFacade<Sessiones> {
+public class SessionesFacade extends AbstractFacade<Session> {
 
-    @PersistenceContext(unitName = "Turnos")
+    @PersistenceContext(unitName = "JFLOW")
     private EntityManager em;
 
     @Override
@@ -29,15 +29,15 @@ public class SessionesFacade extends AbstractFacade<Sessiones> {
     }
 
     public SessionesFacade() {
-        super(Sessiones.class);
+        super(Session.class);
     }
 
-    public Sessiones getOpenSesssion(Usuario usuario) {
-        String jpql = "FROM Sessiones s "
+    public Session getOpenSesssion(Usuario usuario) {
+        String jpql = "FROM Session s "
                 + "WHERE s.idestado = :estado AND s.idoperador = :usuario";
 
         try {
-            return (Sessiones) em.createQuery(jpql)
+            return (Session) em.createQuery(jpql)
                     .setParameter("estado", Estados.ABIERTA)
                     .setParameter("usuario", usuario)
                     .setMaxResults(1)
@@ -48,8 +48,8 @@ public class SessionesFacade extends AbstractFacade<Sessiones> {
         return null;
     }
 
-    public Sessiones estaLibre(Estacion estacion) {
-        String jpql = "FROM Sessiones s "
+    public Session estaLibre(Estacion estacion) {
+        String jpql = "FROM Session s "
                 + "WHERE s.idestacion = :estacion AND s.idestado = :estado";
 
         try {
@@ -58,7 +58,7 @@ public class SessionesFacade extends AbstractFacade<Sessiones> {
                     .setParameter("estacion", estacion)
                     .getSingleResult();
 
-            return (Sessiones) obj;
+            return (Session) obj;
         } catch (Exception ex) {
         }
 

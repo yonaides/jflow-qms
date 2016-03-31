@@ -27,7 +27,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author hventura@citrus.com.do
+ * @author hectorvent@gmail.com
  */
 @Entity
 @Table(name = "ESPERA")
@@ -58,7 +58,7 @@ public class Espera implements Serializable {
     private MotivoReceso idmotivoReceso;
     @JoinColumn(name = "IDSESSION", referencedColumnName = "IDSESSION")
     @ManyToOne(optional = false)
-    private Sessiones idsession;
+    private Session idsession;
 
     public Espera() {
     }
@@ -107,11 +107,11 @@ public class Espera implements Serializable {
         this.idmotivoReceso = idmotivoReceso;
     }
 
-    public Sessiones getIdsession() {
+    public Session getIdsession() {
         return idsession;
     }
 
-    public void setIdsession(Sessiones idsession) {
+    public void setIdsession(Session idsession) {
         this.idsession = idsession;
     }
 
@@ -137,7 +137,7 @@ public class Espera implements Serializable {
 
     @Override
     public String toString() {
-        return "com.edenorte.turnos.entity.Espera[ idespera=" + idespera + " ]";
+        return "com.aniuska.turnos.entity.Espera[ idespera=" + idespera + " ]";
     }
 
 }

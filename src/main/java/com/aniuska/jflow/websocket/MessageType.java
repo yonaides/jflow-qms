@@ -7,7 +7,7 @@ package com.aniuska.jflow.websocket;
 
 /**
  *
- * @author hventura@citrus.com.do
+ * @author hectorvent@gmail.com
  */
 public class MessageType {
 

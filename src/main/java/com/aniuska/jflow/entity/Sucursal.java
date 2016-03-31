@@ -29,14 +29,14 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author hventura@citrus.com.do
+ * @author hectorvent@gmail.com
  */
 @Entity
-@Table(name = "OFICINA")
+@Table(name = "SUCURSAL")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Oficina.findAll", query = "SELECT o FROM Oficina o")})
-public class Oficina implements Serializable {
+    @NamedQuery(name = "Sucursal.findAll", query = "SELECT o FROM Sucursal o")})
+public class Sucursal implements Serializable {
 
     @JoinColumn(name = "IDSECTOR", referencedColumnName = "IDSECTOR")
     @ManyToOne(optional = false)
@@ -46,10 +46,10 @@ public class Oficina implements Serializable {
     @Id
     @Basic(optional = false)
     @NotNull
-    @Column(name = "IDOFICINA")
-    @SequenceGenerator(name = "SEC_OFICINA", sequenceName = "SEC_OFICINA", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEC_OFICINA")
-    private Integer idoficina;
+    @Column(name = "IDSUCURSAL")
+    @SequenceGenerator(name = "SEC_SUCURSAL", sequenceName = "SEC_SUCURSAL", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEC_SUCURSAL")
+    private Integer idsucursal;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 100)
@@ -66,46 +66,46 @@ public class Oficina implements Serializable {
     private String cordenadas;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "NUMERO_OFICINA")
-    private int numeroOficina;
+    @Column(name = "NUMERO_SUCURSAL")
+    private int numeroSucursal;
     @Basic(optional = false)
     @NotNull
     @Column(name = "SECUENCIA")
     private int secuencia;
-    @JoinTable(name = "OFICINA_SERVICIO", joinColumns = {
-        @JoinColumn(name = "IDOFICINA", referencedColumnName = "IDOFICINA")}, inverseJoinColumns = {
+    @JoinTable(name = "SUCURSAL_SERVICIO", joinColumns = {
+        @JoinColumn(name = "IDSUCURSAL", referencedColumnName = "IDSUCURSAL")}, inverseJoinColumns = {
         @JoinColumn(name = "IDSERVICIO", referencedColumnName = "IDSERVICIO")})
     @ManyToMany
     private List<Servicio> servicioList;
-    @OneToMany(mappedBy = "idoficina")
+    @OneToMany(mappedBy = "idsucursal")
     private List<Estacion> estacionList;
-    @OneToMany(mappedBy = "idoficina")
+    @OneToMany(mappedBy = "idsucursal")
     private List<Kiosco> kioscoList;
-    @OneToMany(mappedBy = "idoficina")
+    @OneToMany(mappedBy = "idsucursal")
     private List<Usuario> usuarioList;
-    @OneToMany(mappedBy = "idoficina")
-    private List<Turno> turnoList;
+    @OneToMany(mappedBy = "idsucursal")
+    private List<Ticket> turnoList;
 
-    public Oficina() {
+    public Sucursal() {
     }
 
-    public Oficina(Integer idoficina) {
-        this.idoficina = idoficina;
+    public Sucursal(Integer sucursal) {
+        this.idsucursal = sucursal;
     }
 
-    public Oficina(Integer idoficina, String nombre, int numeroOficina, int secuencia) {
-        this.idoficina = idoficina;
+    public Sucursal(Integer sucursal, String nombre, int numeroOficina, int secuencia) {
+        this.idsucursal = sucursal;
         this.nombre = nombre;
-        this.numeroOficina = numeroOficina;
+        this.numeroSucursal = numeroOficina;
         this.secuencia = secuencia;
     }
 
-    public Integer getIdoficina() {
-        return idoficina;
+    public Integer getIdsucursal() {
+        return idsucursal;
     }
 
-    public void setIdoficina(Integer idoficina) {
-        this.idoficina = idoficina;
+    public void setIdsucursal(Integer idsucursal) {
+        this.idsucursal = idsucursal;
     }
 
     public String getNombre() {
@@ -140,12 +140,12 @@ public class Oficina implements Serializable {
         this.cordenadas = cordenadas;
     }
 
-    public int getNumeroOficina() {
-        return numeroOficina;
+    public int getNumeroSucursal() {
+        return numeroSucursal;
     }
 
-    public void setNumeroOficina(int numeroOficina) {
-        this.numeroOficina = numeroOficina;
+    public void setNumeroSucursal(int numeroSucursal) {
+        this.numeroSucursal = numeroSucursal;
     }
 
     public int getSecuencia() {
@@ -193,29 +193,29 @@ public class Oficina implements Serializable {
     }
 
     @XmlTransient
-    public List<Turno> getTurnoList() {
+    public List<Ticket> getTurnoList() {
         return turnoList;
     }
 
-    public void setTurnoList(List<Turno> turnoList) {
+    public void setTurnoList(List<Ticket> turnoList) {
         this.turnoList = turnoList;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (idoficina != null ? idoficina.hashCode() : 0);
+        hash += (idsucursal != null ? idsucursal.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Oficina)) {
+        if (!(object instanceof Sucursal)) {
             return false;
         }
-        Oficina other = (Oficina) object;
-        if ((this.idoficina == null && other.idoficina != null) || (this.idoficina != null && !this.idoficina.equals(other.idoficina))) {
+        Sucursal other = (Sucursal) object;
+        if ((this.idsucursal == null && other.idsucursal != null) || (this.idsucursal != null && !this.idsucursal.equals(other.idsucursal))) {
             return false;
         }
         return true;
@@ -223,7 +223,7 @@ public class Oficina implements Serializable {
 
     @Override
     public String toString() {
-        return "Oficina{" + "idoficina=" + idoficina + ", nombre=" + nombre + ", direccion=" + direccion + ", telefono=" + telefono + ", cordenadas=" + cordenadas + ", numeroOficina=" + numeroOficina + ", secuencia=" + secuencia + '}';
+        return "Oficina{" + "idsucursal=" + idsucursal + ", nombre=" + nombre + ", direccion=" + direccion + ", telefono=" + telefono + ", cordenadas=" + cordenadas + ", numeroOficina=" + numeroSucursal + ", secuencia=" + secuencia + '}';
     }
 
     public Sector getIdsector() {

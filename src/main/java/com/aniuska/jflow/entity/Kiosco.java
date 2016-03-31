@@ -24,7 +24,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author hventura@citrus.com.do
+ * @author hectorvent@gmail.com
  */
 @Entity
 @Table(name = "KIOSCO")
@@ -52,9 +52,9 @@ public class Kiosco implements Serializable {
     @NotNull
     @Column(name = "AUTOSERVICIO")
     private Character autoservicio;
-    @JoinColumn(name = "IDOFICINA", referencedColumnName = "IDOFICINA")
+    @JoinColumn(name = "IDSUCURSAL", referencedColumnName = "IDSUCURSAL")
     @ManyToOne(optional = false)
-    private Oficina idoficina;
+    private Sucursal idsucursal;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 55)
@@ -106,12 +106,12 @@ public class Kiosco implements Serializable {
         this.autoservicio = autoservicio;
     }
 
-    public Oficina getIdoficina() {
-        return idoficina;
+    public Sucursal getIdsucursal() {
+        return idsucursal;
     }
 
-    public void setIdoficina(Oficina idoficina) {
-        this.idoficina = idoficina;
+    public void setIdsucursal(Sucursal idsucursal) {
+        this.idsucursal = idsucursal;
     }
 
     public String getVersionKiosco() {
@@ -144,7 +144,7 @@ public class Kiosco implements Serializable {
 
     @Override
     public String toString() {
-        return "com.edenorte.turnos.entity.Kiosco[ idkiosco=" + idkiosco + " ]";
+        return "com.aniuska.turnos.entity.Kiosco[ idkiosco=" + idkiosco + " ]";
     }
 
 }

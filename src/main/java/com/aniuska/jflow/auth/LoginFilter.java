@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * @author hventura@citrus.com.do
+ * @author hectorvent@gmail.com
  *
  */
 @WebFilter(filterName = "AppFilter", urlPatterns = {"*.xhtml"})

@@ -27,7 +27,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  * 
- * @author hventura@citrus.com.do
+ * @author hectorvent@gmail.com
  */
 @Entity
 @Table(name = "MOTIVO_RECESO")
@@ -104,7 +104,7 @@ public class MotivoReceso implements Serializable {
 
     @Override
     public String toString() {
-        return "com.edenorte.turnos.entity.MotivoReceso[ idmotivoReceso=" + idmotivoReceso + " ]";
+        return "com.aniuska.turnos.entity.MotivoReceso[ idmotivoReceso=" + idmotivoReceso + " ]";
     }
 
 }

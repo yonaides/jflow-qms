@@ -1,8 +1,8 @@
 package com.aniuska.jflow.quartz;
 
-import com.aniuska.jflow.ejb.TurnoFacade;
-import com.aniuska.jflow.entity.Turno;
-import com.aniuska.jflow.entity.TurnoDetalle;
+import com.aniuska.jflow.ejb.TicketFacade;
+import com.aniuska.jflow.entity.Ticket;
+import com.aniuska.jflow.entity.TicketDetalle;
 import com.aniuska.jflow.utils.Estados;
 import java.util.Date;
 import java.util.List;
@@ -17,7 +17,7 @@ import org.quartz.JobExecutionException;
 
 public class CierreAutomatico implements Job {
 
-    private TurnoFacade turnoCtrl;
+    private TicketFacade turnoCtrl;
     private final Logger LOG = LogManager.getLogger(CierreAutomatico.class);
 
     @Override
@@ -36,19 +36,19 @@ public class CierreAutomatico implements Job {
     public void ejecutarProceso() {
 
         try {
-            turnoCtrl = (TurnoFacade) getEJB("TurnoFacade");
+            turnoCtrl = (TicketFacade) getEJB("TurnoFacade");
         } catch (NamingException ex) {
             LOG.error("Error: ", ex);
             return;
         }
 
         LOG.info("Iniciando proceso de cierre de Turnos En Espera y En Proceso");
-        List<Turno> turnos = turnoCtrl.findTurnosAbiertos();
+        List<Ticket> turnos = turnoCtrl.findTurnosAbiertos();
 
-        for (Turno turno : turnos) {
+        for (Ticket turno : turnos) {
             LOG.info("Cerrando turno {} - {}", turno.getIdturno(), turno.getHappyNumber());
 
-            for (TurnoDetalle td : turno.getTurnoDetalleList()) {
+            for (TicketDetalle td : turno.getTicketDetalleList()) {
                 td.setFechaInicioAtencion(new Date());
                 td.setFechaFinAtencion(new Date());
                 td.setIdestado(Estados.CIERRE_AUTOMATICO);
