@@ -37,3 +37,4 @@
 * Administrador Publicidad: capturar el tiempo de video para calcular la factura. 
 * Administrador de Voces y Sonidos:  Habria voces femeninas, masculinas.
 * Otros que se irán listando sobre la marcha.
+* Calcular tiempos promedio de atención por representante, oficina (o sucursal) y por servicio. 
