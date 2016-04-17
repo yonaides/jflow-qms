@@ -153,7 +153,7 @@ public class WSNotification {
 
                     clients.put(session, k);
                     Message ms = new Message(MessageType.SUCCESS_LOGIN);
-                    ms.put("nombreOficina", k.getIdsucursal().getNombre());
+                    ms.put("nombreSucursal", k.getIdsucursal().getNombre());
 
                     sendMessage(session, ms);
                     LOG.info("Success connected kiosk {} ", k.getDescripcion());

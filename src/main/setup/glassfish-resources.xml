@@ -25,7 +25,9 @@
         <property name="PortNumber" value="5432"/>
         <property name="Password" value="jflow2016"/>
         <property name="DatabaseName" value="jflowdb"/>
-        <property name="ServerName" value="10.200.71.125"/>
+        <property name="ServerName" value="10.0.0.22"/>
+        <!--<property name="ServerName" value="192.168.1.102"/>-->
+        <!--<property name="ServerName" value="10.200.71.125"/>-->
     </jdbc-connection-pool>
   
     <jdbc-resource 
