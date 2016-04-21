@@ -1,94 +1,135 @@
 <?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
-
+      xmlns:pt="http://java.sun.com/jsf/passthrough">
     <h:head>
+        <title>JFlow Login</title>
 
         <f:facet name="first">
+
+            <!-- Meta, title, CSS, favicons, etc. -->
+            <meta charset="utf-8"/>
             <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+            <meta name="viewport" content="width=device-width, initial-scale=1"/>
 
+            <meta http-equiv="x-ua-compatible" content="ie=edge"/>
+
+            <meta http-equiv="X-UA-Compatible" content="IE=11"/>
+            <meta http-equiv="X-UA-Compatible" content="EmulateIE8" />
             <meta http-equiv="Content-Type"    content="text/html; charset=UTF-8"/>
-            <meta http-equiv="cache-control" content="max-age=0" />
-            <meta http-equiv="cache-control" content="no-cache" />
-            <meta http-equiv="expires" content="0" />
-            <meta http-equiv="pragma" content="no-cache" />
-            <meta charset="UTF-8" />
+            <meta http-equiv="pragma"          content="no-cache"/>
+            <meta http-equiv="cache-control"   content="no-cache"/>
+            <meta http-equiv="expires"         content="0"/>
 
-            <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport" />
+            <meta name="viewport" content="width=device-width, initial-scale=1" />
             <meta http-equiv="refresh" content="#{facesContext.externalContext.sessionMaxInactiveInterval};url=#{request.contextPath}/app/login.xhtml"/>
         </f:facet>
 
-        <title>Login - Sistema de Turnos</title>
+        <!-- Bootstrap core CSS -->
+        <link href="resources/gentelella/css/bootstrap.min.css" rel="stylesheet"></link>
 
-        <!--bootstrap librery-->
-        <h:outputStylesheet name="css/bootstrap-3.3.4.min.css"/>
-        <h:outputStylesheet name="css/font-awesome-4.4.0.min.css"/>
-        <h:outputStylesheet name="css/AdminLTE.css"/>
+        <link href="resources/gentelella/fonts/css/font-awesome.css" rel="stylesheet"></link>
+        <link href="resources/gentelella/css/animate.min.css" rel="stylesheet"> </link>
+
+        <!-- Custom styling plus plugins -->
+        <link href="resources/gentelella/css/custom.css" rel="stylesheet"></link>
+        <link href="resources/gentelella/css/icheck/flat/green.css" rel="stylesheet"></link>
+
+        <h:outputScript name="jquery/jquery.js" library="primefaces" target="head" />
+
         <h:outputStylesheet name="css/main.css"/>
         <h:outputStylesheet name="css/ajax-login.css"/>
 
+        <!--[if lt IE 9]>
+       <script src="../assets/js/ie8-responsive-file-warning.js"></script>
+       <![endif]-->
+
+        <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+                <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+                <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+              <![endif]-->
+
     </h:head>
+    <h:body style="background:#F7F7F7;">
 
-    <h:body class="login-page">
+        <div class="">
+            <a class="hiddenanchor" id="toregister"></a>
+            <a class="hiddenanchor" id="tologin"></a>
 
-        <div class="login-box">
+            <div id="wrapper">
+                <div id="login" class="animate form">
+                    <section class="login_content">
+                        <p class="login-box-msg">Completar para iniciar sesión</p>
+                        <h:form id="loginForm">
+                            <h1>ADM - Login</h1>
 
-            <div class="login-logo">
-                <a href="#">
-                    <i class="fa fa-refresh fa-1x"></i>
-                    ADM - <b>Turnos</b></a>
-            </div>
+                            <p:focus for="username"/>
+                            <p:defaultCommand target="loginbtn"/>
+                            <p:growl id="errorLogin" showDetail="true" life="3000"/>
 
-            <div class="login-box-body">
+                            <div>
 
-                <p class="login-box-msg">Completar para iniciar sesión</p>
+                                <p:inputText id="username" styleClass="form-control username" 
+                                             placeholder="Nombre de Usuario" 
+                                             required="true" requiredMessage="Se debe indicar usuario"
+                                             value="#{authenticationBean.username}"/>
+                                <span class="glyphicon glyphicon-user form-control-feedback"></span>
 
-                <h:form id="loginForm">
-                    <p:focus for="username"/>
-                    <p:defaultCommand target="loginbtn"/>
-                    <p:growl id="errorLogin" showDetail="true" life="3000"/>
+                            </div>
+                            <div>
 
-                    <div class="form-group has-feedback">
-                        <p:inputText id="username" styleClass="form-control username" 
-                                     placeholder="Nombre de Usuario" 
-                                     required="true" requiredMessage="Se debe indicar usuario"
-                                     value="#{authenticationBean.username}"/>
-                        <span class="glyphicon glyphicon-user form-control-feedback"></span>
-                    </div>
+                                <p:password  id="password" styleClass="form-control password" 
+                                             required="true" requiredMessage="Se debe indicar contraseña"
+                                             placeholder="Contraseña" value="#{authenticationBean.password}"/>
+                                <span class="glyphicon glyphicon-lock form-control-feedback"></span>
 
-                    <div class="form-group has-feedback">
-                        <p:password  id="password" styleClass="form-control password" 
-                                     required="true" requiredMessage="Se debe indicar contraseña"
-                                     placeholder="Contraseña" value="#{authenticationBean.password}"/>
-                        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div id="statusDiv" style="display: none;">
-
-                                <div class="spinner">
-                                    <div class="rect1"></div>
-                                    <div class="rect2"></div>
-                                    <div class="rect3"></div>
-                                    <div class="rect4"></div>
-                                    <div class="rect5"></div>
-                                </div>
                             </div>
 
-                        </div>
-                        <div class="col-md-6">
-                            <p:commandLink id="loginbtn" styleClass="btn btn-primary btn-flat pull-right btnLogin" 
-                                           action="#{authenticationBean.doLogin()}" ajax="true" update="errorLogin">
-                                <span class="glyphicon glyphicon-log-in"></span> Iniciar
-                            </p:commandLink>
-                        </div><!-- /.col -->
-                    </div>
-                </h:form>
+                            <div class="col-md-6">
+                                <div id="statusDiv" style="display: none;">
 
+                                    <div class="spinner">
+                                        <div class="rect1"></div>
+                                        <div class="rect2"></div>
+                                        <div class="rect3"></div>
+                                        <div class="rect4"></div>
+                                        <div class="rect5"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <p:commandLink id="loginbtn" styleClass="btn btn-primary btn-flat pull-right btnLogin" 
+                                               action="#{authenticationBean.doLogin()}" ajax="true" update="errorLogin">
+                                    <i class="fa fa-lock" aria-hidden="true"></i> Entrar
+                                </p:commandLink>
+
+                                <a class="reset_pass" href="#">Lost your password?</a>
+                            </div>
+                            <div class="clearfix"></div>
+                            <div class="separator">
+
+                                <p class="change_link">New to site?
+                                    <a href="#toregister" class="to_register"> Create Account </a>
+                                </p>
+                                <div class="clearfix"></div>
+                                <br />
+                                <div>
+                                    <h1><i class="fa fa-paw" style="font-size: 26px;"></i> Gentelella Alela!</h1>
+
+                                    <p>©2015 All Rights Reserved. Gentelella Alela! is a Bootstrap 3 template. Privacy and Terms</p>
+                                </div>
+                            </div>
+                        </h:form>
+                        <!-- form -->
+                    </section>
+                    <!-- content -->
+                </div>
+
+                
             </div>
         </div>
 
@@ -105,6 +146,7 @@
                 }
             }
         </script>
+
 
 
     </h:body>
