@@ -1158,7 +1158,7 @@ table.dataTable td.focus {
     margin-left: 10px;
 }
 .paginate_disabled_previous {
-    //background: url('../images/back_disabled.png') no-repeat top left;
+    /*background: url('../images/back_disabled.png') no-repeat top left; */ 
     background: url('#{resource[gentelella/images/back_disabled.png]}') no-repeat top left;
 
 }
@@ -4747,7 +4747,7 @@ a:hover {
 }
 .login_content {
     margin: 0 auto;
-    padding: 25px 0 0;
+    padding: 20px 0 0;
     position: relative;
     text-align: center;
     text-shadow: 0 1px 0 #fff;
@@ -5009,7 +5009,7 @@ header {
     display: inline-block;
     width: 20px;
     height: 20px;
-    //background-image: url("../images/icons.png");
+    /* background-image: url("../images/icons.png");*/
     background-image: url("#{resource['gentelella/images/glyphicons-halflings.png']}");
     vertical-align: middle;
 }

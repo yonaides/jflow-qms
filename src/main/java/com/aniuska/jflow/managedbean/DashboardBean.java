@@ -44,25 +44,25 @@ public class DashboardBean implements Serializable {
         this.authBean = authBean;
     }
 
-    public BigDecimal getTurnoGenerados() {
+    public Long getTurnoGenerados() {
         return dashboardCtrl.getCountTurnosToday(user);
     }
 
-    public BigDecimal getTurnoAtendidos() {
+    public Long getTurnoAtendidos() {
         return dashboardCtrl.getCountTurnosStatus(user, Estados.ATENDIDO);
     }
 
-    public BigDecimal getTurnoAbandonados() {
+    public Long getTurnoAbandonados() {
         return dashboardCtrl.getCountTurnosStatus(user, Estados.ABANDONADO);
     }
 
-    public BigDecimal getTurnoEspera() {
+    public Long getTurnoEspera() {
         return dashboardCtrl.getCountTurnosStatus(user, Estados.EN_ESPERA);
     }
 
     public Double getTiempoAtencion() {
-        BigDecimal tt = dashboardCtrl.getCountTurnosStatusTiempo(user, Estados.ATENDIDO, 40.0);
-        BigDecimal t = getTurnoGenerados();
+        Long tt = dashboardCtrl.getCountTurnosStatusTiempo(user, Estados.ATENDIDO, 40.0);
+        Long t = getTurnoGenerados();
 
         if (t.intValue() == 0) {
             return 0.00;
@@ -72,7 +72,7 @@ public class DashboardBean implements Serializable {
         return ((tt.doubleValue() / t.doubleValue()) * 100);
     }
 
-    public BigDecimal getSessionesEstaciones() {
+    public Long getSessionesEstaciones() {
         return dashboardCtrl.getCountSessionesEstaciones(user);
     }
 

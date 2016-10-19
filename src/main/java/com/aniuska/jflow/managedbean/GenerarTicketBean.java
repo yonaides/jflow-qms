@@ -19,7 +19,6 @@ import com.aniuska.jflow.utils.Estados;
 import com.aniuska.jflow.websocket.Message;
 import com.aniuska.jflow.websocket.MessageType;
 import com.aniuska.jflow.websocket.WSPrinter;
-import com.aniuska.jflow.ws.ConsultaContratoWS;
 import com.aniuska.utils.MessageUtils;
 import com.aniuska.utils.date.DateUtils;
 import java.io.Serializable;
@@ -140,7 +139,8 @@ public class GenerarTicketBean implements Serializable {
 
     public boolean isPrinterConnected() {
         Sucursal ofi = authenticationBean.getUsuario().getIdsucursal();
-        return wsPrinter.isConnected(ofi);
+        //return true;
+       return wsPrinter.isConnected(ofi);
     }
 
     public void salvar() {

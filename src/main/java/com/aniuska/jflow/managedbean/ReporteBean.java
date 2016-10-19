@@ -109,14 +109,9 @@ public class ReporteBean implements Serializable {
     public void imprimirReporte() {
 
         try {
-
-//            System.out.println("DateRange : " + dateRange);
-//            System.out.println("Sucursal = " + sucursal.getNombre());
             LOGGER.info("Imprimiendo reporte");
-
-//            Sucursal sucursal = authenticationBean.getUsuario().getIdsucursal();
             JasperReportUtils.newReport()
-                    .setJaspersDir("/com/aniuska/turnos/reports/")
+                    .setJaspersDir("/com/aniuska/jflow/reports/")
                     .setJasperFile(reportFile)
                     .setDataSource(dataSource)
                     .put("sucursalNombre", sucursal.getNombre())

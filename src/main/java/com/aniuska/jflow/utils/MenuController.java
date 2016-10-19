@@ -39,7 +39,7 @@ public class MenuController implements Serializable {
     public String getVersion() {
         return version;
     }
-    
+
     public void setSession(Session session) {
         this.session = session;
         pagina = (session == null ? "ticket/iniciar_session" : "ticket/colatickets");

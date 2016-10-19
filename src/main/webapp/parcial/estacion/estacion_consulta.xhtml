@@ -1,0 +1,104 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:jsf="http://xmlns.jcp.org/jsf"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1><li class="fa fa-desktop fa-1x"></li> Estaciones<small>Consulta</small> </h1>
+        <ol class="breadcrumb">
+            <li>
+                <a href="#">
+                    <i class="fa fa-mobile"></i>Inicio
+                </a>
+            </li>
+            <!--<li><a href=""></a></li>-->
+            <li class="active">Estaciones
+            </li>
+        </ol>
+    </section>
+
+    <section class="content">
+        <div class="box box-primary">
+
+            <div class="box-header with-border">
+                <h3 class="box-title">Consulat de Estaciones</h3>
+            </div>
+            <div class="box-body">
+
+                <div class="row">
+
+                    <div class="col-md-12" >
+                        <h:form id="formBusquedaCuenta" >
+                            <p:defaultCommand target="buscarEstacionBtn" />
+                            <div class="input-group">
+                                <p:inputText id="buscarEstacion" placeholder="Buscar Estación..." value="#{servicioBean.busqueda}"
+                                             class="form-control input-sm"/>
+                                <span class="input-group-btn">
+                                    <p:commandLink id="buscarEstacionBtn" class="btn btn-primary btn-sm btn-flat" update=":estacionesTb"
+                                                   type="button" actionListener="#{estacionBean.buscar()}" >
+                                        <span class="glyphicon glyphicon-search"></span>
+                                        Buscar
+                                    </p:commandLink>
+
+                                    <p:commandLink id="editarBtn" class="btn btn-default btn-sm btn-flat" update=":estacionContent"
+                                                   type="button" actionListener="#{estacionBean.setVista('editar')}">
+                                        <span class="glyphicon glyphicon-plus"></span>
+                                        Crear
+                                    </p:commandLink>
+                                </span>
+                            </div>
+                        </h:form>
+                    </div>
+                    <div class="col-md-12" >
+                        <p:dataTable id="estacionesTb" var="estacion" 
+                                     value="#{estacionBean.estaciones}"
+                                     rowKey="#{estacion.idestacion}"
+                                     paginator="true"
+                                     paginatorPosition="top"  rows="5"
+                                     rowsPerPageTemplate="5,10"
+                                     selectionMode="single"
+                                     emptyMessage="No hay registros">
+
+                            <p:column headerText="# Estación" style="width: 10%">
+                                <h:outputText value="#{estacion.numeroEstacion}" />
+                            </p:column>
+
+                            <p:column headerText="Nombre Estación" style="width: 20%">
+                                <h:outputText value="#{estacion.nombre}" />
+                            </p:column>
+
+                            <p:column headerText="Descripción" style="width: 30%">
+                                <h:outputText value="#{estacion.descripcion}" />
+                            </p:column>
+
+                            <p:column headerText="Oficina" style="width: 30%">
+                                <h:outputText value="#{estacion.idsucursal.numeroSucursal} - #{estacion.idsucursal.nombre}" />
+                            </p:column>
+
+                            <p:column headerText="" style="width: 10%">
+                                <div class="btn-group btn-group-justified" role="group" aria-label="...">
+
+                                    <p:commandLink id="editarOficina" actionListener="#{estacionBean.setEstacion(estacion)}"
+                                                   update=":estacionContent"
+                                                   class="btn btn-default btn-sm btn-flat" type="button" >
+                                        <span class="glyphicon glyphicon-pencil"></span> 
+                                    </p:commandLink>
+                                </div>
+                            </p:column>
+
+                        </p:dataTable>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+</ui:composition>
+

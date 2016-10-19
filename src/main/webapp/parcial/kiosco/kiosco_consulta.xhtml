@@ -1,0 +1,125 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:jsf="http://xmlns.jcp.org/jsf"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1><li class="fa fa-tablet fa-1x"></li> Dispositivos<small>Consulta</small> </h1>
+        <ol class="breadcrumb">
+            <li>
+                <a href="#">
+                    <i class="fa fa-tablet"></i>Inicio
+                </a>
+            </li>
+            <!--<li><a href=""></a></li>-->
+            <li class="active">Dispositivos
+            </li>
+        </ol>
+    </section>
+
+    <section class="content"><style>
+            .status { 
+                width: 15px;
+                height: 15px;
+                border-radius: 50px;
+            }
+        </style>
+        <div class="box box-primary">
+            <div class="box-header with-border">
+                <h3 class="box-title">Consulta de Dispositivos</h3>
+            </div>
+            <div class="box-body">
+                <div class="row">
+
+                    <div class="col-md-12" >
+                        <h:form id="formBusqueda" >
+                            <p:defaultCommand target="buscarBtn" />
+                            <div class="input-group">
+                                <p:inputText id="buscarKiosco" placeholder="Buscar Dispositivo..." value="#{kioscoBean.busqueda}"
+                                             class="form-control input-sm"/>
+                                <span class="input-group-btn">
+                                    <p:commandLink id="buscarBtn" class="btn btn-primary btn-sm btn-flat" update=":kioscosTb"
+                                                   type="button" actionListener="#{kioscoBean.buscar()}" >
+                                        <span class="glyphicon glyphicon-search"></span>
+                                        Buscar
+                                    </p:commandLink>
+
+                                    <p:commandLink id="buscarBtn2" class="btn btn-default btn-sm btn-flat" update=":kioscoContent"
+                                                   type="button" actionListener="#{kioscoBean.setVista('editar')}" >
+                                        <span class="glyphicon glyphicon-plus"></span>
+                                        Crear
+                                    </p:commandLink>
+                                </span>
+                            </div>
+                        </h:form>
+                    </div>
+                    <div class="col-md-12" >
+                        <p:dataTable id="kioscosTb" var="kiosco" 
+                                     value="#{kioscoBean.kioscos}"
+                                     rowKey="#{kiosco.idkiosco}"
+                                     paginator="true"
+                                     paginatorPosition="top"  rows="5"
+                                     rowsPerPageTemplate="5,10"
+                                     selectionMode="single"
+                                     emptyMessage="No hay registros">
+
+
+                            <p:column headerText="-" style="width: 3%" class="text text-center">
+                                <label class="status #{kioscoBean.isConnected(kiosco) ? 'label-success' : 'label-danger'} "></label>
+
+                            </p:column>
+
+                            <p:column headerText="Descripción" style="width: 20%">
+                                <h:outputText value="#{kiosco.descripcion}" />
+                            </p:column>
+
+                            <p:column headerText="Versión Detectada" style="width: 10%" class="text text-center">
+                                <h:outputText value="#{kiosco.versionKiosco}" />
+                            </p:column>
+
+                            <p:column headerText="Ultima conexión" style="width: 20%" class="text text-center">
+                                <h:outputText value="#{kiosco.ultimaConexion}" >
+                                    <f:convertDateTime pattern="dd/MM/yyyy hh:mm:ss a"/>
+                                </h:outputText>
+                            </p:column>
+
+                            <p:column headerText="Auto Servicio" style="width: 10%" class="text text-center">
+                                <h:outputText value="#{kiosco.autoservicio == 1 ? 'Autoservicio' : 'Informativa'}" />
+                            </p:column>
+
+                            <p:column headerText="Oficina" style="width: 20%">
+                                <h:outputText value="#{kiosco.idsucursal.numeroSucursal} - #{kiosco.idsucursal.nombre}" />
+                            </p:column>
+
+                            <p:column headerText="" style="width: 10%">
+                                <div class="btn-group btn-group-justified" role="group" aria-label="...">
+
+                                    <p:commandLink id="editarKiosco" actionListener="#{kioscoBean.editarKiosco(kiosco)}"
+                                                   update=":kioscoContent"
+                                                   class="btn btn-default btn-sm btn-flat" type="button" >
+                                        <span class="glyphicon glyphicon-pencil"></span> 
+                                    </p:commandLink>
+                                    <p:commandLink id="refresh" actionListener="#{kioscoBean.refreshKiosco(kiosco)}"
+                                                   disabled="#{!kioscoBean.isConnected(kiosco)}"
+                                                   class="btn btn-default btn-sm btn-flat" type="button" >
+                                        <span class="glyphicon glyphicon-refresh"></span> 
+                                    </p:commandLink>
+                                </div>
+                            </p:column>
+
+                        </p:dataTable>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+</ui:composition>
+

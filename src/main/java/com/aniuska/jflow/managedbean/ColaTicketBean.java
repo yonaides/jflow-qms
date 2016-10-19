@@ -25,8 +25,7 @@ import com.aniuska.jflow.utils.Estados;
 import com.aniuska.jflow.utils.TimeUtils;
 import com.aniuska.jflow.websocket.Message;
 import com.aniuska.jflow.websocket.MessageType;
-import com.aniuska.jflow.websocket.WSNotification;
-import com.aniuska.jflow.ws.ConsultaContratoWS;
+import com.aniuska.jflow.websocket.WSKioscoInf;
 import com.aniuska.utils.MessageUtils;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -62,7 +61,7 @@ public class ColaTicketBean implements Serializable {
     @EJB
     private ClienteFacade clienteCtrl;
     @EJB
-    private WSNotification wsNotificacion;
+    private WSKioscoInf wsNotificacion;
     @EJB
     private EsperaFacade esperaCtrl;
 
@@ -130,7 +129,7 @@ public class ColaTicketBean implements Serializable {
         this.cliente.setTitular((short) (titu ? 1 : 0));
     }
 
-    public void setWsNotificacion(WSNotification wsNotificacion) {
+    public void setWsNotificacion(WSKioscoInf wsNotificacion) {
         this.wsNotificacion = wsNotificacion;
     }
 
@@ -407,9 +406,6 @@ public class ColaTicketBean implements Serializable {
         ms.put("puesto", ticketDetalle.getIdestacion().getNumeroEstacion() + "");
         ms.put("especial", turno.getPrioridad() == 2);
         ms.put("rellamar", rellamar);
-        
-        
-        
 
         wsNotificacion.sendMessage(authenticationBean.getUsuario().getIdsucursal(), ms);
     }
@@ -462,8 +458,8 @@ public class ColaTicketBean implements Serializable {
 //            }
 //
 //            if ("M02".equals(dc.getMensaje().getCodigo())) {
-                MessageUtils.sendSuccessfulMessage("Este contrato no existe!!");
-                return;
+            MessageUtils.sendSuccessfulMessage("Este contrato no existe!!");
+            return;
 //            }
 //
 //            cliente.setApellido(dc.getApellidos());

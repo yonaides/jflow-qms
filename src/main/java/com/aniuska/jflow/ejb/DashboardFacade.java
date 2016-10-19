@@ -36,8 +36,8 @@ public class DashboardFacade extends AbstractFacade<Object> {
         super(Object.class);
     }
 
-    public BigDecimal getCountTurnosToday(Usuario usuario) {
-        return (BigDecimal) em.createNativeQuery("SELECT COUNT(*) "
+    public Long getCountTurnosToday(Usuario usuario) {
+        return (Long) em.createNativeQuery("SELECT COUNT(*) "
                 + "FROM TICKET T WHERE TO_CHAR(T.FECHA_CREACION, 'DD/MM/YYYY') = ?1 "
                 + "AND T.IDSUCURSAL = ?2")
                 .setParameter(1, df.format(new Date()))
@@ -45,8 +45,8 @@ public class DashboardFacade extends AbstractFacade<Object> {
                 .getSingleResult();
     }
 
-    public BigDecimal getCountTurnosStatus(Usuario usuario, Estado estado) {
-        return (BigDecimal) em.createNativeQuery("SELECT COUNT(*) "
+    public Long getCountTurnosStatus(Usuario usuario, Estado estado) {
+        return (Long) em.createNativeQuery("SELECT COUNT(*) "
                 + "FROM TICKET T INNER JOIN TICKET_DETALLE TD ON (T.IDTICKET = TD.IDTICKET) "
                 + "WHERE TO_CHAR(T.FECHA_CREACION, 'DD/MM/YYYY') = ?1 "
                 + "AND T.IDSUCURSAL = ?2 AND TD.IDESTADO = ?3")
@@ -56,8 +56,8 @@ public class DashboardFacade extends AbstractFacade<Object> {
                 .getSingleResult();
     }
 
-    public BigDecimal getCountTurnosStatusTiempo(Usuario usuario, Estado estado, Double tiempo) {
-        return (BigDecimal) em.createNativeQuery("SELECT COUNT(*) "
+    public Long getCountTurnosStatusTiempo(Usuario usuario, Estado estado, Double tiempo) {
+        return (Long) em.createNativeQuery("SELECT COUNT(*) "
                 + "FROM TICKET T INNER JOIN TICKET_DETALLE TD ON (T.IDTICKET = TD.IDTICKET) "
                 + "WHERE TO_CHAR(T.FECHA_CREACION, 'DD/MM/YYYY') = ?1 "
                 + "AND T.IDTICKET = ?2 AND TD.IDESTADO = ?3 "
@@ -69,8 +69,8 @@ public class DashboardFacade extends AbstractFacade<Object> {
                 .getSingleResult();
     }
 
-    public BigDecimal getCountSessionesEstaciones(Usuario usuario) {
-        return (BigDecimal) em.createNativeQuery("SELECT COUNT (*) "
+    public Long getCountSessionesEstaciones(Usuario usuario) {
+        return (Long) em.createNativeQuery("SELECT COUNT (*) "
                 + "FROM SESSION S INNER JOIN USUARIO U ON (S.IDOPERADOR = U.IDOPERADOR) "
                 + "WHERE U.IDSUCURSAL = ?1 AND S.IDESTADO = ?2")
                 .setParameter(1, usuario.getIdsucursal().getIdsucursal())

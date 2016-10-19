@@ -45,6 +45,7 @@ public class EstacionBean implements Serializable {
     private List<Sucursal> sucursals;
     private List<TipoEstacion> tiposEstacion;
     private String busqueda;
+    private String vista = "consulta";
 
     @PostConstruct
     public void init() {
@@ -121,6 +122,8 @@ public class EstacionBean implements Serializable {
 
         estacionServicios = estacion.getEstacionServicioList();
         sucursalServicios = estacion.getIdsucursal().getServicioList();
+
+        vista = "editar";
     }
 
     public List<Estacion> getEstaciones() {
@@ -129,6 +132,14 @@ public class EstacionBean implements Serializable {
 
     public void setEstaciones(List<Estacion> estaciones) {
         this.estaciones = estaciones;
+    }
+
+    public String getVista() {
+        return vista;
+    }
+
+    public void setVista(String vista) {
+        this.vista = vista;
     }
 
     public void salvar() {

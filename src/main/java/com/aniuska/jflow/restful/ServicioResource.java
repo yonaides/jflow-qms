@@ -32,9 +32,9 @@ public class ServicioResource {
     KioscoFacade ctrlKiosco;
 
     @GET
-    @Path("/kiosco/{token}")
+    @Path("/kiosco/{tokenApi}")
     @Produces({MediaType.APPLICATION_JSON})
-    public Response findServicioByKiosco(@PathParam("token") String token) {
+    public Response findServicioByKiosco(@PathParam("tokenApi") String token) {
 
         LOG.info("Peticion token {}", token);
         Kiosco k = ctrlKiosco.find(token);

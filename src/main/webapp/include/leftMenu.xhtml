@@ -17,12 +17,12 @@
                             <span class="fa fa-bars" aria-hidden="true"></span> MENU PRINCIPAL
                         </li>
 
-<!--                        <li class="#menuController.pagina == 'dashboard/dashboard' ? 'active' : ''}">
-                            <h:commandLink action="#menuController.setPagina('dashboard/dashboard')}" >
+                        <li class="#{menuController.pagina == 'dashboard/dashboard' ? 'active' : ''}">
+                            <h:commandLink action="#{menuController.setPagina('dashboard/dashboard')}" >
                                 <span class="fa fa-dashboard" aria-hidden="true"></span>
                                 <span>Panel de Principal</span> 
                             </h:commandLink>
-                        </li>-->
+                        </li>
 
                         <c:if test="#{authenticationBean.hasRol(rolEnum.atenderTurno)}">
                             <li class="#{menuController.pagina == 'ticket/colatickets' or menuController.pagina == 'turno/iniciar_session' ? 'active' : ''}">
@@ -90,7 +90,7 @@
                                     <li>
                                         <h:commandLink action="#{menuController.setPagina('kiosco/kiosco')}" >
                                             <span class="fa fa-tablet" aria-hidden="true"></span>
-                                            <span>Kioscos</span> 
+                                            <span>Dispositivos</span> 
                                         </h:commandLink>
                                     </li>
                                     <li>

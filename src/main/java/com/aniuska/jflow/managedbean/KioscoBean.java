@@ -10,7 +10,8 @@ import com.aniuska.jflow.ejb.SucursalFacade;
 import com.aniuska.jflow.entity.Kiosco;
 import com.aniuska.jflow.websocket.Message;
 import com.aniuska.jflow.websocket.MessageType;
-import com.aniuska.jflow.websocket.WSNotification;
+import com.aniuska.jflow.websocket.WSKioscoInf;
+import com.aniuska.jflow.websocket.WSPrinter;
 import com.aniuska.utils.MessageUtils;
 import java.io.Serializable;
 import java.util.List;
@@ -31,15 +32,19 @@ public class KioscoBean implements Serializable {
     private final long serialVersionUID = 23L;
 
     @EJB
-    private SucursalFacade sucursalCtrl;
+    SucursalFacade sucursalCtrl;
     @EJB
-    private KioscoFacade kioscoCtrl;
+    KioscoFacade kioscoCtrl;
     @EJB
-    private WSNotification wsNotificacion;
+    WSKioscoInf wsKioscoInf;
+    @EJB
+    WSPrinter wsPrinter;
 
+    private List<String> selectedOptions;
     private Kiosco kiosco;
     private List<Kiosco> kioscos;
     private String busqueda;
+    private String vista = "consulta";
 
     @PostConstruct
     public void init() {
@@ -55,22 +60,6 @@ public class KioscoBean implements Serializable {
         this.busqueda = busqueda;
     }
 
-    public SucursalFacade getSucursalCtrl() {
-        return sucursalCtrl;
-    }
-
-    public void setSucursalCtrl(SucursalFacade sucursalCtrl) {
-        this.sucursalCtrl = sucursalCtrl;
-    }
-
-    public KioscoFacade getKioscoCtrl() {
-        return kioscoCtrl;
-    }
-
-    public void setKioscoCtrl(KioscoFacade kioscoCtrl) {
-        this.kioscoCtrl = kioscoCtrl;
-    }
-
     public Kiosco getKiosco() {
         return kiosco;
     }
@@ -79,12 +68,13 @@ public class KioscoBean implements Serializable {
         this.kiosco = kiosco;
     }
 
-    public List<Kiosco> getKioscos() {
-        return kioscos;
+    public void editarKiosco(Kiosco kiosco) {
+        this.kiosco = kiosco;
+       vista = "editar";
     }
 
-    public void setKioscos(List<Kiosco> kioscos) {
-        this.kioscos = kioscos;
+    public List<Kiosco> getKioscos() {
+        return kioscos;
     }
 
     public boolean isAutoservicio() {
@@ -95,13 +85,30 @@ public class KioscoBean implements Serializable {
         kiosco.setAutoservicio(autoservicio ? 'S' : 'N');
     }
 
-    public void setWsNotificacion(WSNotification wsNotificacion) {
-        this.wsNotificacion = wsNotificacion;
+    public List<String> getSelectedOptions() {
+        return selectedOptions;
     }
 
-    public boolean isConnected(Kiosco kios) {
+    public void setSelectedOptions(List<String> selectedOptions) {
+        this.selectedOptions = selectedOptions;
+    }
 
-        return wsNotificacion.isConnected(kios);
+    public String getVista() {
+        return vista;
+    }
+
+    public void setVista(String vista) {
+        this.vista = vista;
+    }
+
+    public boolean isConnected(Kiosco k) {
+
+        if ("PRINTER".equals(k.getTipoDispositivo())) {
+            return wsPrinter.isConnected(k);
+        } else {
+            return wsKioscoInf.isConnected(k);
+        }
+
     }
 
     public void salvar() {
@@ -111,7 +118,6 @@ public class KioscoBean implements Serializable {
             String token = UUID.randomUUID().toString().toUpperCase();
             kiosco.setIdkiosco(token);
             kiosco.setVersionKiosco("--");
-
             kioscoCtrl.create(kiosco);
 
             MessageUtils.sendSuccessfulMessage("Nueva kiosco Creado");
@@ -120,7 +126,6 @@ public class KioscoBean implements Serializable {
             MessageUtils.sendSuccessfulMessage("Kiosco actualizada");
         }
 
-        kioscos = kioscoCtrl.findAll();
         nuevo();
     }
 
@@ -130,12 +135,21 @@ public class KioscoBean implements Serializable {
     }
 
     public void refreshKiosco(Kiosco k) {
+
         Message ms = new Message(MessageType.REFRESH);
-        wsNotificacion.sendMessage(k.getIdsucursal(), ms);
+        if ("PRINTER".equals(k.getTipoDispositivo())) {
+            wsPrinter.sendMessage(k, ms);
+        } else {
+            wsKioscoInf.sendMessage(k, ms);
+        }
+
     }
 
     public void buscar() {
 
+        for (String selectedOption : selectedOptions) {
+            System.out.println(selectedOption);
+        }
     }
 
 }

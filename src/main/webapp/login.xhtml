@@ -3,10 +3,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:pt="http://java.sun.com/jsf/passthrough">
+      xmlns:p="http://primefaces.org/ui">
     <h:head>
-        <title>JFlow Login</title>
+        <title>JFlow-QMS Login</title>
 
         <f:facet name="first">
 
@@ -56,82 +55,76 @@
     </h:head>
     <h:body style="background:#F7F7F7;">
 
-        <div class="">
-            <a class="hiddenanchor" id="toregister"></a>
-            <a class="hiddenanchor" id="tologin"></a>
 
-            <div id="wrapper">
-                <div id="login" class="animate form">
-                    <section class="login_content">
-                        <p class="login-box-msg">Completar para iniciar sesión</p>
-                        <h:form id="loginForm">
-                            <h1>ADM - Login</h1>
 
-                            <p:focus for="username"/>
-                            <p:defaultCommand target="loginbtn"/>
-                            <p:growl id="errorLogin" showDetail="true" life="3000"/>
+        <div id="wrapper">
+            
+            <div id="login" class="animate form">
 
-                            <div>
+                <section class="login_content">
 
-                                <p:inputText id="username" styleClass="form-control username" 
-                                             placeholder="Nombre de Usuario" 
-                                             required="true" requiredMessage="Se debe indicar usuario"
-                                             value="#{authenticationBean.username}"/>
-                                <span class="glyphicon glyphicon-user form-control-feedback"></span>
+                    <p class="login-box-msg">Completar para iniciar sesión</p>
+                    <h:form id="loginForm">
+                        <h1>JFlowQMS - Login</h1>
+                        <p:focus for="username"/>
+                        <p:defaultCommand target="loginbtn"/>
+                        <p:growl id="errorLogin" showDetail="true" life="3000"/>
+                        <div>
+                            <p:inputText id="username" styleClass="form-control username" 
+                                         placeholder="Nombre de Usuario" 
+                                         required="true" requiredMessage="Se debe indicar usuario"
+                                         value="#{authenticationBean.username}"/>
+                            <span class="glyphicon glyphicon-user form-control-feedback"></span>
+                        </div>
 
-                            </div>
-                            <div>
+                        <div>
+                            <p:password  id="password" styleClass="form-control password" 
+                                         required="true" requiredMessage="Se debe indicar contraseña"
+                                         placeholder="Contraseña" value="#{authenticationBean.password}"/>
+                            <span class="glyphicon glyphicon-lock form-control-feedback"></span>
 
-                                <p:password  id="password" styleClass="form-control password" 
-                                             required="true" requiredMessage="Se debe indicar contraseña"
-                                             placeholder="Contraseña" value="#{authenticationBean.password}"/>
-                                <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                        </div>
 
-                            </div>
+                        <div class="col-md-6">
+                            <div id="statusDiv" style="display: none;">
 
-                            <div class="col-md-6">
-                                <div id="statusDiv" style="display: none;">
-
-                                    <div class="spinner">
-                                        <div class="rect1"></div>
-                                        <div class="rect2"></div>
-                                        <div class="rect3"></div>
-                                        <div class="rect4"></div>
-                                        <div class="rect5"></div>
-                                    </div>
+                                <div class="spinner">
+                                    <div class="rect1"></div>
+                                    <div class="rect2"></div>
+                                    <div class="rect3"></div>
+                                    <div class="rect4"></div>
+                                    <div class="rect5"></div>
                                 </div>
                             </div>
+                        </div>
+                        <div>
+                            <p:commandLink id="loginbtn" type="button"
+                                           styleClass="btn btn-primary btn-flat pull-right btnLogin" 
+                                           action="#{authenticationBean.doLogin()}" ajax="true" update="errorLogin">
+                                <i class="fa fa-lock" aria-hidden="true"></i> Entrar
+                            </p:commandLink>
+
+
+                        </div>
+                        <div class="clearfix"></div>
+                        <div class="separator">
+
+                            <br />
                             <div>
-                                <p:commandLink id="loginbtn" styleClass="btn btn-primary btn-flat pull-right btnLogin" 
-                                               action="#{authenticationBean.doLogin()}" ajax="true" update="errorLogin">
-                                    <i class="fa fa-lock" aria-hidden="true"></i> Entrar
-                                </p:commandLink>
+                                <!--<h1><i class="fa fa-paw" style="font-size: 26px;"></i> JFlowQMS!</h1>-->
 
-                                <a class="reset_pass" href="#">Lost your password?</a>
+                                <p>©2015 All Rights Reserved. JFlowQMS!</p>
                             </div>
-                            <div class="clearfix"></div>
-                            <div class="separator">
-
-                                <p class="change_link">New to site?
-                                    <a href="#toregister" class="to_register"> Create Account </a>
-                                </p>
-                                <div class="clearfix"></div>
-                                <br />
-                                <div>
-                                    <h1><i class="fa fa-paw" style="font-size: 26px;"></i> Gentelella Alela!</h1>
-
-                                    <p>©2015 All Rights Reserved. Gentelella Alela! is a Bootstrap 3 template. Privacy and Terms</p>
-                                </div>
-                            </div>
-                        </h:form>
-                        <!-- form -->
-                    </section>
-                    <!-- content -->
-                </div>
-
-                
+                        </div>
+                    </h:form>
+                    <!-- form -->
+                </section>
+                <!-- content -->
             </div>
+
+
         </div>
+
 
         <p:ajaxStatus onstart="disabledInput(true)" 
                       onsuccess="disabledInput(false)" onerror="alert('Error');" />
@@ -146,9 +139,6 @@
                 }
             }
         </script>
-
-
-
     </h:body>
 </html>
 

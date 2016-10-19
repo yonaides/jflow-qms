@@ -40,6 +40,17 @@ public class SucursalFacade extends AbstractFacade<Sucursal> {
             return null;
         }
     }
+    
+    public Sucursal findSucursalByNumero(String numSucursal) {
+        try {
+            return (Sucursal) em.createQuery("FROM Sucursal o WHERE o.numeroSucursal = :numSucursal")
+                    .setParameter("numSucursal", numSucursal)
+                    .setMaxResults(1)
+                    .getSingleResult();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
 
     public List<Sucursal> findAll(String busqueda) {
         return em.createNativeQuery("SELECT O.* "

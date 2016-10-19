@@ -32,7 +32,7 @@ public class SucursalBean implements Serializable {
 
     private Sucursal sucursal;
     private List<Servicio> servicios;
-
+    private String vista = "consulta";
     private String busqueda = "";
 
     @PostConstruct
@@ -64,6 +64,7 @@ public class SucursalBean implements Serializable {
     public void setSucursal(Sucursal sucursal) {
         this.sucursal = sucursalCtrl.find(sucursal.getIdsucursal());
         servicios = sucursal.getServicioList();
+        vista = "editar";
     }
 
     public List<Servicio> getServicios() {
@@ -80,6 +81,14 @@ public class SucursalBean implements Serializable {
 
     public void setServicios(List<Servicio> servicios) {
         this.servicios = servicios;
+    }
+
+    public String getVista() {
+        return vista;
+    }
+
+    public void setVista(String vista) {
+        this.vista = vista;
     }
 
     public void salvar() {

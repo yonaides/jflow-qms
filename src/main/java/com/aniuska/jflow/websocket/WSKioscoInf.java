@@ -1,5 +1,6 @@
 /**
- * WSPrinter, is a WebService client to send "Turno" to a printer
+ *
+ *
  */
 package com.aniuska.jflow.websocket;
 
@@ -8,10 +9,10 @@ import com.aniuska.jflow.entity.Kiosco;
 import com.aniuska.jflow.entity.Sucursal;
 import java.io.IOException;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Predicate;
-import java.util.stream.Stream;
 import javax.annotation.PreDestroy;
 import javax.ejb.EJB;
 import javax.ejb.Singleton;
@@ -31,21 +32,22 @@ import org.apache.logging.log4j.Logger;
  * @author hectorvent@gmail.com
  */
 @Singleton
-@ServerEndpoint(value = "/printer", decoders = {MessageDecoder.class}, encoders = {MessageEncoder.class})
-public class WSPrinter {
+@ServerEndpoint(value = "/kioscoinf", decoders = {MessageDecoder.class}, encoders = {MessageEncoder.class})
+public class WSKioscoInf {
 
     @EJB
-    KioscoFacade kioscoCtrl;
-    private final Logger LOG = LogManager.getLogger(WSPrinter.class);
+    private KioscoFacade kioscoCtrl;
+    private final Logger LOG = LogManager.getLogger(WSKioscoInf.class);
     private final Map<Kiosco, Session> clients = Collections.synchronizedMap(new HashMap());
 
     @OnOpen
     public void open(Session session) {
 
         QueryParams qpp = new QueryParams();
-        String queryString = session.getQueryString();
-        if (queryString != null) {
-            qpp.parser(queryString);
+        String qp = session.getQueryString();
+
+        if (qp != null) {
+            qpp.parser(qp);
         }
 
         login(session, qpp);
@@ -53,22 +55,25 @@ public class WSPrinter {
 
     @OnMessage
     public void handleMessage(Session session, Message message) {
-        LOG.info("Received menssage {}", message);
+        LOG.info("Receive message {} ", message);
     }
 
     @OnClose
     public void close(Session session) {
 
-        Kiosco printer = (Kiosco) session.getUserProperties()
-                .get(WSParams.PRINTER);
+        synchronized (clients) {
+            if (clients.containsValue(session)) {
 
-        if (printer != null) {
-            synchronized (clients) {
-                clients.remove(printer);
-                LOG.info("Removing printer sucursal {}",
-                        printer.getIdsucursal().getNombre());
+                Kiosco k = (Kiosco) session.getUserProperties()
+                        .get(WSParams.KIOSCO);
+
+                if (k != null) {
+                    k.setUltimaConexion(new Date());
+                    kioscoCtrl.edit(k);
+                    clients.remove(k);
+                    LOG.info("Disconnecting Kiosk {}", k.getDescripcion());
+                }
             }
-
         }
     }
 
@@ -92,6 +97,7 @@ public class WSPrinter {
     public void sendMessage(Sucursal sucursal, Message nm) {
 
         synchronized (clients) {
+
             LOG.info("Sending to all kiosk from ofice id = {}, name = {}",
                     sucursal.getIdsucursal(), sucursal.getNombre());
             LOG.info("Kiosk conneted : {}", clients.size());
@@ -99,9 +105,12 @@ public class WSPrinter {
             Predicate<Map.Entry<Kiosco, Session>> p;
             p = (entry) -> (sucursal.equals(entry.getKey().getIdsucursal()));
 
-            clients.entrySet().stream().filter(p).forEach((entry) -> {
-                sendMessage(entry.getValue(), nm);
-            });
+            clients.entrySet()
+                    .stream()
+                    .filter(p)
+                    .forEach((entry) -> {
+                        sendMessage(entry.getValue(), nm);
+                    });
         }
     }
 
@@ -128,24 +137,16 @@ public class WSPrinter {
             LOG.info("Sending message : {}", nm);
             session.getAsyncRemote()
                     .sendObject(nm);
-
-            LOG.info("The message has been sent : {}", nm);
         } catch (Exception ex) {
-            LOG.error("Error sending message to printer : ", ex.getMessage(), ex);
+            LOG.error(ex.getMessage(), ex);
         }
 
     }
 
-    public boolean isConnected(Sucursal sucursal) {
-        Predicate<Map.Entry<Kiosco, Session>> p;
-        p = (entry) -> (sucursal.equals(entry.getKey().getIdsucursal()));
-        Stream<Map.Entry<Kiosco, Session>> printers = clients.entrySet().stream();
-        return printers.anyMatch(p);
-    }
-
-    public boolean isConnected(Kiosco printer) {
-        System.out.println("VERIFICANDO CONEXION 22");
-        return clients.containsKey(printer);
+    public boolean isConnected(Kiosco k) {
+        synchronized (clients) {
+            return clients.containsKey(k);
+        }
     }
 
     private void login(Session session, QueryParams qpp) {
@@ -159,28 +160,45 @@ public class WSPrinter {
             return;
         }
 
-        Kiosco printer = kioscoCtrl.getPrinter(tokenApi);
-        if (printer == null) {
-            closeReason(session, CloseCodes.VIOLATED_POLICY,
-                    "Error login, printer (" + tokenApi + ") not found");
-            return;
+        try {
+
+            Kiosco k = kioscoCtrl.getKioscoInf(tokenApi);
+            if (k == null) {
+                closeReason(session, CloseCodes.VIOLATED_POLICY,
+                        "Authentication error! kiosk haven't be found");
+                return;
+            }
+
+            synchronized (clients) {
+
+                // Verificamos si el kiosco tiene una conexion existente para cerrarla
+                if (clients.containsKey(k)) {
+                    Session s = clients.get(k);
+                    closeReason(session, CloseCodes.UNEXPECTED_CONDITION,
+                            "Other connection happened");
+                }
+
+                k.setUltimaConexion(new Date());
+                k.setVersionKiosco(version);
+                kioscoCtrl.edit(k);
+
+                clients.put(k, session);
+                session.getUserProperties()
+                        .put(WSParams.KIOSCO, k);
+
+                sendMessage(session, new Message(MessageType.SUCCESS_LOGIN)
+                        .put("nombreOficina", k.getIdsucursal().getNombre()));
+
+                LOG.info("Kiosk '{}' connected successfully", k.getDescripcion());
+
+            }
+        } catch (Exception ex) {
+            closeReason(session, CloseCodes.NOT_CONSISTENT, "Authentication error! check tokenApi and verion params");
         }
-
-        LOG.info("Sucursal with #{} is {}", tokenApi, printer);
-        // Si el mensaje es de tipo LOGIN, lo agregarlo a la lista de Clientes (KIOSCOS)
-        clients.put(printer, session);
-
-        session.getUserProperties()
-                .put(WSParams.PRINTER, printer);
-
-        sendMessage(session,
-                new Message(MessageType.SUCCESS_LOGIN)
-                .put("nombreSucursal", printer.getIdsucursal().getNombre())
-        );
 
     }
 
-    private void closeReason(Session session, CloseCodes cc, String motivo) {
+    private void closeReason(Session session, CloseReason.CloseCodes cc, String motivo) {
         try {
             session.close(new CloseReason(cc, motivo));
         } catch (IOException ex1) {

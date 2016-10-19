@@ -60,6 +60,11 @@ public class Kiosco implements Serializable {
     @Size(min = 1, max = 55)
     @Column(name = "VERSION_KIOSCO")
     private String versionKiosco;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 55)
+    @Column(name = "TIPO_DISPOSITIVO")
+    private String tipoDispositivo;
 
     public Kiosco() {
     }
@@ -122,6 +127,14 @@ public class Kiosco implements Serializable {
         this.versionKiosco = versionKiosco;
     }
 
+    public String getTipoDispositivo() {
+        return tipoDispositivo;
+    }
+
+    public void setTipoDispositivo(String tipoDispositivo) {
+        this.tipoDispositivo = tipoDispositivo;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -136,10 +149,7 @@ public class Kiosco implements Serializable {
             return false;
         }
         Kiosco other = (Kiosco) object;
-        if ((this.idkiosco == null && other.idkiosco != null) || (this.idkiosco != null && !this.idkiosco.equals(other.idkiosco))) {
-            return false;
-        }
-        return true;
+        return !((this.idkiosco == null && other.idkiosco != null) || (this.idkiosco != null && !this.idkiosco.equals(other.idkiosco)));
     }
 
     @Override
