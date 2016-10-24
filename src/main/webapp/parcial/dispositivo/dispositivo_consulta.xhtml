@@ -40,17 +40,17 @@
                         <h:form id="formBusqueda" >
                             <p:defaultCommand target="buscarBtn" />
                             <div class="input-group">
-                                <p:inputText id="buscarKiosco" placeholder="Buscar Dispositivo..." value="#{kioscoBean.busqueda}"
+                                <p:inputText id="buscarKiosco" placeholder="Buscar Dispositivo..." value="#{dispositivoBean.busqueda}"
                                              class="form-control input-sm"/>
                                 <span class="input-group-btn">
                                     <p:commandLink id="buscarBtn" class="btn btn-primary btn-sm btn-flat" update=":kioscosTb"
-                                                   type="button" actionListener="#{kioscoBean.buscar()}" >
+                                                   type="button" actionListener="#{dispositivoBean.buscar()}" >
                                         <span class="glyphicon glyphicon-search"></span>
                                         Buscar
                                     </p:commandLink>
 
-                                    <p:commandLink id="buscarBtn2" class="btn btn-default btn-sm btn-flat" update=":kioscoContent"
-                                                   type="button" actionListener="#{kioscoBean.setVista('editar')}" >
+                                    <p:commandLink id="buscarBtn2" class="btn btn-default btn-sm btn-flat" update=":dispositivoContent"
+                                                   type="button" actionListener="#{dispositivoBean.setVista('editar')}" >
                                         <span class="glyphicon glyphicon-plus"></span>
                                         Crear
                                     </p:commandLink>
@@ -59,9 +59,9 @@
                         </h:form>
                     </div>
                     <div class="col-md-12" >
-                        <p:dataTable id="kioscosTb" var="kiosco" 
-                                     value="#{kioscoBean.kioscos}"
-                                     rowKey="#{kiosco.idkiosco}"
+                        <p:dataTable id="kioscosTb" var="dispositivo" 
+                                     value="#{dispositivoBean.dispositivos}"
+                                     rowKey="#{dispositivo.iddispositivo}"
                                      paginator="true"
                                      paginatorPosition="top"  rows="5"
                                      rowsPerPageTemplate="5,10"
@@ -70,42 +70,41 @@
 
 
                             <p:column headerText="-" style="width: 3%" class="text text-center">
-                                <label class="status #{kioscoBean.isConnected(kiosco) ? 'label-success' : 'label-danger'} "></label>
-
+                                <label class="status #{dispositivoBean.isConnected(dispositivo) ? 'label-success' : 'label-danger'} "></label>
                             </p:column>
 
                             <p:column headerText="Descripción" style="width: 20%">
-                                <h:outputText value="#{kiosco.descripcion}" />
+                                <h:outputText value="#{dispositivo.descripcion}" />
                             </p:column>
 
                             <p:column headerText="Versión Detectada" style="width: 10%" class="text text-center">
-                                <h:outputText value="#{kiosco.versionKiosco}" />
+                                <h:outputText value="#{dispositivo.versionDispositivo}" />
                             </p:column>
 
                             <p:column headerText="Ultima conexión" style="width: 20%" class="text text-center">
-                                <h:outputText value="#{kiosco.ultimaConexion}" >
+                                <h:outputText value="#{dispositivo.ultimaConexion}" >
                                     <f:convertDateTime pattern="dd/MM/yyyy hh:mm:ss a"/>
                                 </h:outputText>
                             </p:column>
 
-                            <p:column headerText="Auto Servicio" style="width: 10%" class="text text-center">
-                                <h:outputText value="#{kiosco.autoservicio == 1 ? 'Autoservicio' : 'Informativa'}" />
+                            <p:column headerText="Tipo Dispositivo" style="width: 10%" class="text text-center">
+                                <h:outputText value="#{dispositivo.tipoDispositivo}" />
                             </p:column>
 
                             <p:column headerText="Oficina" style="width: 20%">
-                                <h:outputText value="#{kiosco.idsucursal.numeroSucursal} - #{kiosco.idsucursal.nombre}" />
+                                <h:outputText value="#{dispositivo.idsucursal.numeroSucursal} - #{dispositivo.idsucursal.nombre}" />
                             </p:column>
 
                             <p:column headerText="" style="width: 10%">
                                 <div class="btn-group btn-group-justified" role="group" aria-label="...">
 
-                                    <p:commandLink id="editarKiosco" actionListener="#{kioscoBean.editarKiosco(kiosco)}"
-                                                   update=":kioscoContent"
+                                    <p:commandLink id="editarKiosco" actionListener="#{dispositivoBean.editarKiosco(dispositivo)}"
+                                                   update=":dispositivoContent"
                                                    class="btn btn-default btn-sm btn-flat" type="button" >
                                         <span class="glyphicon glyphicon-pencil"></span> 
                                     </p:commandLink>
-                                    <p:commandLink id="refresh" actionListener="#{kioscoBean.refreshKiosco(kiosco)}"
-                                                   disabled="#{!kioscoBean.isConnected(kiosco)}"
+                                    <p:commandLink id="refresh" actionListener="#{dispositivoBean.refreshKiosco(dispositivo)}"
+                                                   disabled="#{!dispositivoBean.isConnected(dispositivo)}"
                                                    class="btn btn-default btn-sm btn-flat" type="button" >
                                         <span class="glyphicon glyphicon-refresh"></span> 
                                     </p:commandLink>

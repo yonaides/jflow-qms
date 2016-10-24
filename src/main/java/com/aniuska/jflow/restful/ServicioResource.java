@@ -5,8 +5,8 @@
  */
 package com.aniuska.jflow.restful;
 
-import com.aniuska.jflow.ejb.KioscoFacade;
-import com.aniuska.jflow.entity.Kiosco;
+import com.aniuska.jflow.ejb.DispositivoFacade;
+import com.aniuska.jflow.entity.Dispositivo;
 import com.aniuska.jflow.entity.Servicio;
 import com.aniuska.jflow.restful.model.RestServicio;
 import java.util.List;
@@ -29,7 +29,7 @@ public class ServicioResource {
 
     private static final Logger LOG = LogManager.getLogger(ServicioResource.class);
     @EJB
-    KioscoFacade ctrlKiosco;
+    DispositivoFacade ctrlKiosco;
 
     @GET
     @Path("/kiosco/{tokenApi}")
@@ -37,7 +37,7 @@ public class ServicioResource {
     public Response findServicioByKiosco(@PathParam("tokenApi") String token) {
 
         LOG.info("Peticion token {}", token);
-        Kiosco k = ctrlKiosco.find(token);
+        Dispositivo k = ctrlKiosco.find(token);
 
         if (k == null) {
             return Response

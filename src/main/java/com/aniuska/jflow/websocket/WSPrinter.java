@@ -3,8 +3,8 @@
  */
 package com.aniuska.jflow.websocket;
 
-import com.aniuska.jflow.ejb.KioscoFacade;
-import com.aniuska.jflow.entity.Kiosco;
+import com.aniuska.jflow.ejb.DispositivoFacade;
+import com.aniuska.jflow.entity.Dispositivo;
 import com.aniuska.jflow.entity.Sucursal;
 import java.io.IOException;
 import java.util.Collections;
@@ -35,9 +35,9 @@ import org.apache.logging.log4j.Logger;
 public class WSPrinter {
 
     @EJB
-    KioscoFacade kioscoCtrl;
+    DispositivoFacade kioscoCtrl;
     private final Logger LOG = LogManager.getLogger(WSPrinter.class);
-    private final Map<Kiosco, Session> clients = Collections.synchronizedMap(new HashMap());
+    private final Map<Dispositivo, Session> clients = Collections.synchronizedMap(new HashMap());
 
     @OnOpen
     public void open(Session session) {
@@ -59,7 +59,7 @@ public class WSPrinter {
     @OnClose
     public void close(Session session) {
 
-        Kiosco printer = (Kiosco) session.getUserProperties()
+        Dispositivo printer = (Dispositivo) session.getUserProperties()
                 .get(WSParams.PRINTER);
 
         if (printer != null) {
@@ -96,7 +96,7 @@ public class WSPrinter {
                     sucursal.getIdsucursal(), sucursal.getNombre());
             LOG.info("Kiosk conneted : {}", clients.size());
 
-            Predicate<Map.Entry<Kiosco, Session>> p;
+            Predicate<Map.Entry<Dispositivo, Session>> p;
             p = (entry) -> (sucursal.equals(entry.getKey().getIdsucursal()));
 
             clients.entrySet().stream().filter(p).forEach((entry) -> {
@@ -105,7 +105,7 @@ public class WSPrinter {
         }
     }
 
-    public void sendMessage(Kiosco kioscoInf, Message nm) {
+    public void sendMessage(Dispositivo kioscoInf, Message nm) {
 
         synchronized (clients) {
 
@@ -137,13 +137,13 @@ public class WSPrinter {
     }
 
     public boolean isConnected(Sucursal sucursal) {
-        Predicate<Map.Entry<Kiosco, Session>> p;
+        Predicate<Map.Entry<Dispositivo, Session>> p;
         p = (entry) -> (sucursal.equals(entry.getKey().getIdsucursal()));
-        Stream<Map.Entry<Kiosco, Session>> printers = clients.entrySet().stream();
+        Stream<Map.Entry<Dispositivo, Session>> printers = clients.entrySet().stream();
         return printers.anyMatch(p);
     }
 
-    public boolean isConnected(Kiosco printer) {
+    public boolean isConnected(Dispositivo printer) {
         System.out.println("VERIFICANDO CONEXION 22");
         return clients.containsKey(printer);
     }
@@ -159,7 +159,7 @@ public class WSPrinter {
             return;
         }
 
-        Kiosco printer = kioscoCtrl.getPrinter(tokenApi);
+        Dispositivo printer = kioscoCtrl.getPrinter(tokenApi);
         if (printer == null) {
             closeReason(session, CloseCodes.VIOLATED_POLICY,
                     "Error login, printer (" + tokenApi + ") not found");

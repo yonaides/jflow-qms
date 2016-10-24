@@ -39,7 +39,7 @@
                                 <label for="descripcionKiosco" class="col-md-3 control-label">Descripción</label>
                                 <div class="col-md-9">
                                     <p:inputText id="descripcionKiosco" class="form-control input-sm" 
-                                                 value="#{kioscoBean.kiosco.descripcion}"/>
+                                                 value="#{dispositivoBean.dispositivo.descripcion}"/>
                                 </div>
                             </div>
 
@@ -47,7 +47,7 @@
                                 <label for="tipoDispositivo" class="col-md-3 control-label">Tipo Dispositivo</label>
                                 <div class="col-md-9">
                                     <h:selectOneMenu id="tipoDispositivo" class="form-control input-sm"
-                                                     value="#{kioscoBean.kiosco.tipoDispositivo}"
+                                                     value="#{dispositivoBean.dispositivo.tipoDispositivo}"
                                                      required="true" requiredMessage="Debe seleccionar oficina" >
                                         <f:selectItem itemLabel="1 - Printer" itemValue="PRINTER"/>
                                         <f:selectItem itemLabel="2 - Kiosco Inf" itemValue="KIOSCOINF"/>
@@ -60,7 +60,7 @@
                                 <label for="oficinaKiosco" class="col-md-3 control-label">Sucursal</label>
                                 <div class="col-md-9">
                                     <h:selectOneMenu id="oficinaKiosco" class="form-control input-sm"
-                                                     converter="#{sucursalConverter}" value="#{kioscoBean.kiosco.idsucursal}"
+                                                     converter="#{sucursalConverter}" value="#{dispositivoBean.dispositivo.idsucursal}"
                                                      required="true" requiredMessage="Debe seleccionar oficina" >
                                         <f:selectItem itemLabel="Seleccionar oficina " itemValue=""/>
                                         <f:selectItems value="#{estacionBean.sucursals}" 
@@ -75,15 +75,15 @@
                                 <label for="tokenKiosco" class="col-md-3 control-label">ID (Token)</label>
                                 <div class="col-md-9">
                                     <p:inputText id="tokenKiosco" class="form-control input-sm" 
-                                                 value="#{kioscoBean.kiosco.idkiosco}" readonly="true"/>
+                                                 value="#{dispositivoBean.dispositivo.iddispositivo}" readonly="true"/>
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <label for="tokenKiosco" class="col-md-3 control-label">Estatus</label>
                                 <div class="col-md-9">
-                                    <label class="status control-label #{kioscoBean.isConnected(kioscoBean.kiosco) ? 'label-success' : 'label-danger'}"/>
-                                    <label for="tokenKiosco" class="control-label">#{kioscoBean.isConnected(kioscoBean.kiosco) ? 'Conectado' : 'Desconectado'}</label>
+                                    <label class="status control-label #{dispositivoBean.isConnected(dispositivoBean.dispositivo) ? 'label-success' : 'label-danger'}"/>
+                                    <label for="tokenKiosco" class="control-label">#{dispositivoBean.isConnected(dispositivoBean.dispositivo) ? 'Conectado' : 'Desconectado'}</label>
                                 </div>
                             </div>
                         </div>
@@ -91,18 +91,18 @@
                         <div class="col-md-2">
                             <div class="btn-group btn-group-vertical btn-block">
                                 <p:commandLink id="volverConsultaBtn" class="btn btn-twitter btn-sm btn-flat" ajax="true"
-                                               actionListener="${kioscoBean.setVista('consulta')}" 
-                                               update=":kioscoContent" immediate="true">
+                                               actionListener="${dispositivoBean.setVista('consulta')}" 
+                                               update=":dispositivoContent" immediate="true">
                                     <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Volver
                                 </p:commandLink>
                                 
-                                <p:commandLink id="cancelarBtn" class="btn btn-default btn-sm btn-flat" actionListener="#{kioscoBean.nuevo()}"
+                                <p:commandLink id="cancelarBtn" class="btn btn-default btn-sm btn-flat" actionListener="#{dispositivoBean.nuevo()}"
                                                resetValues="true" type="reset" immediate="true" update="@form">
                                     <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Nuevo
                                 </p:commandLink>
 
                                 <p:commandLink id="guardarBtn" class="btn btn-primary btn-sm btn-flat" ajax="true"
-                                               actionListener="${kioscoBean.salvar()}" update="messages @form">
+                                               actionListener="${dispositivoBean.salvar()}" update="messages @form">
                                     <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span> Guardar
                                 </p:commandLink>
                             </div>

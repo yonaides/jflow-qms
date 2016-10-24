@@ -27,19 +27,19 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author hectorvent@gmail.com
  */
 @Entity
-@Table(name = "KIOSCO")
+@Table(name = "DISPOSITIVO")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Kiosco.findAll", query = "SELECT k FROM Kiosco k")})
-public class Kiosco implements Serializable {
+    @NamedQuery(name = "Dispositivo.findAll", query = "SELECT d FROM Dispositivo d")})
+public class Dispositivo implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 36)
-    @Column(name = "IDKIOSCO")
-    private String idkiosco;
+    @Column(name = "IDDISPOSITIVO")
+    private String iddispositivo;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 55)
@@ -48,43 +48,39 @@ public class Kiosco implements Serializable {
     @Column(name = "ULTIMA_CONEXION")
     @Temporal(TemporalType.TIMESTAMP)
     private Date ultimaConexion;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "AUTOSERVICIO")
-    private Character autoservicio;
+
     @JoinColumn(name = "IDSUCURSAL", referencedColumnName = "IDSUCURSAL")
     @ManyToOne(optional = false)
     private Sucursal idsucursal;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 55)
-    @Column(name = "VERSION_KIOSCO")
-    private String versionKiosco;
+    @Column(name = "VERSION_DISPOSITIVO")
+    private String versionDispositivo;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 55)
     @Column(name = "TIPO_DISPOSITIVO")
     private String tipoDispositivo;
 
-    public Kiosco() {
+    public Dispositivo() {
     }
 
-    public Kiosco(String idkiosco) {
-        this.idkiosco = idkiosco;
+    public Dispositivo(String idkiosco) {
+        this.iddispositivo = idkiosco;
     }
 
-    public Kiosco(String idkiosco, String descripcion, Character autoservicio) {
-        this.idkiosco = idkiosco;
+    public Dispositivo(String idkiosco, String descripcion) {
+        this.iddispositivo = idkiosco;
         this.descripcion = descripcion;
-        this.autoservicio = autoservicio;
     }
 
-    public String getIdkiosco() {
-        return idkiosco;
+    public String getIddispositivo() {
+        return iddispositivo;
     }
 
-    public void setIdkiosco(String idkiosco) {
-        this.idkiosco = idkiosco;
+    public void setIddispositivo(String iddispositivo) {
+        this.iddispositivo = iddispositivo;
     }
 
     public String getDescripcion() {
@@ -103,14 +99,6 @@ public class Kiosco implements Serializable {
         this.ultimaConexion = ultimaConexion;
     }
 
-    public Character getAutoservicio() {
-        return autoservicio;
-    }
-
-    public void setAutoservicio(Character autoservicio) {
-        this.autoservicio = autoservicio;
-    }
-
     public Sucursal getIdsucursal() {
         return idsucursal;
     }
@@ -119,12 +107,12 @@ public class Kiosco implements Serializable {
         this.idsucursal = idsucursal;
     }
 
-    public String getVersionKiosco() {
-        return versionKiosco;
+    public String getVersionDispositivo() {
+        return versionDispositivo;
     }
 
-    public void setVersionKiosco(String versionKiosco) {
-        this.versionKiosco = versionKiosco;
+    public void setVersionDispositivo(String versionDispositivo) {
+        this.versionDispositivo = versionDispositivo;
     }
 
     public String getTipoDispositivo() {
@@ -138,23 +126,23 @@ public class Kiosco implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (idkiosco != null ? idkiosco.hashCode() : 0);
+        hash += (iddispositivo != null ? iddispositivo.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Kiosco)) {
+        if (!(object instanceof Dispositivo)) {
             return false;
         }
-        Kiosco other = (Kiosco) object;
-        return !((this.idkiosco == null && other.idkiosco != null) || (this.idkiosco != null && !this.idkiosco.equals(other.idkiosco)));
+        Dispositivo other = (Dispositivo) object;
+        return !((this.iddispositivo == null && other.iddispositivo != null) || (this.iddispositivo != null && !this.iddispositivo.equals(other.iddispositivo)));
     }
 
     @Override
     public String toString() {
-        return "com.aniuska.turnos.entity.Kiosco[ idkiosco=" + idkiosco + " ]";
+        return "Dispositivo{" + "iddispositivo=" + iddispositivo + ", descripcion=" + descripcion + ", ultimaConexion=" + ultimaConexion + ", idsucursal=" + idsucursal + ", versionDispositivo=" + versionDispositivo + ", tipoDispositivo=" + tipoDispositivo + '}';
     }
 
 }

@@ -5,9 +5,9 @@
  */
 package com.aniuska.jflow.managedbean;
 
-import com.aniuska.jflow.ejb.KioscoFacade;
+import com.aniuska.jflow.ejb.DispositivoFacade;
 import com.aniuska.jflow.ejb.SucursalFacade;
-import com.aniuska.jflow.entity.Kiosco;
+import com.aniuska.jflow.entity.Dispositivo;
 import com.aniuska.jflow.websocket.Message;
 import com.aniuska.jflow.websocket.MessageType;
 import com.aniuska.jflow.websocket.WSKioscoInf;
@@ -27,29 +27,29 @@ import javax.faces.view.ViewScoped;
  */
 @ViewScoped
 @Named
-public class KioscoBean implements Serializable {
+public class DispositivoBean implements Serializable {
 
     private final long serialVersionUID = 23L;
 
     @EJB
     SucursalFacade sucursalCtrl;
     @EJB
-    KioscoFacade kioscoCtrl;
+    DispositivoFacade DispositivoCtrl;
     @EJB
     WSKioscoInf wsKioscoInf;
     @EJB
     WSPrinter wsPrinter;
 
     private List<String> selectedOptions;
-    private Kiosco kiosco;
-    private List<Kiosco> kioscos;
+    private Dispositivo dispositivo;
+    private List<Dispositivo> dispositivos;
     private String busqueda;
     private String vista = "consulta";
 
     @PostConstruct
     public void init() {
-        kiosco = new Kiosco();
-        kioscos = kioscoCtrl.findAll();
+        dispositivo = new Dispositivo();
+        dispositivos = DispositivoCtrl.findAll();
     }
 
     public String getBusqueda() {
@@ -60,29 +60,21 @@ public class KioscoBean implements Serializable {
         this.busqueda = busqueda;
     }
 
-    public Kiosco getKiosco() {
-        return kiosco;
+    public Dispositivo getDispositivo() {
+        return dispositivo;
     }
 
-    public void setKiosco(Kiosco kiosco) {
-        this.kiosco = kiosco;
+    public void setDispositivo(Dispositivo dispositivo) {
+        this.dispositivo = dispositivo;
     }
 
-    public void editarKiosco(Kiosco kiosco) {
-        this.kiosco = kiosco;
+    public void editarKiosco(Dispositivo kiosco) {
+        this.dispositivo = kiosco;
        vista = "editar";
     }
 
-    public List<Kiosco> getKioscos() {
-        return kioscos;
-    }
-
-    public boolean isAutoservicio() {
-        return kiosco.getAutoservicio() == null || kiosco.getAutoservicio() == 'S';
-    }
-
-    public void setAutoservicio(boolean autoservicio) {
-        kiosco.setAutoservicio(autoservicio ? 'S' : 'N');
+    public List<Dispositivo> getDispositivos() {
+        return dispositivos;
     }
 
     public List<String> getSelectedOptions() {
@@ -101,7 +93,7 @@ public class KioscoBean implements Serializable {
         this.vista = vista;
     }
 
-    public boolean isConnected(Kiosco k) {
+    public boolean isConnected(Dispositivo k) {
 
         if ("PRINTER".equals(k.getTipoDispositivo())) {
             return wsPrinter.isConnected(k);
@@ -113,28 +105,28 @@ public class KioscoBean implements Serializable {
 
     public void salvar() {
 
-        if (kiosco.getIdkiosco() == null) {
+        if (dispositivo.getIddispositivo() == null) {
 
             String token = UUID.randomUUID().toString().toUpperCase();
-            kiosco.setIdkiosco(token);
-            kiosco.setVersionKiosco("--");
-            kioscoCtrl.create(kiosco);
+            dispositivo.setIddispositivo(token);
+            dispositivo.setVersionDispositivo("--");
+            DispositivoCtrl.create(dispositivo);
 
-            MessageUtils.sendSuccessfulMessage("Nueva kiosco Creado");
+            MessageUtils.sendSuccessfulMessage("Nueva dispositivo Creado");
         } else {
-            kioscoCtrl.edit(kiosco);
-            MessageUtils.sendSuccessfulMessage("Kiosco actualizada");
+            DispositivoCtrl.edit(dispositivo);
+            MessageUtils.sendSuccessfulMessage("dispositivo actualizada");
         }
 
         nuevo();
     }
 
     public void nuevo() {
-        kiosco = new Kiosco();
-        kioscos = kioscoCtrl.findAll();
+        dispositivo = new Dispositivo();
+        dispositivos = DispositivoCtrl.findAll();
     }
 
-    public void refreshKiosco(Kiosco k) {
+    public void refreshKiosco(Dispositivo k) {
 
         Message ms = new Message(MessageType.REFRESH);
         if ("PRINTER".equals(k.getTipoDispositivo())) {

@@ -4,8 +4,8 @@
  */
 package com.aniuska.jflow.websocket;
 
-import com.aniuska.jflow.ejb.KioscoFacade;
-import com.aniuska.jflow.entity.Kiosco;
+import com.aniuska.jflow.ejb.DispositivoFacade;
+import com.aniuska.jflow.entity.Dispositivo;
 import com.aniuska.jflow.entity.Sucursal;
 import java.io.IOException;
 import java.util.Collections;
@@ -36,9 +36,9 @@ import org.apache.logging.log4j.Logger;
 public class WSKioscoInf {
 
     @EJB
-    private KioscoFacade kioscoCtrl;
+    private DispositivoFacade kioscoCtrl;
     private final Logger LOG = LogManager.getLogger(WSKioscoInf.class);
-    private final Map<Kiosco, Session> clients = Collections.synchronizedMap(new HashMap());
+    private final Map<Dispositivo, Session> clients = Collections.synchronizedMap(new HashMap());
 
     @OnOpen
     public void open(Session session) {
@@ -64,7 +64,7 @@ public class WSKioscoInf {
         synchronized (clients) {
             if (clients.containsValue(session)) {
 
-                Kiosco k = (Kiosco) session.getUserProperties()
+                Dispositivo k = (Dispositivo) session.getUserProperties()
                         .get(WSParams.KIOSCO);
 
                 if (k != null) {
@@ -102,7 +102,7 @@ public class WSKioscoInf {
                     sucursal.getIdsucursal(), sucursal.getNombre());
             LOG.info("Kiosk conneted : {}", clients.size());
 
-            Predicate<Map.Entry<Kiosco, Session>> p;
+            Predicate<Map.Entry<Dispositivo, Session>> p;
             p = (entry) -> (sucursal.equals(entry.getKey().getIdsucursal()));
 
             clients.entrySet()
@@ -114,7 +114,7 @@ public class WSKioscoInf {
         }
     }
 
-    public void sendMessage(Kiosco kioscoInf, Message nm) {
+    public void sendMessage(Dispositivo kioscoInf, Message nm) {
 
         synchronized (clients) {
 
@@ -143,7 +143,7 @@ public class WSKioscoInf {
 
     }
 
-    public boolean isConnected(Kiosco k) {
+    public boolean isConnected(Dispositivo k) {
         synchronized (clients) {
             return clients.containsKey(k);
         }
@@ -162,7 +162,7 @@ public class WSKioscoInf {
 
         try {
 
-            Kiosco k = kioscoCtrl.getKioscoInf(tokenApi);
+            Dispositivo k = kioscoCtrl.getKioscoInf(tokenApi);
             if (k == null) {
                 closeReason(session, CloseCodes.VIOLATED_POLICY,
                         "Authentication error! kiosk haven't be found");
@@ -179,7 +179,7 @@ public class WSKioscoInf {
                 }
 
                 k.setUltimaConexion(new Date());
-                k.setVersionKiosco(version);
+                k.setVersionDispositivo(version);
                 kioscoCtrl.edit(k);
 
                 clients.put(k, session);

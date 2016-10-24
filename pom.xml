@@ -3,11 +3,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.aniuska</groupId>
-    <artifactId>jflowqms</artifactId>
+    <artifactId>jflow-qms</artifactId>
     <version>0.0.1</version>
     <packaging>war</packaging>
 
-    <name>jflowqms</name>
+    <name>jflow-qms</name>
 
     <properties>
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>

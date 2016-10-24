@@ -80,7 +80,7 @@ public class Sucursal implements Serializable {
     @OneToMany(mappedBy = "idsucursal")
     private List<Estacion> estacionList;
     @OneToMany(mappedBy = "idsucursal")
-    private List<Kiosco> kioscoList;
+    private List<Dispositivo> dispositivoList;
     @OneToMany(mappedBy = "idsucursal")
     private List<Usuario> usuarioList;
     @OneToMany(mappedBy = "idsucursal")
@@ -175,12 +175,12 @@ public class Sucursal implements Serializable {
     }
 
     @XmlTransient
-    public List<Kiosco> getKioscoList() {
-        return kioscoList;
+    public List<Dispositivo> getDispositivoList() {
+        return dispositivoList;
     }
 
-    public void setKioscoList(List<Kiosco> kioscoList) {
-        this.kioscoList = kioscoList;
+    public void setDispositivoList(List<Dispositivo> dispositivoList) {
+        this.dispositivoList = dispositivoList;
     }
 
     @XmlTransient

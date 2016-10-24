@@ -5,7 +5,7 @@
  */
 package com.aniuska.jflow.ejb;
 
-import com.aniuska.jflow.entity.Kiosco;
+import com.aniuska.jflow.entity.Dispositivo;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -15,7 +15,7 @@ import javax.persistence.PersistenceContext;
  * @author hectorvent@gmail.com
  */
 @Stateless
-public class KioscoFacade extends AbstractFacade<Kiosco> {
+public class DispositivoFacade extends AbstractFacade<Dispositivo> {
 
     @PersistenceContext(unitName = "JFLOW")
     private EntityManager em;
@@ -25,14 +25,14 @@ public class KioscoFacade extends AbstractFacade<Kiosco> {
         return em;
     }
 
-    public KioscoFacade() {
-        super(Kiosco.class);
+    public DispositivoFacade() {
+        super(Dispositivo.class);
     }
 
-    public Kiosco getKioscoInf(String token) {
-        Kiosco k = super.find(token);
+    public Dispositivo getKioscoInf(String token) {
+        Dispositivo k = super.find(token);
 
-        // Verificar si es Kiosco
+        // Verificar si es Dispositivo
         if (k != null && "KIOSCOINF".equals(k.getTipoDispositivo())) {
             return k;
         }
@@ -40,8 +40,8 @@ public class KioscoFacade extends AbstractFacade<Kiosco> {
         return null;
     }
 
-    public Kiosco getPrinter(String token) {
-        Kiosco k = super.find(token);
+    public Dispositivo getPrinter(String token) {
+        Dispositivo k = super.find(token);
 
         // Verificar si es Printer
         if (k != null && "PRINTER".equals(k.getTipoDispositivo())) {

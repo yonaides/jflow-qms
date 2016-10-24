@@ -5,12 +5,12 @@
  */
 package com.aniuska.jflow.restful;
 
-import com.aniuska.jflow.ejb.KioscoFacade;
+import com.aniuska.jflow.ejb.DispositivoFacade;
 import com.aniuska.jflow.ejb.SucursalFacade;
 import com.aniuska.jflow.ejb.ServicioFacade;
 import com.aniuska.jflow.ejb.TicketFacade;
 import com.aniuska.jflow.entity.Cliente;
-import com.aniuska.jflow.entity.Kiosco;
+import com.aniuska.jflow.entity.Dispositivo;
 import com.aniuska.jflow.entity.Sucursal;
 import com.aniuska.jflow.entity.Servicio;
 import com.aniuska.jflow.entity.Ticket;
@@ -52,7 +52,7 @@ public class TurnoResource {
     private final ExecutorService executorService = Executors.newCachedThreadPool();
     private static final Logger LOG = LogManager.getLogger(ServicioResource.class);
     @EJB
-    KioscoFacade kioscoCtrl;
+    DispositivoFacade kioscoCtrl;
     @EJB
     TicketFacade turnoCtrl;
     @EJB
@@ -66,7 +66,7 @@ public class TurnoResource {
     public Response findTurnosByKiosco(@PathParam("tokenApi") String token) {
 
         LOG.info("Peticion token {}", token);
-        Kiosco k = kioscoCtrl.find(token);
+        Dispositivo k = kioscoCtrl.find(token);
 
         if (k == null) {
             return Response
@@ -116,7 +116,7 @@ public class TurnoResource {
 
     private Response doCreateTurno(RestTicket rt) {
         LOG.info("Buscando Kiosco by Token {}", rt.getTokenApi());
-        Kiosco k = kioscoCtrl.find(rt.getTokenApi());
+        Dispositivo k = kioscoCtrl.find(rt.getTokenApi());
 
         if (k == null) {
             return Response
