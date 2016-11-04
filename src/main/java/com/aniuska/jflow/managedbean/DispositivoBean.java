@@ -39,7 +39,6 @@ public class DispositivoBean implements Serializable {
     WSKioscoInf wsKioscoInf;
     @EJB
     WSPrinter wsPrinter;
-
     private List<String> selectedOptions;
     private Dispositivo dispositivo;
     private List<Dispositivo> dispositivos;
@@ -70,7 +69,7 @@ public class DispositivoBean implements Serializable {
 
     public void editarKiosco(Dispositivo kiosco) {
         this.dispositivo = kiosco;
-       vista = "editar";
+        vista = "editar";
     }
 
     public List<Dispositivo> getDispositivos() {

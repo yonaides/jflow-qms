@@ -30,13 +30,13 @@ public class CierreAutomatico implements Job {
 
     private Object getEJB(String name) throws NamingException {
         final Context cx = new InitialContext();
-        return cx.lookup("java:global/TurnosWebApp-2.0.0.3/" + name);
+        return cx.lookup("java:global/jflow-qms/" + name);
     }
 
     public void ejecutarProceso() {
 
         try {
-            turnoCtrl = (TicketFacade) getEJB("TurnoFacade");
+            turnoCtrl = (TicketFacade) getEJB("TicketFacade");
         } catch (NamingException ex) {
             LOG.error("Error: ", ex);
             return;

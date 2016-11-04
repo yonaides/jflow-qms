@@ -18,13 +18,12 @@ import javax.inject.Named;
  *
  * @author hectorvent@gmail.com
  */
-
 @RequestScoped
 @Named("motivoAbandonoConverter")
 public class MotivoAbandonoConverter implements Converter {
 
     @EJB
-    private MotivoAbandonoFacade motivoAbandonoCtrl;
+    MotivoAbandonoFacade motivoAbandonoCtrl;
 
     @Override
     public Object getAsObject(FacesContext context, UIComponent component, String value) {
@@ -38,10 +37,6 @@ public class MotivoAbandonoConverter implements Converter {
     @Override
     public String getAsString(FacesContext context, UIComponent component, Object value) {
         return value == null || (value instanceof String) ? null : ((MotivoAbandono) value).getIdmotivoAbandono().toString();
-    }
-
-    public void setMotivoAbandonoCtrl(MotivoAbandonoFacade motivoAbandonoCtrl) {
-        this.motivoAbandonoCtrl = motivoAbandonoCtrl;
     }
 
 }

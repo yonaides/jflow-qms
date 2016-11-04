@@ -26,13 +26,14 @@ public class ConfiguracionBean implements Serializable {
 
     @PostConstruct
     public void init() {
-        configuracion = new ArrayList();
 
         value = "init";
+        configuracion = new ArrayList();
         configuracion.add(new GenericType("Motivo Abandono", "motivo_abandono"));
         configuracion.add(new GenericType("Motivo Receso", "motivo_receso"));
-        configuracion.add(new GenericType("Tipo Estaciones", "tipo_estacion"));
-        configuracion.add(new GenericType("Archivos Anuncios", "archivos_anuncios"));
+        configuracion.add(new GenericType("Variables del Sistema", "variables"));
+        configuracion.add(new GenericType("Subir Archivos", "archivos"));
+        configuracion.add(new GenericType("Lista Archivos", "archivos_lista"));
     }
 
     public String getValue() {

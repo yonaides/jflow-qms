@@ -18,7 +18,7 @@
 
             <div class="box-body">
                 <div class="row">
-                    <div class="col-md-5">
+                    <div class="col-md-12">
                         <h:form class="form form-personalizado form-horizontal" >
                             <div class="form-group">
                                 <label for="oficinaKiosco" class="col-md-3 control-label">Configuración</label>
@@ -35,9 +35,9 @@
                             </div>
                         </h:form>
                     </div>
-                    <div class="col-md-7">
+                    <div class="col-md-12">
                         <h:panelGroup id="contentConfig" >
-                            <ui:include src="#{configuracionBean.value}.xhtml" rendered="#{configuracionBean.value != null}" />
+                            <ui:include src="configuracion_#{configuracionBean.value}.xhtml" rendered="#{configuracionBean.value != null}" />
                         </h:panelGroup>
                     </div>
                 </div>

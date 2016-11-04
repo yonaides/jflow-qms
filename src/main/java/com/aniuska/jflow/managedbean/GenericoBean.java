@@ -28,10 +28,9 @@ public class GenericoBean implements Serializable {
     private final long serialVersionUID = 23L;
 
     @EJB
-    private MotivoAbandonoFacade motivoAbandonoCtrl;
+    MotivoAbandonoFacade motivoAbandonoCtrl;
     @EJB
-    private MotivoRecesoFacade motivoRecesoCtrl;
-
+    MotivoRecesoFacade motivoRecesoCtrl;
     private MotivoAbandono motivoAbandono;
     private MotivoReceso motivoReceso;
 
@@ -39,10 +38,6 @@ public class GenericoBean implements Serializable {
     public void init() {
         motivoAbandono = new MotivoAbandono();
         motivoReceso = new MotivoReceso();
-    }
-
-    public void setMotivoAbandonoCtrl(MotivoAbandonoFacade motivoAbandonoCtrl) {
-        this.motivoAbandonoCtrl = motivoAbandonoCtrl;
     }
 
     public MotivoAbandono getMotivoAbandono() {
@@ -63,10 +58,6 @@ public class GenericoBean implements Serializable {
 
     public void setMotivoReceso(MotivoReceso motivoReceso) {
         this.motivoReceso = motivoReceso;
-    }
-
-    public void setMotivoRecesoCtrl(MotivoRecesoFacade motivoRecesoCtrl) {
-        this.motivoRecesoCtrl = motivoRecesoCtrl;
     }
 
     public List<MotivoReceso> getMotivoRecesos() {

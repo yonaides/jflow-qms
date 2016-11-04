@@ -28,21 +28,19 @@ public class AuthenticationBean implements Serializable {
     private static final Logger LOGGER = LogManager.getLogger(AuthenticationBean.class);
     private static final long serialVersionUID = 7765876811740798583L;
 
+    @EJB
+    UsuarioFacade usuarioFacade;
+    @EJB
+    SessionesFacade sessionCtrl;
+    @Inject
+    MenuController menuController;
     private String username = "";
     private String password;
     private boolean remenberMe;
     private boolean loggedIn;
     private Usuario usuario;
     private Set<String> rols;
-    @EJB
-    private UsuarioFacade usuarioFacade;
-    @EJB
-    private SessionesFacade sessionCtrl;
-
     private Session session;
-
-    @Inject
-    private MenuController menuController;
 
     public String getUsername() {
         return username;
@@ -58,14 +56,6 @@ public class AuthenticationBean implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public MenuController getMenuController() {
-        return menuController;
-    }
-
-    public void setMenuController(MenuController menuController) {
-        this.menuController = menuController;
     }
 
     public boolean isLoggedIn() {
@@ -93,17 +83,10 @@ public class AuthenticationBean implements Serializable {
         menuController.setSession(session);
     }
 
-    public void setSessionCtrl(SessionesFacade sessionCtrl) {
-        this.sessionCtrl = sessionCtrl;
-    }
-
     public void refreshRols() {
-        usuario = usuarioFacade.find(usuario.getIdoperador());
-
         rols.clear();
-        for (Rol rol : usuario.getRolList()) {
-            rols.add(rol.getNombre());
-        }
+        usuario = usuarioFacade.find(usuario.getIdoperador());
+        usuario.getRolList().stream().forEach(rol -> rols.add(rol.getNombre()));
     }
 
     public String doLogin() {
@@ -122,9 +105,7 @@ public class AuthenticationBean implements Serializable {
 
         if (success && usuario != null && 'S' == usuario.getHabilitado()) {
 
-            for (Rol rol : usuario.getRolList()) {
-                rols.add(rol.getNombre());
-            }
+            usuario.getRolList().stream().forEach(rol -> rols.add(rol.getNombre()));
             loggedIn = true;
             setMainContent();
             return RedirectPath.MAIN;
@@ -156,8 +137,6 @@ public class AuthenticationBean implements Serializable {
         session = sessionCtrl.getOpenSesssion(usuario);
         menuController.setSession(session);
 
-//        System.out.println("MenuController : " + menuController);
-//
         if (rols.contains(RolEnum.CREAR_TURNO)) {
             menuController.setPagina("ticket/generar_ticket");
         } else if (rols.contains(RolEnum.ATENDER_TURNO)) {

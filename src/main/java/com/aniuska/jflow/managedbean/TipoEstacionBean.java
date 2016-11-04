@@ -26,7 +26,7 @@ public class TipoEstacionBean implements Serializable {
     private final long serialVersionUID = 28L;
 
     @EJB
-    private TipoEstacionFacade tipoEstacionCtrl;
+    TipoEstacionFacade tipoEstacionCtrl;
     private TipoEstacion tipoEstacion;
 
     @PostConstruct
@@ -40,10 +40,6 @@ public class TipoEstacionBean implements Serializable {
 
     public void setTipoEstacion(TipoEstacion tipoEstacion) {
         this.tipoEstacion = tipoEstacion;
-    }
-
-    public void setTipoEstacionCtrl(TipoEstacionFacade tipoEstacionCtrl) {
-        this.tipoEstacionCtrl = tipoEstacionCtrl;
     }
 
     public List<TipoEstacion> getTipoEstaciones() {

@@ -51,20 +51,23 @@ public class ColaTicketBean implements Serializable {
     private final long serialVersionUID = 75L;
 
     @EJB
-    private TicketFacade turnoCtrl;
+    TicketFacade turnoCtrl;
     @EJB
-    private ServicioFacade servicioCtrl;
+    ServicioFacade servicioCtrl;
     @EJB
-    private MotivoRecesoFacade movitoRecesoCtrl;
+    MotivoRecesoFacade movitoRecesoCtrl;
     @EJB
-    private MotivoAbandonoFacade motivoAbandonoCtrl;
+    MotivoAbandonoFacade motivoAbandonoCtrl;
     @EJB
-    private ClienteFacade clienteCtrl;
+    ClienteFacade clienteCtrl;
     @EJB
-    private WSKioscoInf wsNotificacion;
+    WSKioscoInf wsNotificacion;
     @EJB
-    private EsperaFacade esperaCtrl;
-
+    EsperaFacade esperaCtrl;
+    @Inject
+    AuthenticationBean authenticationBean;
+    @Inject
+    SessionBean sessionBean;
     private TicketDetalle ticketDetalle;
     private Cliente cliente;
     private Servicio servicio;
@@ -73,11 +76,6 @@ public class ColaTicketBean implements Serializable {
     private int tipoOpcionTurno = 0;
     private Espera espera;
     private boolean tomarTurno = true;
-
-    @Inject
-    private AuthenticationBean authenticationBean;
-    @Inject
-    private SessionBean sessionBean;
 
     @PostConstruct
     public void init() {
@@ -91,18 +89,6 @@ public class ColaTicketBean implements Serializable {
         tomarTurno = true;
 
         espera = esperaCtrl.findEsperaActiva(authenticationBean.getSession());
-    }
-
-    public void setTurnoCtrl(TicketFacade turnoCtrl) {
-        this.turnoCtrl = turnoCtrl;
-    }
-
-    public void setClienteCtrl(ClienteFacade clienteCtrl) {
-        this.clienteCtrl = clienteCtrl;
-    }
-
-    public void setAuthenticationBean(AuthenticationBean authenticationBean) {
-        this.authenticationBean = authenticationBean;
     }
 
     public TicketDetalle getTicketDetalle() {
@@ -127,22 +113,6 @@ public class ColaTicketBean implements Serializable {
 
     public void setTitular(boolean titu) {
         this.cliente.setTitular((short) (titu ? 1 : 0));
-    }
-
-    public void setWsNotificacion(WSKioscoInf wsNotificacion) {
-        this.wsNotificacion = wsNotificacion;
-    }
-
-    public void setServicioCtrl(ServicioFacade servicioCtrl) {
-        this.servicioCtrl = servicioCtrl;
-    }
-
-    public void setMovitoRecesoCtrl(MotivoRecesoFacade movitoRecesoCtrl) {
-        this.movitoRecesoCtrl = movitoRecesoCtrl;
-    }
-
-    public void setMotivoAbandonoCtrl(MotivoAbandonoFacade motivoAbandonoCtrl) {
-        this.motivoAbandonoCtrl = motivoAbandonoCtrl;
     }
 
     public List<MotivoAbandono> getMotivoAbandonos() {
@@ -189,14 +159,6 @@ public class ColaTicketBean implements Serializable {
         this.tipoOpcionTurno = tipoOpcionTurno;
     }
 
-    public EsperaFacade getEsperaCtrl() {
-        return esperaCtrl;
-    }
-
-    public void setEsperaCtrl(EsperaFacade esperaCtrl) {
-        this.esperaCtrl = esperaCtrl;
-    }
-
     public Espera getEspera() {
         return espera;
     }
@@ -207,10 +169,6 @@ public class ColaTicketBean implements Serializable {
 
     public void setTomarTurno(boolean tomarTurno) {
         this.tomarTurno = tomarTurno;
-    }
-
-    public void setSessionBean(SessionBean sessionBean) {
-        this.sessionBean = sessionBean;
     }
 
     public void terminarTurno() {

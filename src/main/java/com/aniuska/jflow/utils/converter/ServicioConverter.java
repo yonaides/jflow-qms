@@ -23,7 +23,7 @@ import javax.inject.Named;
 public class ServicioConverter implements Converter {
 
     @EJB
-    private ServicioFacade servicioFacade;
+    ServicioFacade servicioFacade;
 
     @Override
     public Object getAsObject(FacesContext context, UIComponent component, String value) {
@@ -37,14 +37,6 @@ public class ServicioConverter implements Converter {
     @Override
     public String getAsString(FacesContext context, UIComponent component, Object value) {
         return value == null || (value instanceof String) ? "" : ((Servicio) value).getIdservicio().toString();
-    }
-
-    public ServicioFacade getServicioFacade() {
-        return servicioFacade;
-    }
-
-    public void setServicioFacade(ServicioFacade servicioFacade) {
-        this.servicioFacade = servicioFacade;
     }
 
 }

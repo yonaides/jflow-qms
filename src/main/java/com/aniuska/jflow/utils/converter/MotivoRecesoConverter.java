@@ -23,7 +23,7 @@ import javax.inject.Named;
 public class MotivoRecesoConverter implements Converter {
 
     @EJB
-    private MotivoRecesoFacade motivoRecesoCtrl;
+    MotivoRecesoFacade motivoRecesoCtrl;
 
     @Override
     public Object getAsObject(FacesContext context, UIComponent component, String value) {
@@ -38,10 +38,6 @@ public class MotivoRecesoConverter implements Converter {
     @Override
     public String getAsString(FacesContext context, UIComponent component, Object value) {
         return value == null || (value instanceof String) ? null : ((MotivoReceso) value).getIdmotivoReceso().toString();
-    }
-
-    public void setMotivoRecesoCtrl(MotivoRecesoFacade motivoRecesoCtrl) {
-        this.motivoRecesoCtrl = motivoRecesoCtrl;
     }
 
 }

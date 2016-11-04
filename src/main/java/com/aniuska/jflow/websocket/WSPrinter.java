@@ -122,6 +122,18 @@ public class WSPrinter {
         }
     }
 
+    public void sendMessage(Message nm) {
+
+        synchronized (clients) {
+
+            LOG.info("Sending to all kiosk...");
+
+            this.clients.forEach((Dispositivo d, Session session) -> {
+                sendMessage(session, nm);
+            });
+        }
+    }
+
     private void sendMessage(Session session, Message nm) {
 
         try {
@@ -131,7 +143,7 @@ public class WSPrinter {
 
             LOG.info("The message has been sent : {}", nm);
         } catch (Exception ex) {
-            LOG.error("Error sending message to printer : ", ex.getMessage(), ex);
+            LOG.error("Error sending message to printer : {}", ex.getMessage(), ex);
         }
 
     }
@@ -144,7 +156,6 @@ public class WSPrinter {
     }
 
     public boolean isConnected(Dispositivo printer) {
-        System.out.println("VERIFICANDO CONEXION 22");
         return clients.containsKey(printer);
     }
 

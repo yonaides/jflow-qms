@@ -22,11 +22,7 @@ import javax.inject.Named;
 public class SectorBean implements Serializable {
 
     @EJB
-    private SectorFacade sectorCtrl;
-
-    public void setSectorCtrl(SectorFacade sectorCtrl) {
-        this.sectorCtrl = sectorCtrl;
-    }
+    SectorFacade sectorCtrl;
 
     public List<Sector> getSectores() {
         return sectorCtrl.findAll();

@@ -140,7 +140,7 @@ public class GenerarTicketBean implements Serializable {
     public boolean isPrinterConnected() {
         Sucursal ofi = authenticationBean.getUsuario().getIdsucursal();
         //return true;
-       return wsPrinter.isConnected(ofi);
+        return wsPrinter.isConnected(ofi);
     }
 
     public void salvar() {
@@ -249,16 +249,17 @@ public class GenerarTicketBean implements Serializable {
             return;
         }
 
-        Message mes = new Message(MessageType.PRINT);
         Cliente cli = turno.getIdcliente();
         TicketDetalle td = turno.getTicketDetalleList().get(0);
 
-        mes.put("contrato", cli.getContrato().toString())
+        Message mes = new Message(MessageType.PRINT);
+        mes.put("cuenta", cli.getContrato().toString())
                 .put("fecha", DateUtils.dateTime2String(turno.getFechaCreacion()))
-                .put("nombreCliente", cli.getNombre() + " " + cli.getApellido())
-                .put("sucursal", turno.getIdsucursal().getNombre())
+                .put("nombre", cli.toString())
+                .put("oficicina", turno.getIdsucursal().getNombre())
                 .put("servicio", td.getIdservicio().getNombre())
-                .put("turno", turno.getHappyNumber());
+                .put("turno", turno.getHappyNumber())
+                .put("empresa", "JFlow QMS");
 
         wsPrinter.sendMessage(turno.getIdsucursal(), mes);
 

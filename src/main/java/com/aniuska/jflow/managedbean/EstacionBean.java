@@ -33,9 +33,9 @@ public class EstacionBean implements Serializable {
     private final long serialVersionUID = 24L;
 
     @EJB
-    private SucursalFacade sucursalCtrl;
+    SucursalFacade sucursalCtrl;
     @EJB
-    private EstacionFacade estacionCtrl;
+    EstacionFacade estacionCtrl;
     @EJB
     private TipoEstacionFacade tipoEstacionCtrl;
     private Estacion estacion;
@@ -65,14 +65,6 @@ public class EstacionBean implements Serializable {
         this.busqueda = busqueda;
     }
 
-    public SucursalFacade getSucursalCtrl() {
-        return sucursalCtrl;
-    }
-
-    public void setSucursalCtrl(SucursalFacade sucursalCtrl) {
-        this.sucursalCtrl = sucursalCtrl;
-    }
-
     public List<Servicio> getSucursalServicios() {
         return sucursalServicios;
     }
@@ -87,14 +79,6 @@ public class EstacionBean implements Serializable {
 
     public void setSucursals(List<Sucursal> sucursals) {
         this.sucursals = sucursals;
-    }
-
-    public EstacionFacade getEstacionCtrl() {
-        return estacionCtrl;
-    }
-
-    public void setEstacionCtrl(EstacionFacade estacionCtrl) {
-        this.estacionCtrl = estacionCtrl;
     }
 
     public List<EstacionServicio> getEstacionServicios() {
@@ -118,8 +102,8 @@ public class EstacionBean implements Serializable {
     }
 
     public void setEstacion(Estacion est) {
-        this.estacion = estacionCtrl.find(est.getIdestacion());
 
+        this.estacion = estacionCtrl.find(est.getIdestacion());
         estacionServicios = estacion.getEstacionServicioList();
         sucursalServicios = estacion.getIdsucursal().getServicioList();
 

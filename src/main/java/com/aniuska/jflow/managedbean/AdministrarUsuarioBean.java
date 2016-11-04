@@ -80,10 +80,6 @@ public class AdministrarUsuarioBean implements Serializable {
         return usuarioRol;
     }
 
-    public void setRolFacade(RolFacade rolFacade) {
-        this.rolFacade = rolFacade;
-    }
-
     public List<Rol> getRolList() {
         return rolList;
     }

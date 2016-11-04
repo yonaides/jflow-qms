@@ -1,0 +1,131 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <div class="panel panel-primary">
+
+        <div class="panel-heading">Variables del Sistema</div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-sm-12">
+                    <h:form >
+                        <p:commandLink id="agregarUsuarioBtn" 
+                                       class="btn btn-success input-sm btn-flat"  
+                                       oncomplete="PF('variablePn').show()" update=":variablePn"
+                                       actionListener="#{configuracionBean1.nuevaConfiguracion()}" >
+                            <span class="glyphicon glyphicon-plus"></span> Agregar Variable
+                        </p:commandLink>
+
+                    </h:form>
+                </div>
+                <div class="col-sm-12">
+                    <p:dataTable id="usuariosTb"
+                                 var="conf" 
+                                 value="#{configuracionBean1.configuraciones}" >
+
+                        <p:column headerText="Varible" style="width: 20%;">
+                            <h:outputText value="#{conf.nombreVariable}" />
+                        </p:column> 
+
+                        <p:column headerText="Descripción" style="width: 20%;">
+                            <h:outputText value="#{conf.descripcion}" />
+                        </p:column>
+
+                        <p:column headerText="Valor" style="width: 55%;">
+                            <h:outputText value="#{conf.valor}" escape="false"/>
+                        </p:column>
+
+                        <p:column headerText="-" style="width: 5%;" exportable="false">
+
+                            <div class="btn-group btn-group-justified btn-group-sm" role="group" aria-label="...">
+
+                                <p:commandLink id="verEstadoCuentaBtn" oncomplete="PF('variablePn').show()"
+                                               class="btn btn-default btn-flat" update="variablePn"
+                                               actionListener="#{configuracionBean1.setConfiguracion(conf)}" >
+                                    <span class="glyphicon glyphicon-edit"></span> 
+                                </p:commandLink>
+                            </div>
+                        </p:column>
+
+                    </p:dataTable>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+    <p:dialog header="Agregar variable" resizable="false" draggable="true"
+              id="variablePn" widgetVar="variablePn" modal="true" width="80%">
+
+
+        <h:form  id="usuarioForm">
+            <div class="row">
+                <div class="col-md-4">
+
+                    <div class="form-group">
+                        <label for="nombreVarieble" class="control-label">Nombre Variable</label>
+                        <p:inputText value="#{configuracionBean1.configuracion.nombreVariable}" 
+                                     readonly="#{!configuracionBean1.nueva}"
+                                     class="form-control input-sm" id="nombreVarieble" placeholder="Nombre Variable"
+                                     required="true" requiredMessage="No se ha especificado descripción"/>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="tipoConfiguracion" class="control-label">Tipo Dato</label>
+                        <h:selectOneMenu id="tipoConfiguracion"  class="form-control input-sm"
+                                         readonly="#{!configuracionBean1.nueva}"
+                                         value="#{configuracionBean1.configuracion.tipoDato}" 
+                                         required="true" requiredMessage="Debe seleccionar oficina" >
+
+                            <p:ajax listener="#{configuracionBean1.changeTipoVariable()}"
+                                    update="@form"/>
+
+                            <f:selectItem itemValue="STRING" itemLabel="String" />
+                            <f:selectItem itemValue="NUMERICO" itemLabel="Numerico"/>
+                            <f:selectItem itemValue="HTML" itemLabel="HTML"/>
+                            <f:selectItem itemValue="BOOLEAN" itemLabel="Booleano"/>
+                        </h:selectOneMenu>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="descripcion" class="control-label">Descripción</label>
+                        <p:inputTextarea value="#{configuracionBean1.configuracion.descripcion}"
+                                         class="form-control input-sm" id="nombre" placeholder="Nombre"
+                                         required="true" requiredMessage="No se ha especificado descripción"/>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <label for="descripcion" class="control-label">VALOR</label>
+
+                    <p:inputText rendered="#{configuracionBean1.configuracion.tipoDato != 'HTML' }" 
+                                 value="#{configuracionBean1.configuracion.valor}"
+                                 class="form-control input-sm" placeholder="valor.."
+                                 required="true" requiredMessage="No se ha especificado descripción"/>
+                    <p:editor id="editor" rendered="#{configuracionBean1.configuracion.tipoDato == 'HTML' }" 
+                              widgetVar="editorWidget" value="#{configuracionBean1.configuracion.valor}" 
+                              width="500"/>
+                </div>
+                <div class="col-md-2">
+                    <div class="btn-group btn-group-vertical btn-block" role="group" aria-label="...">
+                        <p:commandLink actionListener="#{configuracionBean1.guardarConfiguracion()}" 
+                                       update="usuariosTb :messages"
+                                       class="btn btn-primary btn-flat">
+                            <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>
+                            Guardar
+                        </p:commandLink>
+                    </div>
+                </div>
+            </div>
+        </h:form>
+
+
+    </p:dialog>
+    <!--Fin consulta Titular-->
+
+</ui:composition>
+

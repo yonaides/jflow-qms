@@ -14,12 +14,12 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
     
-    <repositories>
+<!--    <repositories>
         <repository>
             <id>primefaces.repo</id>
             <url>http://repository.primefaces.org/</url>
         </repository>
-    </repositories>
+    </repositories>-->
     
     
     <dependencies>

@@ -10,7 +10,6 @@ import com.aniuska.jflow.ejb.DashboardFacade;
 import com.aniuska.jflow.entity.Usuario;
 import com.aniuska.jflow.utils.Estados;
 import java.io.Serializable;
-import java.math.BigDecimal;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.view.ViewScoped;

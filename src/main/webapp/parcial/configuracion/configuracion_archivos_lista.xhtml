@@ -1,0 +1,59 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <div class="panel panel-primary">
+
+        <div class="panel-heading">Lista de archivos de Anuncios</div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <h:form class="form form-personalizado form-horizontal" 
+                            id="formMotivoAbandono">
+
+                        <div class="col-md-12">
+                            <p:dataTable id="archivoTb"
+                                         var="archivo" 
+                                         value="#{archivoAnuncionBean.archivos}" >
+
+                                <p:column headerText="-" style="width: 5%;" class="text-center">
+                                    <i class="fa #{ archivoAnuncionBean.getFileTypeIcon(archivo.fomato) }" aria-hidden="true"></i>
+                                </p:column> 
+
+                                <p:column headerText="Id" style="width: 25%;">
+                                    <h:outputText value="#{archivo.id}" />
+                                </p:column>
+
+                                <p:column headerText="Nombre" style="width: 35%;">
+                                    <h:outputText value="#{archivo.nombre}" />
+                                </p:column>
+
+                                <p:column headerText="Size" style="width: 10%;" class="text-right">
+                                    <h:outputText value="#{ archivoAnuncionBean.humanReadableByteCount(archivo.tamano, true)}" />
+                                </p:column>
+
+                                <p:column headerText="Tipo Contenido" style="width: 10%;" class="text-center">
+                                    <h:outputText value="#{archivo.tipoContenido}" />
+                                </p:column>
+                                <p:column headerText="" style="width: 5%;" class="text-center">
+                                    <a target="_blank" href="/jflow-qms/archivo/#{archivo.id}"> 
+                                        <i class="fa fa-download"></i>
+                                    </a>
+                                </p:column>
+
+
+                            </p:dataTable>
+                        </div>
+                    </h:form>
+                </div>
+            </div>
+
+            <hr />
+        </div>
+    </div>
+
+</ui:composition>
+

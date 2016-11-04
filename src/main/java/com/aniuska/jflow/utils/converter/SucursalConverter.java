@@ -23,7 +23,7 @@ import javax.inject.Named;
 public class SucursalConverter implements Converter {
 
     @EJB
-    private SucursalFacade sucursalCtrl;
+    SucursalFacade sucursalCtrl;
 
     @Override
     public Object getAsObject(FacesContext context, UIComponent component, String value) {
@@ -37,14 +37,6 @@ public class SucursalConverter implements Converter {
     @Override
     public String getAsString(FacesContext context, UIComponent component, Object value) {
         return value == null || (value instanceof String) ? "" : ((Sucursal) value).getIdsucursal().toString();
-    }
-
-    public SucursalFacade getSucursalCtrl() {
-        return sucursalCtrl;
-    }
-
-    public void setSucursalCtrl(SucursalFacade sucursalCtrl) {
-        this.sucursalCtrl = sucursalCtrl;
     }
 
 }

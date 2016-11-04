@@ -10,6 +10,7 @@ import com.aniuska.jflow.entity.Dispositivo;
 import com.aniuska.jflow.entity.Servicio;
 import com.aniuska.jflow.restful.model.RestServicio;
 import java.util.List;
+import java.util.function.Function;
 import javax.ejb.EJB;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -31,13 +32,18 @@ public class ServicioResource {
     @EJB
     DispositivoFacade ctrlKiosco;
 
+    /**
+     *
+     * @param tokenApi
+     * @return Response
+     */
     @GET
     @Path("/kiosco/{tokenApi}")
     @Produces({MediaType.APPLICATION_JSON})
-    public Response findServicioByKiosco(@PathParam("tokenApi") String token) {
+    public Response findServicioByKiosco(@PathParam("tokenApi") String tokenApi) {
 
-        LOG.info("Peticion token {}", token);
-        Dispositivo k = ctrlKiosco.find(token);
+        LOG.info("Peticion token {}", tokenApi);
+        Dispositivo k = ctrlKiosco.find(tokenApi);
 
         if (k == null) {
             return Response
@@ -48,15 +54,14 @@ public class ServicioResource {
         LOG.info("Kiosco {} id ", k.getDescripcion());
 
         List<Servicio> sers = k.getIdsucursal().getServicioList();
-        RestServicio servicios[] = new RestServicio[sers.size()];
-        int i = 0;
-        for (Servicio servicio : sers) {
-            servicios[i] = new RestServicio();
-            servicios[i].setNombre(servicio.getNombre());
-            servicios[i].setServicioId(servicio.getIdservicio());
-            servicios[i].setDescripcion(servicio.getDescripcion());
-            i++;
-        }
+        RestServicio servicios[] = (RestServicio[]) sers.stream()
+                .map(r -> {
+                    RestServicio servicio = new RestServicio();
+                    servicio.setNombre(r.getNombre());
+                    servicio.setServicioId(r.getIdservicio());
+                    servicio.setDescripcion(r.getDescripcion());
+                    return servicio;
+                }).toArray();
 
         return Response.ok(servicios).build();
     }

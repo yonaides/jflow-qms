@@ -19,6 +19,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
@@ -34,35 +35,24 @@ import javax.inject.Inject;
 public class MonitorearTicket implements Serializable {
 
     private final long serialVersionUID = 23L;
-    private static final java.util.logging.Logger LOG = java.util.logging.Logger.getLogger(MonitorearTicket.class.getName());
 
     @EJB
-    private TicketFacade ticketCtrl;
+    TicketFacade ticketCtrl;
     @Inject
-    private AuthenticationBean authenticationBean;
+    AuthenticationBean authenticationBean;
 
     @PostConstruct
     public void init() {
 
     }
 
-    public void setTicketCtrl(TicketFacade ticketCtrl) {
-        this.ticketCtrl = ticketCtrl;
-    }
-
-    public void setAuthenticationBean(AuthenticationBean authenticationBean) {
-        this.authenticationBean = authenticationBean;
-    }
-
     public List<TicketMonitoreo> getTicketsEspera() {
 
         Sucursal sucursal = authenticationBean.getUsuario().getIdsucursal();
         List<TicketDetalle> tickets = ticketCtrl.findTurnosBySucursalAndEstado(sucursal, Estados.EN_ESPERA);
-        List<TicketMonitoreo> mTickets = new ArrayList();
 
-        for (TicketDetalle td : tickets) {
+        List<TicketMonitoreo> mTickets = tickets.stream().map((td) -> {
             TicketMonitoreo tm = new TicketMonitoreo();
-
             Ticket turno = td.getIdticket();
             tm.setCliente(turno.getIdcliente().toString());
             tm.setEspecial(turno.getPrioridad() == 2);
@@ -71,16 +61,10 @@ public class MonitorearTicket implements Serializable {
             tm.setTiempoEspera(TimeUtils.getDiffTimeMinutes(turno.getFechaCreacion(), new Date()));
             tm.setServicio(td.getIdservicio().getNombre());
             tm.setTicket(turno.getHappyNumber());
-
-            mTickets.add(tm);
-        }
-
-        Collections.sort(mTickets, new Comparator<TicketMonitoreo>() {
-            @Override
-            public int compare(TicketMonitoreo o1, TicketMonitoreo o2) {
-                return o2.getTiempoEspera().subtract(o1.getTiempoEspera()).intValue();
-            }
-        });
+            return tm;
+        }).sorted((o1, o2) -> {
+            return o2.getTiempoEspera().subtract(o1.getTiempoEspera()).intValue();
+        }).collect(Collectors.toList());
 
         return mTickets;
     }
@@ -89,35 +73,24 @@ public class MonitorearTicket implements Serializable {
 
         Sucursal sucursal = authenticationBean.getUsuario().getIdsucursal();
         List<TicketDetalle> turnos = ticketCtrl.findTurnosBySucursalAndEstado(sucursal, Estados.EN_PROCESO);
-        List<TicketMonitoreo> mTurnos = new ArrayList();
 
-        for (TicketDetalle td : turnos) {
-
+        List<TicketMonitoreo> mTurnos = turnos.stream().map((td) -> {
             TicketMonitoreo tm = new TicketMonitoreo();
-
             Ticket turno = td.getIdticket();
             tm.setCliente(turno.getIdcliente().toString());
             tm.setEspecial(turno.getPrioridad() == 2);
             tm.setFecha(turno.getFechaCreacion());
             tm.setNic(turno.getIdcliente().getContrato().toString());
             tm.setTiempoEspera(td.getTiempoEspera());
-
             tm.setEstacion(td.getIdestacion().getNombre());
-
             tm.setUsuario(td.getIdoperador().toString());
             tm.setTiempoProceso(TimeUtils.getDiffTimeMinutes(td.getFechaInicioAtencion(), new Date()));
             tm.setServicio(td.getIdservicio().getNombre());
             tm.setTicket(turno.getHappyNumber());
-
-            mTurnos.add(tm);
-        }
-
-        Collections.sort(mTurnos, new Comparator<TicketMonitoreo>() {
-            @Override
-            public int compare(TicketMonitoreo o1, TicketMonitoreo o2) {
-                return o2.getTiempoProceso().subtract(o1.getTiempoProceso()).intValue();
-            }
-        });
+            return tm;
+        }).sorted((o1, o2) -> {
+            return o2.getTiempoProceso().subtract(o1.getTiempoProceso()).intValue();
+        }).collect(Collectors.toList());
 
         return mTurnos;
     }

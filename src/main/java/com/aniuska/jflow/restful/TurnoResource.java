@@ -18,13 +18,13 @@ import com.aniuska.jflow.entity.TicketDetalle;
 import com.aniuska.jflow.restful.model.RestTicket;
 import com.aniuska.jflow.utils.Estados;
 import com.aniuska.utils.date.DateUtils;
-import com.sun.javafx.css.Combinator;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import javax.ejb.EJB;
 import javax.ws.rs.Consumes;
@@ -34,9 +34,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.container.AsyncResponse;
-import javax.ws.rs.container.CompletionCallback;
 import javax.ws.rs.container.Suspended;
-import javax.ws.rs.container.TimeoutHandler;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import org.apache.logging.log4j.LogManager;
@@ -50,7 +48,7 @@ import org.apache.logging.log4j.Logger;
 public class TurnoResource {
 
     private final ExecutorService executorService = Executors.newCachedThreadPool();
-    private static final Logger LOG = LogManager.getLogger(ServicioResource.class);
+    private static final Logger LOG = LogManager.getLogger(TurnoResource.class);
     @EJB
     DispositivoFacade kioscoCtrl;
     @EJB
@@ -79,15 +77,12 @@ public class TurnoResource {
         kioscoCtrl.edit(k);
 
         List<TicketDetalle> ts = turnoCtrl.getTurnoEnProcesoBySucursal(k.getIdsucursal());
-        RestTicket turnos[] = new RestTicket[ts.size()];
-        int i = 0;
-        for (TicketDetalle td : ts) {
-            turnos[i] = new RestTicket();
-            turnos[i].setServicio(td.getIdservicio().getNombre());
-//            turnos[i].set(td.getIdestacion().getNumeroEstacion() + "");
-            turnos[i].setTurno(td.getIdticket().getHappyNumber());
-            i++;
-        }
+        RestTicket turnos[] = (RestTicket[]) ts.stream().map(t -> {
+            RestTicket rt = new RestTicket();
+            rt.setServicio(t.getIdservicio().getNombre());
+            rt.setTurno(t.getIdticket().getHappyNumber());
+            return rt;
+        }).toArray();
 
         return Response.ok(turnos).build();
     }
@@ -97,20 +92,13 @@ public class TurnoResource {
     public void createTurno(@Suspended final AsyncResponse asyncResponse, final RestTicket rt) {
 
         asyncResponse.setTimeout(20, TimeUnit.SECONDS);
-        asyncResponse.setTimeoutHandler(new TimeoutHandler() {
-
-            @Override
-            public void handleTimeout(AsyncResponse asyncResponse) {
-                asyncResponse.resume(Response.status(Response.Status.SERVICE_UNAVAILABLE)
-                        .entity("Operation time out.").build());
-            }
+        asyncResponse.setTimeoutHandler(asyncResp -> {
+            asyncResp.resume(Response.status(Response.Status.SERVICE_UNAVAILABLE)
+                    .entity("Operation time out.").build());
         });
 
-        executorService.submit(new Runnable() {
-            @Override
-            public void run() {
-                asyncResponse.resume(doCreateTurno(rt));
-            }
+        Future<?> submit = executorService.submit(() -> {
+            asyncResponse.resume(doCreateTurno(rt));
         });
     }
 

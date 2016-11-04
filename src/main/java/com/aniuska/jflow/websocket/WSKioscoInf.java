@@ -114,6 +114,18 @@ public class WSKioscoInf {
         }
     }
 
+    public void sendMessage(Message nm) {
+
+        synchronized (clients) {
+
+            LOG.info("Sending to all kiosk...");
+
+            this.clients.forEach((Dispositivo d, Session session) -> {
+                sendMessage(session, nm);
+            });
+        }
+    }
+
     public void sendMessage(Dispositivo kioscoInf, Message nm) {
 
         synchronized (clients) {

@@ -28,8 +28,7 @@ public class SucursalBean implements Serializable {
     private final long serialVersionUID = 23L;
 
     @EJB
-    private SucursalFacade sucursalCtrl;
-
+    SucursalFacade sucursalCtrl;
     private Sucursal sucursal;
     private List<Servicio> servicios;
     private String vista = "consulta";
@@ -47,14 +46,6 @@ public class SucursalBean implements Serializable {
 
     public void setBusqueda(String busqueda) {
         this.busqueda = busqueda;
-    }
-
-    public SucursalFacade getSucursalCtrl() {
-        return sucursalCtrl;
-    }
-
-    public void setSucursalCtrl(SucursalFacade sucursalCtrl) {
-        this.sucursalCtrl = sucursalCtrl;
     }
 
     public Sucursal getSucursal() {

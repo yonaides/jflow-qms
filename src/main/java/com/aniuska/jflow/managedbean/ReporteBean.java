@@ -37,15 +37,14 @@ public class ReporteBean implements Serializable {
     private static final Logger LOGGER = LogManager.getLogger(ReporteBean.class);
 
     @Resource(lookup = "jdbc/jflow")
-    private DataSource dataSource;
-
-    @EJB
-    private SucursalFacade sucursalCtrl;
-    private Sucursal sucursal;
-    private DateRange dateRange;
+    DataSource dataSource;
 
     @Inject
-    private AuthenticationBean authenticationBean;
+    AuthenticationBean authenticationBean;
+    @EJB
+    SucursalFacade sucursalCtrl;
+    private Sucursal sucursal;
+    private DateRange dateRange;
     private List<GenericType> reportes;
     private String reportFile;
 
@@ -78,20 +77,8 @@ public class ReporteBean implements Serializable {
         this.dateRange = dateRange;
     }
 
-    public void setSucursalCtrl(SucursalFacade sucursalCtrl) {
-        this.sucursalCtrl = sucursalCtrl;
-    }
-
     public List<Sucursal> getSucursales() {
         return sucursalCtrl.findAll();
-    }
-
-    public AuthenticationBean getAuthenticationBean() {
-        return authenticationBean;
-    }
-
-    public void setAuthenticationBean(AuthenticationBean authenticationBean) {
-        this.authenticationBean = authenticationBean;
     }
 
     public List<GenericType> getReportes() {

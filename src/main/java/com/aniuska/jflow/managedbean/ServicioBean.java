@@ -26,7 +26,7 @@ public class ServicioBean implements Serializable {
     private final long serialVersionUID = 24L;
 
     @EJB
-    private ServicioFacade servicioCtrl;
+    ServicioFacade servicioCtrl;
     private List<Servicio> servicios;
     private Servicio servicio;
 
@@ -52,14 +52,6 @@ public class ServicioBean implements Serializable {
 
     public void setBusqueda(String busqueda) {
         this.busqueda = busqueda;
-    }
-
-    public ServicioFacade getServicioCtrl() {
-        return servicioCtrl;
-    }
-
-    public void setServicioCtrl(ServicioFacade servicioCtrl) {
-        this.servicioCtrl = servicioCtrl;
     }
 
     public List<Servicio> getServicios() {

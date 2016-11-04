@@ -24,7 +24,7 @@ public class LoginFilter implements Filter {
     private final Set<String> staticAllow = new HashSet();
 
     @Inject
-    private AuthenticationBean authBean;
+    AuthenticationBean authBean;
 
     public LoginFilter() {
         staticAllow.add("javax.faces.resource");

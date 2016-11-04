@@ -33,35 +33,21 @@ public class SessionBean implements Serializable {
     private final long serialVersionUID = 23L;
 
     @EJB
-    private EstacionFacade estacionCtrl;
+    EstacionFacade estacionCtrl;
     @EJB
-    private SessionesFacade sessionCtrl;
-    private Estacion estacion;
-
+    SessionesFacade sessionCtrl;
     @Inject
-    private AuthenticationBean authenticationBean;
+    AuthenticationBean authenticationBean;
+    private Estacion estacion;
 
     @PostConstruct
     public void init() {
         estacion = null;
     }
 
-    public void setAuthenticationBean(AuthenticationBean authenticationBean) {
-        this.authenticationBean = authenticationBean;
-    }
-
-    public void setSessionCtrl(SessionesFacade sessionCtrl) {
-        this.sessionCtrl = sessionCtrl;
-    }
-
-    public void setEstacionCtrl(EstacionFacade estacionCtrl) {
-        this.estacionCtrl = estacionCtrl;
-    }
-
     public List<Estacion> getEstaciones() {
         Sucursal ofi = authenticationBean.getUsuario().getIdsucursal();
         return estacionCtrl.getEstacionByOficina(ofi);
-
     }
 
     public Estacion getEstacion() {
@@ -76,12 +62,12 @@ public class SessionBean implements Serializable {
 
         Session sec = sessionCtrl.estaLibre(estacion);
         if (sec != null) {
-            MessageUtils.sendSuccessfulMessage("Esta estación esta ocupada por : " + sec.getIdoperador().getNombre());
+            MessageUtils.sendSuccessfulMessage("Esta estación esta ocupada por : "
+                    + sec.getIdoperador().getNombre());
             return;
         }
 
         Session session = new Session();
-
         session.setFechaInicio(new Date());
         session.setIdestacion(estacion);
         session.setIdestado(Estados.ABIERTA);
@@ -104,7 +90,6 @@ public class SessionBean implements Serializable {
         sec.setIdestado(Estados.CERRADA);
 
         sessionCtrl.edit(sec);
-
         authenticationBean.setSession(null);
     }
 

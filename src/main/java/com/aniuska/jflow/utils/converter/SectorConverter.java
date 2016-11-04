@@ -23,7 +23,7 @@ import javax.inject.Named;
 public class SectorConverter implements Converter {
 
     @EJB
-    private SectorFacade sectorCtrl;
+    SectorFacade sectorCtrl;
 
     @Override
     public Object getAsObject(FacesContext context, UIComponent component, String value) {

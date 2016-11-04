@@ -23,7 +23,7 @@ import javax.inject.Named;
 public class EstacionConverter implements Converter {
 
     @EJB
-    private EstacionFacade estacionCtrl;
+    EstacionFacade estacionCtrl;
 
     @Override
     public Object getAsObject(FacesContext context, UIComponent component, String value) {
@@ -37,14 +37,6 @@ public class EstacionConverter implements Converter {
     @Override
     public String getAsString(FacesContext context, UIComponent component, Object value) {
         return value == null || (value instanceof String) ? null : ((Estacion) value).getIdestacion().toString();
-    }
-
-    public EstacionFacade getEstacionCtrl() {
-        return estacionCtrl;
-    }
-
-    public void setEstacionCtrl(EstacionFacade estacionCtrl) {
-        this.estacionCtrl = estacionCtrl;
     }
 
 }
