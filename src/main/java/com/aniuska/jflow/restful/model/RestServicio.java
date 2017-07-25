@@ -5,16 +5,22 @@
  */
 package com.aniuska.jflow.restful.model;
 
+import java.io.Serializable;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
  *
  * @author hectorvent@gmail.com
  */
-public class RestServicio {
+@XmlRootElement
+public class RestServicio implements Serializable{
 
     private int servicioId;
     private String nombre;
     private String descripcion;
 
+    @XmlElement
     public int getServicioId() {
         return servicioId;
     }
@@ -23,6 +29,7 @@ public class RestServicio {
         this.servicioId = servicioId;
     }
 
+    @XmlElement
     public String getNombre() {
         return nombre;
     }
@@ -31,6 +38,7 @@ public class RestServicio {
         this.nombre = nombre;
     }
 
+    @XmlElement
     public String getDescripcion() {
         return descripcion;
     }

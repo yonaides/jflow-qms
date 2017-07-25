@@ -33,8 +33,9 @@ public class EsperaFacade extends AbstractFacade<Espera> {
 
     public Espera findEsperaActiva(Session session) {
 
-        String jpsql = "FROM Espera e "
-                + "WHERE e.enespera = 'S' AND e.idsession = :session";
+        String jpsql = " FROM Espera e "
+                + " WHERE e.enespera = 'S' "
+                + " AND e.idsession = :session";
 
         try {
             return (Espera) em.createQuery(jpsql)

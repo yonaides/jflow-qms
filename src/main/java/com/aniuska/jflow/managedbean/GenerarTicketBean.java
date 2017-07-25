@@ -7,10 +7,12 @@ package com.aniuska.jflow.managedbean;
 
 import com.aniuska.jflow.auth.AuthenticationBean;
 import com.aniuska.jflow.ejb.ClienteFacade;
+import com.aniuska.jflow.ejb.DispositivoFacade;
 import com.aniuska.jflow.ejb.SucursalFacade;
 import com.aniuska.jflow.ejb.ServicioFacade;
 import com.aniuska.jflow.ejb.TicketFacade;
 import com.aniuska.jflow.entity.Cliente;
+import com.aniuska.jflow.entity.Dispositivo;
 import com.aniuska.jflow.entity.Sucursal;
 import com.aniuska.jflow.entity.Servicio;
 import com.aniuska.jflow.entity.Ticket;
@@ -18,6 +20,7 @@ import com.aniuska.jflow.entity.TicketDetalle;
 import com.aniuska.jflow.utils.Estados;
 import com.aniuska.jflow.websocket.Message;
 import com.aniuska.jflow.websocket.MessageType;
+import com.aniuska.jflow.websocket.WSKioscoInf;
 import com.aniuska.jflow.websocket.WSPrinter;
 import com.aniuska.utils.MessageUtils;
 import com.aniuska.utils.date.DateUtils;
@@ -26,6 +29,7 @@ import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
@@ -50,11 +54,18 @@ public class GenerarTicketBean implements Serializable {
     private ServicioFacade servicioCtrl;
     @EJB
     private SucursalFacade ctrlOficina;
+    
+    @EJB
+    private DispositivoFacade dispositivo;
+    
     @Inject
     private AuthenticationBean authenticationBean;
 
     @EJB
     private WSPrinter wsPrinter;
+    
+    @EJB
+    private WSKioscoInf wsKiosko ;
 
     private TicketDetalle ticketDetalle;
     private Cliente cliente;
@@ -134,7 +145,17 @@ public class GenerarTicketBean implements Serializable {
 
     public List<Ticket> getTurnos() {
         Sucursal sucursal = authenticationBean.getUsuario().getIdsucursal();
-        return turnoCtrl.findLast10(sucursal);
+        
+        List<Ticket> turnos = turnoCtrl.findLast10(sucursal);
+        
+        turnos.forEach(  (tik)-> {
+        
+            if (Objects.equals(tik.getIdestado().getIdestado(), Estados.EN_ESPERA.getIdestado())) {
+                sendMessageToKiosko(tik);
+            }
+        });
+        
+        return turnos;
     }
 
     public boolean isPrinterConnected() {
@@ -153,15 +174,14 @@ public class GenerarTicketBean implements Serializable {
 
         Sucursal ofi = authenticationBean.getUsuario().getIdsucursal();
         ofi = ctrlOficina.find(ofi.getIdsucursal());
-//        Oficina ofi = authenticationBean.getUsuario().getIdsucursal();
         int num = ofi.getSecuencia() + 1;
 
         // Se el numero es 100 resetiar a 1, (1-99)
         if (num == 100) {
             num = 1;
         }
+        
         ofi.setSecuencia(num);
-
         // Se actualiza la secuencia de la sucursal
         ctrlOficina.edit(ofi);
         Servicio ser = ticketDetalle.getIdservicio();
@@ -244,7 +264,6 @@ public class GenerarTicketBean implements Serializable {
     public void imprimir(Ticket turno) {
 
         if (!isPrinterConnected()) {
-
             MessageUtils.sendSuccessfulMessage("El printer no esta conectado!");
             return;
         }
@@ -264,6 +283,18 @@ public class GenerarTicketBean implements Serializable {
         wsPrinter.sendMessage(turno.getIdsucursal(), mes);
 
         MessageUtils.sendSuccessfulMessage("El turno se envio a imprimir!");
+    }
+    
+    private void sendMessageToKiosko(Ticket turno){
+        
+        Sucursal ofi = authenticationBean.getUsuario().getIdsucursal();
+        
+        Message nm = new Message(MessageType.CALL);
+        nm.put("turno", turno.getHappyNumber());
+        
+        wsKiosko.sendMessage(ofi, nm);
+        
+        
     }
 
 }

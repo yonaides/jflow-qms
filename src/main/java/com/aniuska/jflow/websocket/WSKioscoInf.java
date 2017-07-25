@@ -7,6 +7,7 @@ package com.aniuska.jflow.websocket;
 import com.aniuska.jflow.ejb.DispositivoFacade;
 import com.aniuska.jflow.entity.Dispositivo;
 import com.aniuska.jflow.entity.Sucursal;
+import com.aniuska.jflow.utils.converter.JsonEncoder;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Date;
@@ -23,6 +24,7 @@ import javax.websocket.OnError;
 import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
 import javax.websocket.Session;
+import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -32,7 +34,7 @@ import org.apache.logging.log4j.Logger;
  * @author hectorvent@gmail.com
  */
 @Singleton
-@ServerEndpoint(value = "/kioscoinf", decoders = {MessageDecoder.class}, encoders = {MessageEncoder.class})
+@ServerEndpoint(value = "/kioscoinf/{token}/{version}", encoders = MessageEncoder.class, decoders = MessageDecoder.class)
 public class WSKioscoInf {
 
     @EJB
@@ -41,7 +43,7 @@ public class WSKioscoInf {
     private final Map<Dispositivo, Session> clients = Collections.synchronizedMap(new HashMap());
 
     @OnOpen
-    public void open(Session session) {
+    public void open(Session session, @PathParam("token") String token,  @PathParam("version") String version ) {
 
         QueryParams qpp = new QueryParams();
         String qp = session.getQueryString();
@@ -50,7 +52,10 @@ public class WSKioscoInf {
             qpp.parser(qp);
         }
 
-        login(session, qpp);
+        System.out.println("token = " + token);
+        System.out.println("version = " + version);
+        
+        login(session, token, version);
     }
 
     @OnMessage
@@ -161,10 +166,16 @@ public class WSKioscoInf {
         }
     }
 
-    private void login(Session session, QueryParams qpp) {
+    private void login(Session session, String token, String versionp) {
 
-        String tokenApi = qpp.get(WSParams.TOKEN_API_PARAM);
-        String version = qpp.get(WSParams.VERSION_PARAM);
+        //System.out.println("WSParams.TOKEN_API_PARAM = " + WSParams.TOKEN_API_PARAM);
+        //System.out.println("qpp.get(WSParams.TOKEN_API_PARAM) = " + qpp.get(WSParams.TOKEN_API_PARAM));
+
+        System.out.println("token = " + token);
+        System.out.println("versionp = " + versionp);
+        
+        String tokenApi = token ; //qpp.get(WSParams.TOKEN_API_PARAM);
+        String version = versionp ; //qpp.get(WSParams.VERSION_PARAM);
 
         if (tokenApi == null) {
             closeReason(session, CloseCodes.NOT_CONSISTENT,

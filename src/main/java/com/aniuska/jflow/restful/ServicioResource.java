@@ -10,12 +10,12 @@ import com.aniuska.jflow.entity.Dispositivo;
 import com.aniuska.jflow.entity.Servicio;
 import com.aniuska.jflow.restful.model.RestServicio;
 import java.util.List;
-import java.util.function.Function;
 import javax.ejb.EJB;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import org.apache.logging.log4j.LogManager;
@@ -54,7 +54,28 @@ public class ServicioResource {
         LOG.info("Kiosco {} id ", k.getDescripcion());
 
         List<Servicio> sers = k.getIdsucursal().getServicioList();
-        RestServicio servicios[] = (RestServicio[]) sers.stream()
+
+        LOG.info(" Datos de busqueda ", sers.get(0));
+        LOG.info(sers.get(0).toString());
+
+        //RestServicio servicios[] = new RestServicio[0] ;
+        RestServicio servicio = new RestServicio();
+        
+        sers.forEach((item)->
+        {
+            
+            servicio.setDescripcion(item.getDescripcion());
+            servicio.setNombre(item.getNombre());
+            servicio.setServicioId(item.getIdservicio());
+
+        });
+            /*servicios[0].setDescripcion(servicio.getDescripcion());
+            servicios[0].setNombre(servicio.getNombre());
+            servicios[0].setServicioId(servicio.getServicioId());*/
+        
+        return Response.ok(Entity.json(servicio) ).build() ;
+        
+        /*RestServicio servicios[] = (RestServicio[]) sers.stream()
                 .map(r -> {
                     RestServicio servicio = new RestServicio();
                     servicio.setNombre(r.getNombre());
@@ -62,8 +83,9 @@ public class ServicioResource {
                     servicio.setDescripcion(r.getDescripcion());
                     return servicio;
                 }).toArray();
-
-        return Response.ok(servicios).build();
+         */
+        //return Response.ok(servicios).build();
+        //return Response.ok(Response.accepted()).build();
     }
 
 }

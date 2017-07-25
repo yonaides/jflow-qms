@@ -72,10 +72,10 @@
     </mime-mapping>
     <error-page>
         <error-code>404</error-code>
-        <location>/app/public/error.xhtml</location>
+        <location>/public/error.xhtml</location>
     </error-page>
     <error-page>
         <error-code>500</error-code>
-        <location>/app/public/error.xhtml</location>
+        <location>/public/error.xhtml</location>
     </error-page>
 </web-app>

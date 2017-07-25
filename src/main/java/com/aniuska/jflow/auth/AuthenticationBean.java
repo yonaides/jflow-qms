@@ -2,7 +2,6 @@ package com.aniuska.jflow.auth;
 
 import com.aniuska.jflow.ejb.SessionesFacade;
 import com.aniuska.jflow.ejb.UsuarioFacade;
-import com.aniuska.jflow.entity.Rol;
 import com.aniuska.jflow.entity.Session;
 import com.aniuska.jflow.entity.Usuario;
 import com.aniuska.jflow.utils.MenuController;

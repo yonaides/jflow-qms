@@ -169,7 +169,9 @@ public class Servicio implements Serializable {
 
     @Override
     public String toString() {
-        return "com.aniuska.turnos.entity.Servicio[ idservicio=" + idservicio + " ]";
+        return "Servicio{" + "idservicio=" + idservicio + ", nombre=" + nombre + ", descripcion=" + descripcion + ", tiempoProm=" + tiempoProm + ", pathIcon=" + pathIcon + ", prefijo=" + prefijo + ", sucursalList=" + sucursalList + ", turnoDetalleList=" + turnoDetalleList + ", estacionServicioList=" + estacionServicioList + '}';
     }
+
+    
 
 }

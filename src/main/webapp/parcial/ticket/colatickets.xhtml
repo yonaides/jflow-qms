@@ -69,8 +69,11 @@
                         <div class="col-md-2">
 
                             <div class="btn-group btn-group-vertical btn-block">
-                                <p:commandLink id="cerrarSession" class="btn btn-primary btn-sm btn-flat" ajax="true"
-                                               actionListener="${sessionBean.cerrarSession()}" update=":content"
+                                <p:commandLink id="cerrarSession" 
+                                               class="btn btn-primary btn-sm btn-flat" 
+                                               ajax="true"
+                                               actionListener="${sessionBean.cerrarSession()}"
+                                               update=":content"
                                                rendered="#{colaTicketBean.ticketDetalle.idticketDetalle == null and colaTicketBean.espera == null }">
                                     <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> Cerrar
                                 </p:commandLink>

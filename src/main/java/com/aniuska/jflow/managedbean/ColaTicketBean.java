@@ -184,7 +184,7 @@ public class ColaTicketBean implements Serializable {
         //index 1, 2- Terminar turno y asignar otro servicio.
         if (tipoOpcionTurno == 1) {
             if (servicio == null) {
-                MessageUtils.sendErrorMessage("Debe sellecionar un servicio");
+                MessageUtils.sendErrorMessage("Debe seleccionar un servicio");
                 return;
             }
 
@@ -218,7 +218,7 @@ public class ColaTicketBean implements Serializable {
         //index 2, 3- Terminar turno y tomar un receso.
         if (tipoOpcionTurno == 2) {
             if (motivoReceso == null) {
-                MessageUtils.sendErrorMessage("Debe sellecionar motivo de receso");
+                MessageUtils.sendErrorMessage("Debe seleccionar motivo de receso");
                 return;
             }
 
@@ -232,7 +232,7 @@ public class ColaTicketBean implements Serializable {
         //index 3, 4- Abandonar turno y llamar al proximo.
         if (tipoOpcionTurno == 3) {
             if (motivoAbandono == null) {
-                MessageUtils.sendErrorMessage("Debe sellecionar motivo de abandono");
+                MessageUtils.sendErrorMessage("Debe seleccionar motivo de abandono");
                 return;
             }
 
