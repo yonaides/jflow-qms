@@ -9,6 +9,8 @@ import com.aniuska.jflow.entity.Estacion;
 import com.aniuska.jflow.entity.Session;
 import com.aniuska.jflow.entity.Usuario;
 import com.aniuska.jflow.utils.Estados;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -19,6 +21,8 @@ import javax.persistence.PersistenceContext;
  */
 @Stateless
 public class SessionesFacade extends AbstractFacade<Session> {
+
+    private static final Logger LOG = Logger.getLogger(SessionesFacade.class.getName());
 
     @PersistenceContext(unitName = "JFLOW")
     private EntityManager em;
@@ -43,6 +47,7 @@ public class SessionesFacade extends AbstractFacade<Session> {
                     .setMaxResults(1)
                     .getSingleResult();
         } catch (Exception ex) {
+            LOG.log(Level.SEVERE, "Error al abrir al session del usuario ", ex);
         }
 
         return null;
@@ -60,6 +65,7 @@ public class SessionesFacade extends AbstractFacade<Session> {
 
             return (Session) obj;
         } catch (Exception ex) {
+            LOG.log(Level.SEVERE, "Error al revisar la estacion libre ", ex);
         }
 
         return null;

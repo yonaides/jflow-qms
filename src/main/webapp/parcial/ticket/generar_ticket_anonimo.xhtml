@@ -37,20 +37,21 @@
             </div>
             <div class="box-body">
                 <div class="row">
-                    <h:form class="form form-personalizado form-horizontal"  id="formTurno">                        
-                        <div class="col-md-5">
-
-                            <div class="form-group">
+                    <h:form class="form form-personalizado form-horizontal"  id="formTurno">
+                        <div class="col-md-5" style="display: none">
+                            <div class="form-group" style="display: none">
                                 <label for="contratoCliente" class="col-md-3 control-label">Contrato</label>
                                 <div class="col-md-9">
                                     <p:fragment>
                                         <div class="input-group">
-                                            <p:inputText id="contratoCliente" class="form-control input-sm" 
-                                                         value="#{generarTicketBean.cliente.contrato}" required="true"
-                                                         requiredMessage="Se debe indicar NIC "/>
+                                            <p:inputText id="contratoCliente" 
+                                                         class="form-control input-sm" 
+                                                         />
                                             <span class="input-group-btn">
-                                                <p:commandLink id="buscarNic" class="btn btn-success btn-sm btn-flat"
-                                                               type="button" actionListener="#{generarTicketBean.buscarNic()}" 
+                                                <p:commandLink id="buscarNic" 
+                                                               class="btn btn-success btn-sm btn-flat"
+                                                               type="button" 
+                                                               actionListener="#{generarTicketBean.buscarNic()}" 
                                                                update="@form :messages">
                                                     <span class="glyphicon glyphicon-ok"></span>
                                                 </p:commandLink>
@@ -59,18 +60,22 @@
                                     </p:fragment>
                                 </div>
                             </div>
-                            <div class="form-group">
+
+                            <div class="form-group" style="display: none">
                                 <label for="identificacionCliente" class="col-md-3 control-label">Identificación</label>
                                 <div class="col-md-9">
                                     <p:fragment>
                                         <div class="input-group">
-                                            <p:inputText id="identificacionCliente" class="form-control input-sm" 
-                                                         value="#{generarTicketBean.cliente.cedula}" required="true"
-                                                         requiredMessage="Debe introducir Identificación"/>
+                                            <p:inputText id="identificacionCliente" 
+                                                         class="form-control input-sm" 
+                                                         required="false"
+                                                         />
                                             <span class="input-group-btn">
-                                                <p:commandLink id="buscarCliente" class="btn btn-success btn-sm btn-flat"
-                                                               type="button" actionListener="#{generarTicketBean.buscarCliente()}" 
-                                                               update="@form messages">
+                                                <p:commandLink id="buscarCliente" 
+                                                               class="btn btn-success btn-sm btn-flat"
+                                                               type="button" 
+                                                               actionListener="#{generarTicketBean.buscarCliente()}" 
+                                                               >
                                                     <span class="glyphicon glyphicon-ok"></span>
                                                 </p:commandLink>
                                             </span>
@@ -79,37 +84,35 @@
                                 </div>
                             </div>
 
-                            <div class="form-group">
+                            <div class="form-group" style="display: none">
                                 <label for="nombreCliente" class="col-md-3 control-label">Nombre</label>
                                 <div class="col-md-9">
-                                    <p:inputText id="nombreCliente" class="form-control input-sm" 
-                                                 value="#{generarTicketBean.cliente.nombre}" required="true"
-                                                 requiredMessage="Debe introducir nombre"/>
+                                    <p:inputText id="nombreCliente" 
+                                                 class="form-control input-sm" />
                                 </div>
                             </div>
 
-                            <div class="form-group">
+                            <div class="form-group" style="display: none">
                                 <label for="apellidoCliente" class="col-md-3 control-label">Apellido</label>
                                 <div class="col-md-9">
-                                    <p:inputText id="apellidoCliente" class="form-control input-sm" 
-                                                 value="#{generarTicketBean.cliente.apellido}" required="true"
-                                                 requiredMessage="Debe introducir apellido"/>
+                                    <p:inputText id="apellidoCliente" 
+                                                 class="form-control input-sm" />
                                 </div>
                             </div>
 
-                            <div class="form-group">
+                            <div class="form-group" style="display: none">
                                 <label for="telefonoCliente" class="col-md-3 control-label">Teléfono</label>
                                 <div class="col-md-9">
-                                    <p:inputText id="telefonoCliente" class="form-control input-sm" 
-                                                 value="#{generarTicketBean.cliente.telefono}"/>
+                                    <p:inputText id="telefonoCliente" 
+                                                 class="form-control input-sm" />
                                 </div>
                             </div>
 
-                            <div class="form-group">
+                            <div class="form-group" style="display: none">
                                 <div class="col-md-3"></div>
                                 <div class="col-md-9">
                                     <h:selectBooleanCheckbox id="esTitular"
-                                                             value="#{generarTicketBean.titular}"/>
+                                                             />
                                     <span>Es titular</span>
                                 </div>
                             </div>
@@ -122,12 +125,10 @@
                                 <div class="col-md-9">
                                     <h:selectOneMenu id="tipoServicio" class="form-control input-sm"
                                                      converter="#{servicioConverter}" 
-                                                     value="#{generarTicketBean.ticketDetalle.idservicio}"
-                                                     required="true" requiredMessage="Debe seleccionar el servicio" >
+                                                     value="#{generarTicketBean.ticketDetalle.idservicio}">
                                         <f:selectItem itemLabel="Seleccionar Servicio" itemValue=""/>
                                         <f:selectItems value="#{generarTicketBean.servicios}" 
                                                        var="o" itemLabel="#{o.nombre}" />
-
                                     </h:selectOneMenu>
                                 </div>
                             </div>
@@ -153,15 +154,22 @@
 
                         <div class="col-md-2">
                             <div class="btn-group btn-group-vertical btn-block">
-                                <p:commandLink id="cancelarBtn" class="btn btn-default btn-sm btn-flat" 
+                                <p:commandLink id="cancelarBtn" 
+                                               class="btn btn-default btn-sm btn-flat" 
                                                actionListener="#{generarTicketBean.nuevo()}"
-                                               resetValues="true" type="reset" immediate="true" update="@form">
-                                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Limpiar
+                                               resetValues="true" 
+                                               type="reset" 
+                                               immediate="true" 
+                                               update="@form"
+                                               style="display: none">
+                                    <!--<span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Limpiar-->
                                 </p:commandLink>
 
-                                <p:commandLink id="siguienteBtn" class="btn btn-primary btn-sm btn-flat" 
+                                <p:commandLink id="siguienteBtn" 
+                                               class="btn btn-primary btn-lg btn-flat" 
                                                ajax="true"
-                                               actionListener="${generarTicketBean.salvar()}" update="messages @form :tbTurnos">
+                                               actionListener="${generarTicketBean.salvar()}" 
+                                               update="messages @form :tbTurnos">
                                     <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span> Generar Turno
                                 </p:commandLink>
                             </div>
@@ -176,7 +184,7 @@
                         </script>
                     </h:form>
                 </div>
-                <div class="row">
+                <div class="row" style="display:none" >
                     <div class="col-md-12" >
                         <p:dataTable id="tbTurnos" var="turno" 
                                      value="#{generarTicketBean.turnos}"

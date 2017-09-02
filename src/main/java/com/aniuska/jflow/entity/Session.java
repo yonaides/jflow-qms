@@ -171,7 +171,9 @@ public class Session implements Serializable {
 
     @Override
     public String toString() {
-        return "com.aniuska.turnos.entity.Sessiones[ idsession=" + idsession + " ]";
+        return "Session{" + "idsession=" + idsession + ", fechaInicio=" + fechaInicio + ", fechaFin=" + fechaFin + ", segundoEspera=" + segundoEspera + ", idestacion=" + idestacion + ", idestado=" + idestado + ", idoperador=" + idoperador + '}';
     }
+
+
 
 }

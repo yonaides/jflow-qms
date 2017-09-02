@@ -342,11 +342,11 @@ public class ColaTicketBean implements Serializable {
         }
 
         // Si el cliente es ID = 1 es que el cliente por defecto se debe crear uno nuevo
-        if (ticket.getIdcliente().getIdcliente().equals(new BigDecimal(1))) {
+        /*if (ticket.getIdcliente().getIdcliente().equals(new BigDecimal(1))) {
             cliente = new Cliente();
-        } else {
+        } else {*/
             cliente = ticket.getIdcliente();
-        }
+        //}
 
         MessageUtils.sendSuccessfulMessage("Llamando siquiente turno");
 
@@ -407,34 +407,31 @@ public class ColaTicketBean implements Serializable {
         if (cli != null) {
             cliente = cli;
         } else {
-//
-//            DatosCliente dc = ConsultaContratoWS.findClienteByNic(cliente.getContrato().intValue());
-//
-//            if (dc == null) {
-//                MessageUtils.sendSuccessfulMessage("Error al consultar los clientes!!");
-//                return;
-//            }
-//
-//            if ("M02".equals(dc.getMensaje().getCodigo())) {
             MessageUtils.sendSuccessfulMessage("Este contrato no existe!!");
             return;
-//            }
-//
-//            cliente.setApellido(dc.getApellidos());
-//            cliente.setCedula(dc.getCedulaCliente());
-//            cliente.setNombre(dc.getNombreCliente());
-//            cliente.setTelefono(dc.getTelefonos());
-//            cliente.setTitular((short) 1);
         }
 
     }
 
     private void terminarDia() {
-        sessionBean.cerrarSession();
+        sessionBean.doClose();
 
         // Ejecutar actualización de SPA
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("content");
     }
 
+    public void doClose() {
+        
+        System.out.println("cerrando session ");
+        
+        sessionBean.doClose();
+
+        // Ejecutar actualización de SPA
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("content");
+    }
+    
+    
+    
 }

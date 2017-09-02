@@ -12,7 +12,6 @@ import com.aniuska.jflow.ejb.SucursalFacade;
 import com.aniuska.jflow.ejb.ServicioFacade;
 import com.aniuska.jflow.ejb.TicketFacade;
 import com.aniuska.jflow.entity.Cliente;
-import com.aniuska.jflow.entity.Dispositivo;
 import com.aniuska.jflow.entity.Sucursal;
 import com.aniuska.jflow.entity.Servicio;
 import com.aniuska.jflow.entity.Ticket;
@@ -30,6 +29,8 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
@@ -45,6 +46,7 @@ import javax.inject.Inject;
 public class GenerarTicketBean implements Serializable {
 
     private final long serialVersionUID = 23L;
+    private static final Logger LOG = Logger.getLogger(GenerarTicketBean.class.getName());
 
     @EJB
     private TicketFacade turnoCtrl;
@@ -55,8 +57,8 @@ public class GenerarTicketBean implements Serializable {
     @EJB
     private SucursalFacade ctrlOficina;
     
-    @EJB
-    private DispositivoFacade dispositivo;
+/*    @EJB
+    private DispositivoFacade dispositivo;*/
     
     @Inject
     private AuthenticationBean authenticationBean;
@@ -69,13 +71,12 @@ public class GenerarTicketBean implements Serializable {
 
     private TicketDetalle ticketDetalle;
     private Cliente cliente;
-    private boolean prioritario;
+    private boolean prioritario = false;
 
     @PostConstruct
     public void init() {
         ticketDetalle = new TicketDetalle();
         cliente = new Cliente();
-        prioritario = false;
     }
 
     public void setTurnoCtrl(TicketFacade turnoCtrl) {
@@ -145,9 +146,7 @@ public class GenerarTicketBean implements Serializable {
 
     public List<Ticket> getTurnos() {
         Sucursal sucursal = authenticationBean.getUsuario().getIdsucursal();
-        
         List<Ticket> turnos = turnoCtrl.findLast10(sucursal);
-        
         turnos.forEach(  (tik)-> {
         
             if (Objects.equals(tik.getIdestado().getIdestado(), Estados.EN_ESPERA.getIdestado())) {
@@ -165,12 +164,17 @@ public class GenerarTicketBean implements Serializable {
     }
 
     public void salvar() {
-
+        
+        cliente = clienteCtrl.findAll().stream().findFirst().get();
+        
+        System.out.println(cliente);
+        
         if (cliente.getIdcliente() == null) {
             cliente.setFechaIngreso(new Date());
             cliente.setIdusuarioIngreso(authenticationBean.getUsuario());
             clienteCtrl.create(cliente);
         }
+        
 
         Sucursal ofi = authenticationBean.getUsuario().getIdsucursal();
         ofi = ctrlOficina.find(ofi.getIdsucursal());
@@ -185,7 +189,7 @@ public class GenerarTicketBean implements Serializable {
         // Se actualiza la secuencia de la sucursal
         ctrlOficina.edit(ofi);
         Servicio ser = ticketDetalle.getIdservicio();
-
+        
         Ticket turno = new Ticket();
         turno.setFechaCreacion(new Date());
         turno.setHappyNumber(ser.getPrefijo() + "-" + num);
@@ -210,7 +214,9 @@ public class GenerarTicketBean implements Serializable {
 
             init();
         } catch (Exception ex) {
-            MessageUtils.sendErrorMessage("Error creando turno ");
+            MessageUtils.sendErrorMessage("Error creando turno " );
+            LOG.log(Level.SEVERE, "Error al crear el turno " + ex.getMessage());
+            
         }
     }
 
@@ -239,26 +245,8 @@ public class GenerarTicketBean implements Serializable {
         if (cli != null) {
             cliente = cli;
         } else {
-
-//            DatosCliente dc = ConsultaContratoWS.findClienteByNic(cliente.getContrato().intValue());
-//
-//            if (dc == null) {
             MessageUtils.sendSuccessfulMessage("Error al consultar los clientes!!");
-            return;
-//            }
-//
-//            if ("M02".equals(dc.getMensaje().getCodigo())) {
-//                MessageUtils.sendSuccessfulMessage("Este contrato no existe!!");
-//                return;
-//            }
-//
-//            cliente.setApellido(dc.getApellidos());
-//            cliente.setCedula(dc.getCedulaCliente());
-//            cliente.setNombre(dc.getNombreCliente());
-//            cliente.setTelefono(dc.getTelefonos());
-//            cliente.setTitular((short) 1);
         }
-
     }
 
     public void imprimir(Ticket turno) {
@@ -289,7 +277,7 @@ public class GenerarTicketBean implements Serializable {
         
         Sucursal ofi = authenticationBean.getUsuario().getIdsucursal();
         
-        Message nm = new Message(MessageType.CALL);
+        Message nm = new Message(MessageType.REFRESH);
         nm.put("turno", turno.getHappyNumber());
         
         wsKiosko.sendMessage(ofi, nm);

@@ -12,8 +12,11 @@ import com.aniuska.jflow.entity.Ticket;
 import com.aniuska.jflow.entity.TicketDetalle;
 import com.aniuska.jflow.utils.Estados;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 
 /**
@@ -22,15 +25,15 @@ import javax.persistence.PersistenceContext;
  */
 @Stateless
 public class TicketFacade extends AbstractFacade<Ticket> {
-    
+
     @PersistenceContext(unitName = "JFLOW")
     private EntityManager em;
-    
+
     @Override
     protected EntityManager getEntityManager() {
         return em;
     }
-    
+
     public TicketFacade() {
         super(Ticket.class);
     }
@@ -42,13 +45,13 @@ public class TicketFacade extends AbstractFacade<Ticket> {
      * @return turno, siquiente para la session especificada
      */
     public TicketDetalle nextTurnoDetalle(Session session) {
-        
+
         String jpql = "SELECT TD.* FROM TICKET T INNER JOIN TICKET_DETALLE TD "
                 + "ON (T.IDTICKET = TD.IDTICKET) INNER JOIN ESTACION_SERVICIO ES "
                 + "ON (TD.IDSERVICIO = ES.IDSERVICIO AND ES.IDESTACION = ?1) "
                 + "WHERE TD.IDESTADO = ?2 AND T.IDSUCURSAL = ?3 ORDER BY T.PRIORIDAD DESC, "
                 + "ES.PRIORITARIO DESC, T.IDTICKET";
-        
+
         try {
             return (TicketDetalle) em.createNativeQuery(jpql, TicketDetalle.class)
                     .setParameter(1, session.getIdestacion().getIdestacion())
@@ -58,29 +61,33 @@ public class TicketFacade extends AbstractFacade<Ticket> {
                     .getSingleResult();
         } catch (Exception ex) {
         }
-        
+
         return null;
     }
-    
+
     public TicketDetalle turnoPendienteDetalle(Session session) {
-        
+
         String jpql = "SELECT TD.* FROM TICKET T INNER JOIN TICKET_DETALLE TD "
                 + "ON (T.IDTICKET = TD.IDTICKET) "
                 + "WHERE TD.IDESTADO = ?1 "
                 + "AND TD.IDOPERADOR = ?2 "
                 + "ORDER BY T.PRIORIDAD DESC, TD.IDTICKET_DETALLE";
-        
+
         try {
             return (TicketDetalle) em.createNativeQuery(jpql, TicketDetalle.class)
                     .setParameter(1, Estados.EN_PROCESO.getIdestado())
                     .setParameter(2, session.getIdoperador().getIdoperador())
                     .setMaxResults(1)
                     .getSingleResult();
-        } catch (Exception ex) {
+        } catch (NoResultException ex) {
+            LOG.info("No hay mas datos encontrados");
+        }catch(Exception ex){
+            LOG.log(Level.SEVERE, "Error al realizar la busqueda no hay mas datos ", ex);
         }
-        
+
         return null;
     }
+    private static final Logger LOG = Logger.getLogger(TicketFacade.class.getName());
 
     /**
      * Use this method for Resource (Rest)
@@ -92,38 +99,38 @@ public class TicketFacade extends AbstractFacade<Ticket> {
         String jpql = "SELECT TD.* FROM TICKET T INNER JOIN TICKET_DETALLE TD "
                 + "ON (T.IDTICKET = TD.IDTICKET) WHERE T.IDSUCURSAL = ?1 "
                 + "AND TD.IDESTADO = ?2 ORDER BY TD.FECHA_INICIO_ATENCION DESC";
-        
+
         return em.createNativeQuery(jpql, TicketDetalle.class)
                 .setParameter(1, sucursal.getIdsucursal())
                 .setParameter(2, Estados.EN_PROCESO.getIdestado())
                 .getResultList();
     }
-    
+
     public List<Ticket> findLast10(Sucursal sucursal) {
         String jpql = "SELECT T.* "
                 + "FROM (SELECT T.* FROM TICKET T "
                 + "WHERE T.IDSUCURSAL = ?1 "
                 + "ORDER BY T.IDTICKET DESC) T "
                 + "LIMIT 10";
-        
+
         List<Ticket> listado = em.createNativeQuery(jpql, Ticket.class)
                 .setParameter(1, sucursal.getIdsucursal())
                 .getResultList();
-        
+
         listado.forEach((item) -> {
-            
+
             System.out.println("item = " + item);
         });
-        
+
         return listado;
-        
+
     }
-    
+
     public List<TicketDetalle> findTurnosBySucursalAndEstado(Sucursal sucursal, Estado estado) {
         String jpql = "SELECT TD.* "
                 + "FROM TICKET_DETALLE TD INNER JOIN TICKET T ON (T.IDTICKET = TD.IDTICKET) "
                 + "WHERE T.IDSUCURSAL = ?1 AND TD.IDESTADO = ?2";
-        
+
         return em.createNativeQuery(jpql, TicketDetalle.class)
                 .setParameter(1, sucursal.getIdsucursal())
                 .setParameter(2, estado.getIdestado())
@@ -139,11 +146,11 @@ public class TicketFacade extends AbstractFacade<Ticket> {
     public List<Ticket> findTurnosAbiertos() {
         String jpql = "FROM Ticket t "
                 + "WHERE t.idestado = :estado1 OR t.idestado = :estado2";
-        
+
         return em.createQuery(jpql, Ticket.class)
                 .setParameter("estado1", Estados.EN_ESPERA)
                 .setParameter("estado2", Estados.EN_PROCESO)
                 .getResultList();
     }
-    
+
 }

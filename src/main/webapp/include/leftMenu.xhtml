@@ -20,7 +20,7 @@
                         <li class="#{menuController.pagina == 'dashboard/dashboard' ? 'active' : ''}">
                             <h:commandLink action="#{menuController.setPagina('dashboard/dashboard')}" >
                                 <span class="fa fa-dashboard" aria-hidden="true"></span>
-                                <span>Panel de Principal</span> 
+                                <span>DashBoard</span> 
                             </h:commandLink>
                         </li>
 
@@ -28,16 +28,16 @@
                             <li class="#{menuController.pagina == 'ticket/colatickets' or menuController.pagina == 'turno/iniciar_session' ? 'active' : ''}">
                                 <h:commandLink action="#{menuController.setPagina('ticket/colatickets')}" >
                                     <span class="fa fa-bullhorn" aria-hidden="true"></span>
-                                    <span>Cola de Ticket</span> 
+                                    <span>Cola de turnos</span> 
                                 </h:commandLink>
                             </li>
                         </c:if>
 
                         <c:if test="#{authenticationBean.hasRol(rolEnum.crearTurno)}">
-                            <li class="#{menuController.pagina == 'ticket/generar_ticket'  ? 'active' : ''}">
-                                <h:commandLink action="#{menuController.setPagina('ticket/generar_ticket')}" >
+                            <li class="#{menuController.pagina == 'ticket/generar_ticket_anonimo'  ? 'active' : ''}">
+                                <h:commandLink action="#{menuController.setPagina('ticket/generar_ticket_anonimo')}" >
                                     <span class="fa fa-plus-square" aria-hidden="true"></span>
-                                    <span>Generar Ticket</span> 
+                                    <span>Generar turnos</span> 
                                 </h:commandLink>
                             </li>        
                         </c:if>
@@ -46,15 +46,9 @@
                             <li class="#{menuController.pagina == 'ticket/tiempo_tickets'  ? 'active' : ''}">
                                 <h:commandLink action="#{menuController.setPagina('ticket/tiempo_tickets')}" >
                                     <span class="fa fa-clock-o" aria-hidden="true"></span>
-                                    <span>Tiempo Tickets</span> 
+                                    <span>Tiempo turnos</span> 
                                 </h:commandLink>
-                            </li>     
-                            <!--                            <li class="#menuController.pagina == 'estacion/monitoreo'  ? 'active' : ''}">
-                                                            <h:commandLink action="#menuController.setPagina('estacion/monitoreo')}" >
-                                                                <span class="fa fa-desktop" aria-hidden="true"></span>
-                                                                <span>Monitoreo Estaciones</span> 
-                                                            </h:commandLink>
-                                                        </li>     -->
+                            </li>
                         </c:if>
 
                         <c:if test="#{authenticationBean.hasRol(rolEnum.reporteFull) or authenticationBean.hasRol(rolEnum.reporteOficina)}">
@@ -72,7 +66,7 @@
                             <li class="treeview"> 
                                 <a href="#"> 
                                     <i class="fa fa-cogs"></i> 
-                                    <span>Administración</span> 
+                                    <span>Configuracion</span> 
                                 </a> 
                                 <ul class="treeview-menu"> 
                                     <li>

@@ -27,16 +27,13 @@
         <h:outputStylesheet name="css/bootstrap-3.3.4.min.css"/>
         <h:outputStylesheet name="css/font-awesome-4.4.0.min.css"/>
         <h:outputStylesheet name="css/AdminLTE.css"/>
-        <h:outputStylesheet name="css/skins/skin-green.css"/>
+        <h:outputStylesheet name="css/skins/skin-blue-light.css"/> 
         <h:outputStylesheet name="js/datepicker/datepicker3.css"/>
         <h:outputStylesheet name="js/daterangepicker/daterangepicker.css"/>
         <h:outputStylesheet name="css/ajax-status.min.css"/>
-        <!--        <h:outputStylesheet library="primefaces" name="charts/charts.css"/>-->
         <h:outputStylesheet name="css/main.css"/>
         <h:outputStylesheet name="css/square/blue.css"/>
-
-        <!--<h:outputScript library="primefaces-extensions" name="primefaces-extensions.js"/>-->
-        <!--<h:outputScript library="primefaces" name="charts/charts.js"/>-->
+        
         <h:outputScript name="js/bootstrap-3.3.4.min.js"/>
         <h:outputScript name="js/datepicker/bootstrap-datepicker.es.js"/>
         <h:outputScript name="js/daterangepicker/moment-with-locales.js"/>
@@ -47,10 +44,8 @@
         <h:outputScript name="js/main.js"/>
         <h:outputScript name="js/icheck.min.js"/>
 
-        <!--<script src="https://maps.googleapis.com/maps/api/js?signed_in=true" type="text/javascript"></script>-->
-
     </h:head>
-    <h:body class="skin-green sidebar-mini fixed">
+    <h:body class="skin-blue-light sidebar-mini fixed">
         <p:growl id="messages" showDetail="true" life="2000" class="ui-growl" autoUpdate="false" />  
 
         <div class="wrapper">
@@ -66,8 +61,6 @@
 
             <ui:include src="include/footer.xhtml"/>
         </div><!-- ./wrapper -->
-
-        <!--<h:outputScript name="js/bootstrap-select.min.js"  />-->
 
         <p:ajaxStatus onstart="$('#statusDiv').show()" 
                       onsuccess="$('#statusDiv').hide()" />

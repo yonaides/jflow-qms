@@ -9,7 +9,7 @@
 
     <!-- Content Header (Page header) -->
     <section class="content-header">
-        <h1><li class="fa fa-bullhorn fa-1x"></li> Cola de Turnos<small></small> </h1>
+        <h1><li class="fa fa-bell fa-1x"></li> Proximos turnos<small></small> </h1>
         <ol class="breadcrumb">
             <li>
                 <a href="#">
@@ -26,14 +26,14 @@
         <div class="box box-primary">
 
             <div class="box-header with-border">
-                <h3 class="box-title">Atender turno</h3>
+                <h3 class="box-title">Atender turnos</h3>
             </div>
             <div class="box-body">
 
                 <!--<p:hotkey bind="shift+s" handler="siguienteBtn.jq.click();"/>-->
                 <div class="row">
-                    <div class="col-md-1"></div>
-                    <div class="col-md-5">
+                    <!-- <div class="col-md-1"></div> -->
+                    <div class="col-md-4">
                         <dl class="dl-horizontal dlpropio">
                             <dt>Oficina :</dt>
                             <dd>#{authenticationBean.usuario.idsucursal.numeroSucursal} - #{authenticationBean.usuario.idsucursal.nombre}</dd>
@@ -66,40 +66,25 @@
                             </h:panelGroup>
                         </div>
 
-                        <div class="col-md-2">
-
+                        <!--<div class="col-md-2">
                             <div class="btn-group btn-group-vertical btn-block">
-                                <p:commandLink id="cerrarSession" 
-                                               class="btn btn-primary btn-sm btn-flat" 
-                                               ajax="true"
-                                               actionListener="${sessionBean.cerrarSession()}"
-                                               update=":content"
-                                               rendered="#{colaTicketBean.ticketDetalle.idticketDetalle == null and colaTicketBean.espera == null }">
-                                    <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> Cerrar
-                                </p:commandLink>
 
-                                <p:commandLink rendered="#{colaTicketBean.espera != null}" id="terminarEspera" 
-                                               class="btn btn-primary btn-sm btn-flat" ajax="true"
-                                               actionListener="#{colaTicketBean.terminarEspera()}" update=":content">
-                                    <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> Terminar Espera
-                                </p:commandLink>
                             </div>
-
-                        </div>
+                        </div>-->
                     </h:panelGroup>
 
                 </div>
                 <hr/>
 
                 <h:panelGroup id="contentForm" >
-                    <h:form class="form form-personalizado form-horizontal"  id="formTurno" rendered="#{colaTicketBean.espera == null}"> 
+                    <h:form class="form form-personalizado form-horizontal"
+                            id="formTurno"
+                            rendered="#{colaTicketBean.espera == null}">
                         <div class="row">
+                            <!--<div class="col-md-1"></div>-->
+                            <div class="col-md-4" style="display: none;">
 
-                            <div class="col-md-1"></div>
-
-                            <div class="col-md-4">
-
-                                <div class="form-group">
+                                <div class="form-group" style="display: none;">
                                     <label for="contratoCliente" class="col-md-3 control-label">Contrato</label>
                                     <div class="col-md-9">
                                         <p:fragment id="framento1">
@@ -120,14 +105,13 @@
                                     </div>
                                 </div>
 
-                                <div class="form-group">
+                                <div class="form-group" style="display: none;">
                                     <label for="identificacionCliente" class="col-md-3 control-label">Identificación</label>
                                     <div class="col-md-9">
                                         <p:fragment id="framento">
                                             <div class="input-group">
                                                 <p:inputText id="identificacionCliente" class="form-control input-sm" 
-                                                             value="#{colaTicketBean.cliente.cedula}"
-                                                             required="true" requiredMessage="Debe indicar cédula"/>
+                                                             value="#{colaTicketBean.cliente.cedula}"/>
                                                 <span class="input-group-btn">
                                                     <p:commandLink id="buscarCliente" class="btn btn-success btn-sm btn-flat"
                                                                    type="button" actionListener="#{colaTicketBean.buscarCliente()}" 
@@ -142,17 +126,16 @@
                                 </div>
 
 
-                                <div class="form-group">
+                                <div class="form-group" style="display: none;">
                                     <label for="nombreCliente" class="col-md-3 control-label">Nombre</label>
                                     <div class="col-md-9">
                                         <p:inputText id="nombreCliente" class="form-control input-sm" 
-                                                     value="#{colaTicketBean.cliente.toString()}" required="true"
-                                                     requiredMessage="Debe indicar nombre del cliente"
+                                                     value="#{colaTicketBean.cliente.toString()}"
                                                      disabled="#{colaTicketBean.cliente.idcliente != null}"/>
                                     </div>
                                 </div>
 
-                                <div class="form-group">
+                                <div class="form-group" style="display: none;">
                                     <label for="apellidoCliente" class="col-md-3 control-label">Apellido</label>
                                     <div class="col-md-9">
                                         <p:inputText id="apellidoCliente" class="form-control input-sm" 
@@ -161,7 +144,7 @@
                                     </div>
                                 </div>
 
-                                <div class="form-group">
+                                <div class="form-group" style="display: none;">
                                     <label for="telefonoCliente" class="col-md-3 control-label">Teléfono</label>
                                     <div class="col-md-9">
                                         <p:inputText id="telefonoCliente" class="form-control input-sm" 
@@ -170,7 +153,7 @@
                                     </div>
                                 </div>
 
-                                <div class="form-group">
+                                <div class="form-group" style="display: none;">
                                     <div class="col-md-3"></div>
                                     <div class="col-md-9">
                                         <h:selectBooleanCheckbox id="esTitular"
@@ -211,7 +194,7 @@
                                     </div>
                                 </div>
 
-                                <div class="form-group">
+                                <div class="form-group" style="display:none;">
                                     <label for="observacionTurno" class="col-md-3 control-label">Observación</label>
                                     <div class="col-md-9">
                                         <p:inputTextarea id="observacionTurno" class="form-control input-sm" 
@@ -222,20 +205,24 @@
 
                             </div>
 
+                            <!-- Botones -->
                             <div class="col-md-2">
                                 <div class="btn-group btn-group-vertical btn-block">
-                                    <p:commandLink id="guardarBtn" class="btn btn-primary btn-sm btn-flat" ajax="true"
+                                    <p:commandLink id="guardarBtn" class="btn btn-primary btn-sm btn-flat" 
+                                                   ajax="true"
                                                    disabled="#{colaTicketBean.ticketDetalle.idticketDetalle == null}"
                                                    onclick="$('#modalCierre').modal('show')" >
                                         <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span> Terminar
                                     </p:commandLink>
 
-                                    <p:commandLink id="siguienteBtn" class="btn btn-success btn-sm btn-flat"
-                                                   disabled="#{colaTicketBean.ticketDetalle.idticketDetalle != null}" process="@this"
-                                                   actionListener="${colaTicketBean.siguiente()}" update="@form, messages, :contentBtn">
+                                    <p:commandLink id="siguienteBtn" 
+                                                   class="btn btn-success btn-sm btn-flat"
+                                                   disabled="#{colaTicketBean.ticketDetalle.idticketDetalle != null}"
+                                                   process="@this"
+                                                   actionListener="${colaTicketBean.siguiente()}" 
+                                                   update="@form, messages, :contentBtn">
                                         <span class="glyphicon glyphicon-step-forward" aria-hidden="true"></span> Siguiente
-                                        <!--<span class="badge">ctrl+shift+s</span>-->
-                                        <!--<kbd><kbd>shift</kbd> + <kbd>s</kbd></kbd>-->
+                                        
                                     </p:commandLink>
 
                                     <p:commandLink id="volverLlamar" class="btn btn-default btn-sm btn-flat btnLlamar" ajax="true"
@@ -244,6 +231,20 @@
                                                    actionListener="${colaTicketBean.llamarTurno(true)}" update="messages">
                                         <span class="glyphicon glyphicon-bullhorn" aria-hidden="true"></span> Llamar
                                     </p:commandLink>
+
+                                    <h:commandButton id="cerrar" 
+                                                   class="btn btn-primary btn-lg btn-flat"
+                                                   actionListener="#{colaTicketBean.doClose()}">
+                                        Cerrar
+                                    </h:commandButton>
+
+                                    <p:commandLink rendered="#{colaTicketBean.espera != null}" id="terminarEspera" 
+                                                   class="btn btn-primary btn-sm btn-flat" ajax="true"
+                                                   actionListener="#{colaTicketBean.terminarEspera()}" 
+                                                   update=":content">
+                                        <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> Terminar Espera
+                                    </p:commandLink>
+
                                 </div>
                             </div>
                         </div>

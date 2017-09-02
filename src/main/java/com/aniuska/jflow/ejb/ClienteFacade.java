@@ -7,6 +7,8 @@ package com.aniuska.jflow.ejb;
 
 import com.aniuska.jflow.entity.Cliente;
 import java.math.BigInteger;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -17,6 +19,8 @@ import javax.persistence.PersistenceContext;
  */
 @Stateless
 public class ClienteFacade extends AbstractFacade<Cliente> {
+
+    private static final Logger LOG = Logger.getLogger(ClienteFacade.class.getName());
 
     @PersistenceContext(unitName = "JFLOW")
     private EntityManager em;
@@ -39,6 +43,7 @@ public class ClienteFacade extends AbstractFacade<Cliente> {
                     .setMaxResults(1)
                     .getSingleResult();
         } catch (Exception ex) {
+            LOG.log(Level.INFO, "Error al realizar la consulta {0}", ex);
         }
         return null;
     }
@@ -52,6 +57,7 @@ public class ClienteFacade extends AbstractFacade<Cliente> {
                     .setMaxResults(1)
                     .getSingleResult();
         } catch (Exception ex) {
+            LOG.log(Level.INFO, "Error al realizar la consulta {0}", ex);
         }
         return null;
     }

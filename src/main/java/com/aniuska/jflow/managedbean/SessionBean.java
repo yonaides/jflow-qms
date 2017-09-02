@@ -18,8 +18,8 @@ import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import javax.inject.Named;
 import javax.inject.Inject;
 
 /**
@@ -34,9 +34,11 @@ public class SessionBean implements Serializable {
 
     @EJB
     EstacionFacade estacionCtrl;
+
     @EJB
     SessionesFacade sessionCtrl;
-    @Inject
+
+    @EJB
     AuthenticationBean authenticationBean;
     private Estacion estacion;
 
@@ -83,14 +85,19 @@ public class SessionBean implements Serializable {
 
     }
 
-    public void cerrarSession() {
+    public void doClose() {
+        System.out.println("cerrando session ");
 
         Session sec = authenticationBean.getSession();
         sec.setFechaFin(new Date());
         sec.setIdestado(Estados.CERRADA);
 
+        System.out.println("sec = " + sec);
+
         sessionCtrl.edit(sec);
         authenticationBean.setSession(null);
     }
+
+    
 
 }

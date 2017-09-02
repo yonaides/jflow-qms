@@ -78,6 +78,8 @@ public class AuthenticationBean implements Serializable {
     }
 
     public void setSession(Session session) {
+        LOGGER.info(session);
+        
         this.session = session;
         menuController.setSession(session);
     }
@@ -91,15 +93,10 @@ public class AuthenticationBean implements Serializable {
     public String doLogin() {
 
         boolean success = true;
-//        boolean success = WsAutenticacion.login(username, password);
-
-        /// Se usa el nombre de usuario minimizado y trimeado
         username = username.toLowerCase().trim();
-
         LOGGER.info("Intento de iniciar session, usuario = {}, exitoso = {}", username, (success ? "SI" : "NO"));
 
         usuario = usuarioFacade.find(username);
-
         rols = new HashSet();
 
         if (success && usuario != null && 'S' == usuario.getHabilitado()) {
@@ -137,7 +134,7 @@ public class AuthenticationBean implements Serializable {
         menuController.setSession(session);
 
         if (rols.contains(RolEnum.CREAR_TURNO)) {
-            menuController.setPagina("ticket/generar_ticket");
+            menuController.setPagina("ticket/generar_ticket_anonimo");
         } else if (rols.contains(RolEnum.ATENDER_TURNO)) {
             menuController.setPagina("ticket/colaticket");
         } else {
