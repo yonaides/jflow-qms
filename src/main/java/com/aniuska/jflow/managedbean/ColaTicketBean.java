@@ -47,9 +47,9 @@ import org.primefaces.context.RequestContext;
 @Named
 @ViewScoped
 public class ColaTicketBean implements Serializable {
-
+    
     private final long serialVersionUID = 75L;
-
+    
     @EJB
     TicketFacade turnoCtrl;
     @EJB
@@ -66,6 +66,7 @@ public class ColaTicketBean implements Serializable {
     EsperaFacade esperaCtrl;
     @Inject
     AuthenticationBean authenticationBean;
+    
     @Inject
     SessionBean sessionBean;
     private TicketDetalle ticketDetalle;
@@ -76,101 +77,101 @@ public class ColaTicketBean implements Serializable {
     private int tipoOpcionTurno = 0;
     private Espera espera;
     private boolean tomarTurno = true;
-
+    
     @PostConstruct
     public void init() {
         ticketDetalle = new TicketDetalle();
         cliente = new Cliente();
-
+        cliente.setNombre("");
         servicio = null;
         motivoAbandono = null;
         motivoReceso = null;
         tipoOpcionTurno = 0;
         tomarTurno = true;
-
+        
         espera = esperaCtrl.findEsperaActiva(authenticationBean.getSession());
     }
-
+    
     public TicketDetalle getTicketDetalle() {
         return ticketDetalle;
     }
-
+    
     public void setTicketDetalle(TicketDetalle ticketDetalle) {
         this.ticketDetalle = ticketDetalle;
     }
-
+    
     public Cliente getCliente() {
         return cliente;
     }
-
+    
     public void setCliente(Cliente cliente) {
         this.cliente = cliente;
     }
-
+    
     public boolean isTitular() {
         return this.cliente.getTitular() == (short) 1;
     }
-
+    
     public void setTitular(boolean titu) {
         this.cliente.setTitular((short) (titu ? 1 : 0));
     }
-
+    
     public List<MotivoAbandono> getMotivoAbandonos() {
         return motivoAbandonoCtrl.findAll();
     }
-
+    
     public List<MotivoReceso> getMotivoRecesos() {
         return movitoRecesoCtrl.findAll();
     }
-
+    
     public List<Servicio> getServicios() {
         return servicioCtrl.findAll();
     }
-
+    
     public Servicio getServicio() {
         return servicio;
     }
-
+    
     public void setServicio(Servicio servicio) {
         this.servicio = servicio;
     }
-
+    
     public MotivoAbandono getMotivoAbandono() {
         return motivoAbandono;
     }
-
+    
     public void setMotivoAbandono(MotivoAbandono motivoAbandono) {
         this.motivoAbandono = motivoAbandono;
     }
-
+    
     public MotivoReceso getMotivoReceso() {
         return motivoReceso;
     }
-
+    
     public void setMotivoReceso(MotivoReceso motivoReceso) {
         this.motivoReceso = motivoReceso;
     }
-
+    
     public int getTipoOpcionTurno() {
         return tipoOpcionTurno;
     }
-
+    
     public void setTipoOpcionTurno(int tipoOpcionTurno) {
         this.tipoOpcionTurno = tipoOpcionTurno;
     }
-
+    
     public Espera getEspera() {
         return espera;
     }
-
+    
     public boolean isTomarTurno() {
         return tomarTurno;
     }
-
+    
     public void setTomarTurno(boolean tomarTurno) {
         this.tomarTurno = tomarTurno;
     }
-
+    
     public void terminarTurno() {
 
         //index 0, 1- Terminar turno y llamar proximo cliente.
@@ -187,22 +188,22 @@ public class ColaTicketBean implements Serializable {
                 MessageUtils.sendErrorMessage("Debe seleccionar un servicio");
                 return;
             }
-
+            
             TicketDetalle dt = new TicketDetalle();
             dt.setFechaInicio(new Date());
-
+            
             dt.setIdservicio(servicio);
             dt.setTiempoEspera(BigDecimal.ZERO);
             dt.setTiempoProceso(BigDecimal.ZERO);
-
+            
             if (tomarTurno) {
-
+                
                 Session sec = authenticationBean.getSession();
                 dt.setIdestado(Estados.EN_PROCESO);
                 dt.setFechaInicioAtencion(new Date());
                 dt.setIdoperador(authenticationBean.getUsuario());
                 dt.setIdestacion(sec.getIdestacion());
-
+                
                 BigDecimal tdiff = TimeUtils.getDiffTimeMinutes(
                         dt.getFechaInicio(),
                         dt.getFechaInicioAtencion()
@@ -211,7 +212,7 @@ public class ColaTicketBean implements Serializable {
             } else {
                 dt.setIdestado(Estados.EN_ESPERA);
             }
-
+            
             detTurnos.add(dt);
         }
 
@@ -221,7 +222,7 @@ public class ColaTicketBean implements Serializable {
                 MessageUtils.sendErrorMessage("Debe seleccionar motivo de receso");
                 return;
             }
-
+            
             espera = new Espera();
             espera.setFechaInicio(new Date());
             espera.setEnespera('S');
@@ -235,11 +236,11 @@ public class ColaTicketBean implements Serializable {
                 MessageUtils.sendErrorMessage("Debe seleccionar motivo de abandono");
                 return;
             }
-
+            
             estado = Estados.ABANDONADO;
             ticketDetalle.setIdmotivoAbandono(motivoAbandono);
         }
-
+        
         if (ticketDetalle.getIdticket() != null) {
 
             // Si el Id del cliente es null, es que se debe crear0
@@ -247,32 +248,32 @@ public class ColaTicketBean implements Serializable {
                 cliente.setIdusuarioIngreso(authenticationBean.getUsuario());
                 clienteCtrl.create(cliente);
             }
-
+            
             Ticket turno = ticketDetalle.getIdticket();
             turno.setIdcliente(cliente);
             turno.setFechaFin(new Date());
 
             // Si la lista esta vacia quiere decir que no hay otro servicio
             turno.setIdestado(detTurnos.isEmpty() ? estado : Estados.EN_ESPERA);
-
+            
             ticketDetalle.setFechaFinAtencion(turno.getFechaFin());
             ticketDetalle.setIdestado(estado);
-
+            
             BigDecimal td = TimeUtils.getDiffTimeMinutes(ticketDetalle.getFechaInicioAtencion(),
                     ticketDetalle.getFechaFinAtencion()
             );
             ticketDetalle.setTiempoProceso(td);
-
+            
             detTurnos.add(ticketDetalle);
             for (TicketDetalle detTurno : detTurnos) {
                 detTurno.setIdticket(turno);
             }
-
+            
             turno.setTicketDetalleList(detTurnos);
             turnoCtrl.edit(turno);
-
+            
             MessageUtils.sendSuccessfulMessage("Turno concluido!");
-
+            
             quitarTurno();
             //------------------------------------------
             //index 0, 1- Terminar turno y llamar proximo cliente.
@@ -294,38 +295,38 @@ public class ColaTicketBean implements Serializable {
                 init();
                 terminarDia();
             }
-
+            
         }
     }
-
+    
     public void siguiente() {
-
+        
         Session ses = authenticationBean.getSession();
         TicketDetalle td = turnoCtrl.turnoPendienteDetalle(ses);
         Ticket ticket;
-
+        
         if (td == null) {
-
+            
             td = turnoCtrl.nextTurnoDetalle(ses);
-
+            
             if (td == null) {
                 init();
                 MessageUtils.sendSuccessfulMessage("No hay turnos pendientes!!");
                 return;
             }
-
+            
             ticketDetalle = td;
             ticketDetalle.setFechaInicioAtencion(new Date());
             ticketDetalle.setIdoperador(authenticationBean.getUsuario());
             ticketDetalle.setIdestado(Estados.EN_PROCESO);
             ticketDetalle.setIdestacion(ses.getIdestacion());
             ticketDetalle.setTiempoEspera(new BigDecimal(2));
-
+            
             BigDecimal tdiff = TimeUtils.getDiffTimeMinutes(ticketDetalle.getFechaInicio(),
                     ticketDetalle.getFechaInicioAtencion()
             );
             ticketDetalle.setTiempoEspera(tdiff);
-
+            
             ticket = ticketDetalle.getIdticket();
             ticket.setIdestado(Estados.EN_PROCESO);
             ticketDetalle.setIdticket(ticket);
@@ -333,7 +334,7 @@ public class ColaTicketBean implements Serializable {
 
             // Actualizamos el siquiente turno, en proceso y quien es el Operador quien lo va atender.
             turnoCtrl.edit(ticket);
-
+            
             llamarTurno(false);
         } else {
             ticketDetalle = td;
@@ -345,45 +346,45 @@ public class ColaTicketBean implements Serializable {
         /*if (ticket.getIdcliente().getIdcliente().equals(new BigDecimal(1))) {
             cliente = new Cliente();
         } else {*/
-            cliente = ticket.getIdcliente();
+        cliente = ticket.getIdcliente();
         //}
 
         MessageUtils.sendSuccessfulMessage("Llamando siquiente turno");
-
+        
     }
-
+    
     public void llamarTurno(boolean rellamar) {
-
+        
         if (rellamar) {
             MessageUtils.sendSuccessfulMessage("Rellamando turno!");
         }
-
+        
         Ticket turno = ticketDetalle.getIdticket();
         Message ms = new Message(MessageType.CALL);
         ms.put("turno", turno.getHappyNumber());
         ms.put("puesto", ticketDetalle.getIdestacion().getNumeroEstacion() + "");
         ms.put("especial", turno.getPrioridad() == 2);
         ms.put("rellamar", rellamar);
-
+        
         wsNotificacion.sendMessage(authenticationBean.getUsuario().getIdsucursal(), ms);
     }
-
+    
     public void quitarTurno() {
-
+        
         Ticket turno = ticketDetalle.getIdticket();
         Message ms = new Message(MessageType.REMOVE);
         ms.put("turno", turno.getHappyNumber());
         ms.put("puesto", ticketDetalle.getIdestacion().getNumeroEstacion() + "");
         ms.put("especial", turno.getPrioridad() == 2);
         ms.put("rellamar", false);
-
+        
         wsNotificacion.sendMessage(authenticationBean.getUsuario().getIdsucursal(), ms);
     }
-
+    
     public void buscarCliente() {
-
+        
         Cliente cli = clienteCtrl.findByIdentificacion(cliente.getCedula());
-
+        
         if (cli == null) {
             String cedula = cliente.getCedula();
             MessageUtils.sendSuccessfulMessage("Cliente no se encuentra registrado!");
@@ -394,25 +395,25 @@ public class ColaTicketBean implements Serializable {
             cliente = cli;
         }
     }
-
+    
     public void terminarEspera() {
         esperaCtrl.terminarEspera(espera);
         init();
     }
-
+    
     public void buscarNic() {
-
+        
         Cliente cli = clienteCtrl.findByContrato(cliente.getContrato());
-
+        
         if (cli != null) {
             cliente = cli;
         } else {
             MessageUtils.sendSuccessfulMessage("Este contrato no existe!!");
             return;
         }
-
+        
     }
-
+    
     private void terminarDia() {
         sessionBean.doClose();
 
@@ -420,7 +421,7 @@ public class ColaTicketBean implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("content");
     }
-
+    
     public void doClose() {
         
         System.out.println("cerrando session ");
@@ -431,7 +432,5 @@ public class ColaTicketBean implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("content");
     }
-    
-    
     
 }

@@ -128,39 +128,40 @@
 
                                 <div class="form-group" style="display: none;">
                                     <label for="nombreCliente" class="col-md-3 control-label">Nombre</label>
-                                    <div class="col-md-9">
-                                        <p:inputText id="nombreCliente" class="form-control input-sm" 
+                                    <!--<div class="col-md-9">
+                                        <p:inputText id="nombreCliente" 
+                                                     class="form-control input-sm" 
                                                      value="#{colaTicketBean.cliente.toString()}"
                                                      disabled="#{colaTicketBean.cliente.idcliente != null}"/>
-                                    </div>
+                                    </div>-->
                                 </div>
 
                                 <div class="form-group" style="display: none;">
                                     <label for="apellidoCliente" class="col-md-3 control-label">Apellido</label>
-                                    <div class="col-md-9">
+                                    <!--<div class="col-md-9">
                                         <p:inputText id="apellidoCliente" class="form-control input-sm" 
                                                      value="#{colaTicketBean.cliente.apellido}"
                                                      disabled="#{colaTicketBean.cliente.idcliente != null}"/>
-                                    </div>
+                                    </div>-->
                                 </div>
 
                                 <div class="form-group" style="display: none;">
                                     <label for="telefonoCliente" class="col-md-3 control-label">Teléfono</label>
-                                    <div class="col-md-9">
+                                    <!--<div class="col-md-9">
                                         <p:inputText id="telefonoCliente" class="form-control input-sm" 
                                                      value="#{colaTicketBean.cliente.telefono}" 
                                                      disabled="#{colaTicketBean.cliente.idcliente != null}"/>
-                                    </div>
+                                    </div>-->
                                 </div>
 
                                 <div class="form-group" style="display: none;">
                                     <div class="col-md-3"></div>
-                                    <div class="col-md-9">
+                                    <!--<div class="col-md-9">
                                         <h:selectBooleanCheckbox id="esTitular"
                                                                  value="#{colaTicketBean.titular}"
                                                                  disabled="#{colaTicketBean.cliente.idcliente != null}"/>
                                         <span>Es titular</span>
-                                    </div>
+                                    </div>-->
                                 </div>
                             </div>
 
@@ -222,7 +223,7 @@
                                                    actionListener="${colaTicketBean.siguiente()}" 
                                                    update="@form, messages, :contentBtn">
                                         <span class="glyphicon glyphicon-step-forward" aria-hidden="true"></span> Siguiente
-                                        
+
                                     </p:commandLink>
 
                                     <p:commandLink id="volverLlamar" class="btn btn-default btn-sm btn-flat btnLlamar" ajax="true"
@@ -232,11 +233,14 @@
                                         <span class="glyphicon glyphicon-bullhorn" aria-hidden="true"></span> Llamar
                                     </p:commandLink>
 
-                                    <h:commandButton id="cerrar" 
-                                                   class="btn btn-primary btn-lg btn-flat"
-                                                   actionListener="#{colaTicketBean.doClose()}">
-                                        Cerrar
-                                    </h:commandButton>
+                                    <p:commandLink id="cerrarSession" 
+                                                   class="btn btn-primary btn-sm btn-flat" 
+                                                   ajax="true"
+                                                   actionListener="${sessionBean.doClose()}"
+                                                   update=":content"
+                                                   rendered="#{colaTicketBean.ticketDetalle.idticketDetalle == null and colaTicketBean.espera == null }">
+                                        <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> Cerrar
+                                    </p:commandLink>
 
                                     <p:commandLink rendered="#{colaTicketBean.espera != null}" id="terminarEspera" 
                                                    class="btn btn-primary btn-sm btn-flat" ajax="true"
@@ -327,7 +331,8 @@
                                                                  converter="#{motivoAbandonoConverter}" value="#{colaTicketBean.motivoAbandono}">
                                                     <f:selectItem itemLabel="Seleccionar Abandono" itemValue=""/>
                                                     <f:selectItems value="#{colaTicketBean.motivoAbandonos}" 
-                                                                   var="o" itemLabel="#{o.descripcion}" />
+                                                                   var="o" 
+                                                                   itemLabel="#{o.descripcion}" />
                                                 </h:selectOneMenu>
                                             </div>
                                         </div>

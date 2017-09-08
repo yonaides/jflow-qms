@@ -9,11 +9,14 @@ import com.aniuska.jflow.entity.Estacion;
 import com.aniuska.jflow.entity.Session;
 import com.aniuska.jflow.entity.Usuario;
 import com.aniuska.jflow.utils.Estados;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -35,8 +38,31 @@ public class SessionesFacade extends AbstractFacade<Session> {
     public SessionesFacade() {
         super(Session.class);
     }
-
+    
+    public Session isOpenSession(Usuario usuario){
+        
+        Session session = null;
+        
+        String jpql = "FROM Session s "
+                + "WHERE s.idestado = :estado AND s.idoperador = :usuario";
+        
+        try {
+           Query query =  em.createQuery(jpql,Session.class)
+                    .setParameter("estado", Estados.ABIERTA)
+                    .setParameter("usuario", usuario);
+            
+           session = (Session) query.getResultList().stream().findFirst().orElse(null);
+           
+        } catch (Exception e) {
+            LOG.log(Level.SEVERE, "Error al abrir al session del usuario ", e);
+        }
+        return session;
+        
+    }
+    
+/*
     public Session getOpenSesssion(Usuario usuario) {
+        
         String jpql = "FROM Session s "
                 + "WHERE s.idestado = :estado AND s.idoperador = :usuario";
 
@@ -51,8 +77,10 @@ public class SessionesFacade extends AbstractFacade<Session> {
         }
 
         return null;
+        
+        
     }
-
+*/
     public Session estaLibre(Estacion estacion) {
         String jpql = "FROM Session s "
                 + "WHERE s.idestacion = :estacion AND s.idestado = :estado";

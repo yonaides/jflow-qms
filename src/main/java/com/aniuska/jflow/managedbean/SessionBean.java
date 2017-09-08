@@ -19,8 +19,8 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.view.ViewScoped;
-import javax.inject.Named;
 import javax.inject.Inject;
+import javax.inject.Named;
 
 /**
  *
@@ -38,7 +38,7 @@ public class SessionBean implements Serializable {
     @EJB
     SessionesFacade sessionCtrl;
 
-    @EJB
+    @Inject
     AuthenticationBean authenticationBean;
     private Estacion estacion;
 

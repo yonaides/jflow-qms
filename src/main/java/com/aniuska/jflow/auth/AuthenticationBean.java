@@ -7,6 +7,7 @@ import com.aniuska.jflow.entity.Usuario;
 import com.aniuska.jflow.utils.MenuController;
 import com.aniuska.utils.MessageUtils;
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Set;
 import javax.ejb.EJB;
@@ -14,6 +15,7 @@ import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -79,7 +81,7 @@ public class AuthenticationBean implements Serializable {
 
     public void setSession(Session session) {
         LOGGER.info(session);
-        
+
         this.session = session;
         menuController.setSession(session);
     }
@@ -118,6 +120,7 @@ public class AuthenticationBean implements Serializable {
         try {
             return rols.contains(rolName);
         } catch (Exception ex) {
+            LOGGER.log(Level.FATAL, "Error al realizar comparar el rol {0}", ex);
             return false;
         }
     }
@@ -130,7 +133,9 @@ public class AuthenticationBean implements Serializable {
 
     private void setMainContent() {
 
-        session = sessionCtrl.getOpenSesssion(usuario);
+        //session = sessionCtrl.getOpenSesssion(usuario);
+        session = sessionCtrl.isOpenSession(usuario);
+
         menuController.setSession(session);
 
         if (rols.contains(RolEnum.CREAR_TURNO)) {
